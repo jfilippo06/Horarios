@@ -1,0 +1,721 @@
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+import sqlite3
+from rutas import *
+import traceback
+import sys
+
+class CargaAcademica(tk.Toplevel):
+	def __init__(self,master = None):
+		super().__init__(master)
+		# Config:
+		self.master = master
+		self.title('Carga Académica')
+		self.geometry('940x620')
+		self.resizable(width=0,height=0)
+		self.iconbitmap(uptpc)
+		# Menu:
+		self.menubar = tk.Menu(self)
+		self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
+		self.filemenu1.add_command(label="Volver", command=self.volver)
+		self.filemenu1.add_command(label="Salir", command=self.salir)
+		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
+		self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
+		self.filemenu2.add_command(label="Manual")
+		self.menubar.add_cascade(label="Ayuda", menu=self.filemenu2)
+		self.config(menu=self.menubar)
+		# Frame:
+		self.Frame = ttk.Labelframe(self)
+		self.Frame.grid(column=0,row=0,pady=30,padx=10)
+		ttk.Label(self, text='CARGA ARCADÉMICA',font=('Helvetica',14)).place(x=370,y=5)
+		ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
+		self.EntryNombreApellido = ttk.Entry(self.Frame,width=45)
+		self.EntryNombreApellido.grid(column=1,row=0,padx=5,pady=5)
+		ttk.Label(self.Frame,text='Cédula de Identidad N°:',font=('Helvetica',11)).grid(column=2,row=0,padx=5)
+		self.EntryCedula = ttk.Entry(self.Frame,width=45)
+		self.EntryCedula.grid(column=3,row=0,padx=5,pady=5)
+		ttk.Label(self.Frame,text='Categoría:',font=('Helvetica',11)).grid(column=0,row=1,padx=5,pady=5)
+		self.EntryCategoria = ttk.Entry(self.Frame,width=45)
+		self.EntryCategoria.grid(column=1,row=1,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Dedicación:',font=('Helvetica',11)).grid(column=2,row=1,padx=5,pady=5)
+		self.EntryDedicacion = ttk.Entry(self.Frame,width=45)
+		self.EntryDedicacion.grid(column=3,row=1,padx=5,pady=5)
+		ttk.Label(self.Frame,text='Título de Pre-Grado:',font=('Helvetica',11)).grid(column=0,row=2,padx=5,pady=5)
+		self.EntryTPregado = ttk.Entry(self.Frame,width=45)
+		self.EntryTPregado.grid(column=1,row=2,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Título de Post-Grado:',font=('Helvetica',11)).grid(column=2,row=2,padx=5,pady=5)
+		self.EntryTPosgrado = ttk.Entry(self.Frame,width=45)
+		self.EntryTPosgrado.grid(column=3,row=2,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Descarga Académica:',font=('Helvetica',11)).grid(column=0,row=3,padx=5,pady=5)
+		self.DescargaAcademica = tk.StringVar()
+		ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.DescargaAcademica).grid(column=1,row=3,padx=5,pady=5)
+		ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.DescargaAcademica).grid(column=2,row=3,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Condición Laboral:',font=('Helvetica',11)).grid(column=0,row=4,padx=5,pady=5)
+		self.CondicionLaboral = tk.StringVar()
+		ttk.Radiobutton(self.Frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboral).grid(column=1,row=4,padx=5,pady=5)
+		ttk.Radiobutton(self.Frame, text='Contratado', value='Contratado',variable=self.CondicionLaboral).grid(column=2,row=4,padx=5,pady=5)
+		ttk.Label(self.Frame,text='Razón de la descarga:',font=('Helvetica',11)).grid(column=0,row=5,padx=5,pady=5)
+		self.EntryRazon = ttk.Entry(self.Frame,width=45)
+		self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)      
+		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=2,row=5,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=0,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
+		# Treeview:
+		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
+		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
+		self.tree.heading('#1', text = 'Id')
+		self.tree.heading('#2', text = 'Nombre y Apellido')
+		self.tree.heading('#3', text = 'Cedula')
+		
+		self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.tree.yview)
+		self.tree.configure(yscroll=self.scrollbar.set)
+		self.scrollbar.grid(column=1,row=1, sticky='ns')
+		# # Button:
+		ttk.Button(self,text = 'EDITAR DOCENTE', command = self.editar).grid(column=0,row=2, sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=3,sticky = tk.W + tk.E, padx=5)
+
+		self.MostrarDatos()
+		# self.mostarCohorte()
+
+	def volver(self):
+		self.destroy()
+
+	def salir(self):
+		self.master.destroy()
+
+	def limpiarTabla(self):
+		self.DeleteChildren = self.tree.get_children()
+		for element in self.DeleteChildren:
+			self.tree.delete(element)
+
+	def LimpiarCeldas(self):
+		self.EntryNombreApellido.delete(0, tk.END)
+		self.EntryCedula.delete(0, tk.END)
+		self.EntryCategoria.delete(0, tk.END)
+		self.EntryDedicacion.delete(0, tk.END)
+		self.EntryTPregado.delete(0, tk.END)
+		self.EntryTPosgrado.delete(0, tk.END)
+		self.DescargaAcademica.set(0)
+		self.CondicionLaboral.set(0)
+		self.EntryRazon.delete(0, tk.END)
+
+	def ValidarCeldas(self):
+		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())      
+
+	def conexion(self,query,parametros = ()):
+		try:
+			self.con = sqlite3.connect(baseDeDatos)
+			self.cursor = self.con.cursor()
+			self.cursor.execute(query,parametros)
+			self.con.commit()
+			return self.cursor
+		except sqlite3.IntegrityError:
+			pass
+		except sqlite3.Error as er:
+			print('SQLite error: %s' % (' '.join(er.args)))
+			print("Exception class is: ", er.__class__)
+			print('SQLite traceback: ')
+			exc_type, exc_value, exc_tb = sys.exc_info()
+			print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
+	def TraerDatos(self,query):
+		self.mostrar = self.conexion(query)
+		self.rows = self.mostrar.fetchall()
+		return self.rows
+
+	def MostrarDatos(self):
+		self.limpiarTabla()
+		self.rows = self.TraerDatos("SELECT Id,NombreApellido,Cedula FROM docente")
+		for row in self.rows:
+			self.tree.insert('',tk.END,values=row)
+
+	def RegistrarDocente(self):
+		if self.ValidarCeldas():
+			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?)'
+			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get())
+			if self.conexion(self.query,self.parametros):
+				self.MostrarDatos()
+				self.LimpiarCeldas()
+				messagebox.showinfo(title='Info', message='Docente Registrado.')
+			else:
+				messagebox.showinfo(title='Info', message='Esta cedula ya esta registrada')
+		else:
+			messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+	
+	def selecionarFila(self):
+		self.item = self.tree.focus()
+		self.data = self.tree.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def eliminar(self):
+		if self.tree.selection():
+			if messagebox.askyesno('Delete','¿Desea eliminar al docente selecionado?'):
+				self.query1 = 'DELETE FROM docente WHERE Id = ?'
+				self.query2 = 'DELETE FROM materias_asignadas WHERE materias_asignadas.Id_docente = ?'
+				self.parametros = self.selecionarFila()
+				self.conexion(self.query1, (self.parametros,))
+				self.conexion(self.query2, (self.parametros,))
+				self.MostrarDatos()
+				messagebox.showinfo(title='Info', message='Docente eliminado correctamente.')
+			else:
+				self.MostrarDatos()
+		else:
+			messagebox.showwarning(title='Wanning', message='Seleccione un docente a eliminar.')
+
+	def editar(self):
+		if self.tree.selection():
+			if messagebox.askyesno('Edit','¿Desea editar al docente selecionado?'):
+				self.seleccion = self.selecionarFila()
+				self.new = tk.Toplevel()
+				self.new.title('Editar Docente')
+				self.new.geometry('400x380')
+				self.new.resizable(width=0,height=0)
+				self.new.iconbitmap(uptpc)
+				self.frame = ttk.Labelframe(self.new)
+				self.frame.grid(column=0,row=0,pady=5,padx=5,ipadx=0,ipady=5)
+				ttk.Label(self.frame,text='Nombre y Apellido:').grid(row=0,column=0,padx=5,pady=5)
+				self.entryEditarNombre = ttk.Entry(self.frame,width=40)
+				self.entryEditarNombre.grid(row=0,column=1,pady=5,padx=5)
+				ttk.Label(self.frame,text='Cedula:').grid(row=1,column=0,padx=5,pady=5)
+				self.entryEditarCedula = ttk.Entry(self.frame, width=40)
+				self.entryEditarCedula.grid(row=1,column=1,padx=5,pady=5)
+				ttk.Label(self.frame,text='Categoria:').grid(row=2,column=0,padx=5,pady=5)
+				self.entryEditarCategoria = ttk.Entry(self.frame, width=40)
+				self.entryEditarCategoria.grid(row=2,column=1,padx=5,pady=5)
+				ttk.Label(self.frame,text='Dedicación:').grid(row=3,column=0,padx=5,pady=5)
+				self.entryEditarDedicación = ttk.Entry(self.frame, width=40)
+				self.entryEditarDedicación.grid(row=3,column=1,padx=5,pady=5)
+				ttk.Label(self.frame,text='Titulo de Pre-grado:').grid(row=4,column=0,padx=5,pady=5)
+				self.entryEditarTpregado = ttk.Entry(self.frame, width=40)
+				self.entryEditarTpregado.grid(row=4,column=1,padx=5,pady=5)
+				ttk.Label(self.frame,text='Titulo de Posgrado:').grid(row=5,column=0,padx=5,pady=5)
+				self.entryEditarTposgrado = ttk.Entry(self.frame, width=40)
+				self.entryEditarTposgrado.grid(row=5,column=1,padx=5,pady=5)
+				self.DescargaAcademicaEditar = tk.StringVar()
+				ttk.Label(self.frame,text='Descarga Academica').grid(row=6,column=0)
+				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.DescargaAcademicaEditar).grid(row=7,column=0)
+				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.DescargaAcademicaEditar).grid(row=7,column=1)
+				self.CondicionLaboralEditar = tk.StringVar()
+				ttk.Label(self.frame, text='Condición Laboral:').grid(row=8,column=0)
+				ttk.Radiobutton(self.frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboralEditar).grid(row=9,column=0)
+				ttk.Radiobutton(self.frame, text='Contratado', value='Contratado',variable=self.CondicionLaboralEditar).grid(row=9,column=1)
+				ttk.Label(self.frame,text='Razon de la descarga:').grid(row=10,column=0,padx=5,pady=5)
+				self.entryEditarRazon = ttk.Entry(self.frame,width=40)
+				self.entryEditarRazon.grid(row=10,column=1,padx=5,pady=5)
+				ttk.Button(self.new,text='Editar', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)				
+				self.new.mainloop()		
+			else:
+				self.MostrarDatos()		
+		else: 
+			messagebox.showwarning(title='Wanning', message='Seleccione un docente a editar.')
+	
+
+	def validarCeldasEditar(self):
+		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get())
+	
+	def LimpiarCeldasEditar(self):
+		self.entryEditarNombre.delete(0, tk.END)
+		self.entryEditarCedula.delete(0, tk.END)
+		self.entryEditarCategoria.delete(0, tk.END)
+		self.entryEditarDedicación.delete(0, tk.END)
+		self.entryEditarTpregado.delete(0, tk.END)
+		self.entryEditarTposgrado.delete(0, tk.END)
+		self.DescargaAcademicaEditar.set(0)
+		self.CondicionLaboralEditar.set(0)
+		self.entryEditarRazon.delete(0, tk.END)
+
+
+	def botonEditar(self):
+		if self.validarCeldasEditar():
+			self.query1 = 'UPDATE docente SET NombreApellido = ? WHERE id = ?'
+			self.query2 = 'UPDATE docente SET Cedula = ? WHERE id = ?'
+			self.query3 = 'UPDATE docente SET Categoria = ? WHERE id = ?'
+			self.query4 = 'UPDATE docente SET Dedicacion = ? WHERE id = ?'
+			self.query5 = 'UPDATE docente SET Pregrado = ? WHERE id = ?'
+			self.query6 = 'UPDATE docente SET Postgrado = ? WHERE id = ?'
+			self.query7 = 'UPDATE docente SET DescargaAcademica = ? WHERE id = ?'
+			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
+			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
+			self.id = self.seleccion
+			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
+			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
+			self.conexion(self.query3,(self.entryEditarCategoria.get(), self.id))
+			self.conexion(self.query4,(self.entryEditarDedicación.get(), self.id))
+			self.conexion(self.query5,(self.entryEditarTpregado.get(), self.id))
+			self.conexion(self.query6,(self.entryEditarTposgrado.get(), self.id))
+			self.conexion(self.query7,(self.DescargaAcademicaEditar.get(), self.id))
+			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
+			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
+			self.LimpiarCeldasEditar()
+			self.LimpiarCeldas()
+			self.new.destroy()
+			self.MostrarDatos()
+			messagebox.showinfo(title='Info', message='Docente Editado Correctamente.')
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor en las celdas')
+
+	def gestionarMaterias(self):
+		if self.tree.selection():
+			self.lower()
+			self.seleccion = self.selecionarFila()
+			self.MostrarDatos()
+			self.new = tk.Toplevel()
+			self.new.title('Gestionar Materias')
+			self.new.attributes("-fullscreen", False)
+			self.w, self.h = self.new.winfo_screenwidth(), self.new.winfo_screenheight()
+			self.new.geometry("%dx%d" % (self.w, self.h))
+			self.new.iconbitmap(uptpc)
+
+			ttk.Label(self.new, text='AÑADIR MATERIAS',font=('Helvetica',14)).place(x=550,y=5)
+			self.container = ttk.Labelframe(self.new)
+			self.container.grid(column=0,row=0,ipady=5,ipadx=0,pady=30)
+
+			self.frameLapsoAcademico = ttk.Labelframe(self.container)
+			self.frameLapsoAcademico.grid(column=0,row=0,pady=0,padx=5)
+			self.treeLapsoAcademico = ttk.Treeview(self.frameLapsoAcademico, columns=['#1',"#2"],show='headings',height=3)
+			self.treeLapsoAcademico.grid(row=0,column=0)
+			self.treeLapsoAcademico.heading('#1', text = 'Id',)
+			self.treeLapsoAcademico.heading('#2', text = 'Lapso Académico')
+			self.treeLapsoAcademico.column('#1', width=50)
+			self.treeLapsoAcademico.column('#2', width=120)
+			self.scrollbarLapsoAcademico = ttk.Scrollbar(self.frameLapsoAcademico, orient=tk.VERTICAL, command=self.treeLapsoAcademico.yview)
+			self.treeLapsoAcademico.configure(yscroll=self.scrollbarLapsoAcademico.set)
+			self.scrollbarLapsoAcademico.grid(column=1,row=0, sticky='ns')
+
+			self.frameCohorte = ttk.Labelframe(self.container)
+			self.frameCohorte.grid(column=1,row=0,pady=0,padx=5)
+			self.treeCohorte = ttk.Treeview(self.frameCohorte, columns=['#1',"#2"],show='headings',height=3)
+			self.treeCohorte.grid(row=0,column=0)
+			self.treeCohorte.heading('#1', text = 'Id',)
+			self.treeCohorte.heading('#2', text = 'Cohorte')
+			self.treeCohorte.column('#1', width=50)
+			self.treeCohorte.column('#2', width=120)
+			self.scrollbarCohorte = ttk.Scrollbar(self.frameCohorte, orient=tk.VERTICAL, command=self.treeCohorte.yview)
+			self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
+			self.scrollbarCohorte.grid(column=1,row=0, sticky='ns')
+
+			self.frameTrayecto = ttk.Labelframe(self.container)
+			self.frameTrayecto.grid(column=2,row=0,pady=0,padx=5)
+			self.treeTrayecto = ttk.Treeview(self.frameTrayecto, columns=['#1',"#2"],show='headings',height=3)
+			self.treeTrayecto.grid(row=0,column=0)
+			self.treeTrayecto.heading('#1', text = 'Id',)
+			self.treeTrayecto.heading('#2', text = 'Trayecto')
+			self.treeTrayecto.column('#1', width=50)
+			self.treeTrayecto.column('#2', width=120)
+			self.scrollbarTrayecto = ttk.Scrollbar(self.frameTrayecto, orient=tk.VERTICAL, command=self.treeTrayecto.yview)
+			self.treeTrayecto.configure(yscroll=self.scrollbarTrayecto.set)
+			self.scrollbarTrayecto.grid(column=1,row=0, sticky='ns')
+
+			self.frameTrimestre = ttk.Labelframe(self.container)
+			self.frameTrimestre.grid(column=3,row=0,pady=0,padx=5)
+			self.treeTrimestre = ttk.Treeview(self.frameTrimestre, columns=['#1',"#2"],show='headings',height=3)
+			self.treeTrimestre.grid(row=0,column=0)
+			self.treeTrimestre.heading('#1', text = 'Id',)
+			self.treeTrimestre.heading('#2', text = 'Trimestre')
+			self.treeTrimestre.column('#1', width=50)
+			self.treeTrimestre.column('#2', width=120)
+			self.scrollbarTrimestre = ttk.Scrollbar(self.frameTrimestre, orient=tk.VERTICAL, command=self.treeTrimestre.yview)
+			self.treeTrimestre.configure(yscroll=self.scrollbarTrimestre.set)
+			self.scrollbarTrimestre.grid(column=1,row=0, sticky='ns')
+
+			self.frameSeccion = ttk.Labelframe(self.container)
+			self.frameSeccion.grid(column=4,row=0,pady=0,padx=5)
+			self.treeSeccion = ttk.Treeview(self.frameSeccion, columns=['#1',"#2"],show='headings',height=3)
+			self.treeSeccion.grid(row=0,column=0)
+			self.treeSeccion.heading('#1', text = 'Id',)
+			self.treeSeccion.heading('#2', text = 'Sección')
+			self.treeSeccion.column('#1', width=50)
+			self.treeSeccion.column('#2', width=120)
+			self.scrollbarSeccion = ttk.Scrollbar(self.frameSeccion, orient=tk.VERTICAL, command=self.treeSeccion.yview)
+			self.treeSeccion.configure(yscroll=self.scrollbarSeccion.set)
+			self.scrollbarSeccion.grid(column=1,row=0, sticky='ns')
+
+			self.frameTurno = ttk.Labelframe(self.container)
+			self.frameTurno.grid(column=0,row=1,pady=0,padx=5)
+			self.treeTurno = ttk.Treeview(self.frameTurno, columns=['#1',"#2"],show='headings',height=3)
+			self.treeTurno.grid(row=0,column=0)
+			self.treeTurno.heading('#1', text = 'Id',)
+			self.treeTurno.heading('#2', text = 'Turno')
+			self.treeTurno.column('#1', width=50)
+			self.treeTurno.column('#2', width=120)
+			self.scrollbarTurno = ttk.Scrollbar(self.frameTurno, orient=tk.VERTICAL, command=self.treeTurno.yview)
+			self.treeTurno.configure(yscroll=self.scrollbarTurno.set)
+			self.scrollbarTurno.grid(column=1,row=0, sticky='ns')
+
+			self.frameDia = ttk.Labelframe(self.container)
+			self.frameDia.grid(column=1,row=1,pady=0,padx=5)
+			self.treeDia = ttk.Treeview(self.frameDia, columns=['#1',"#2"],show='headings',height=3)
+			self.treeDia.grid(row=0,column=0)
+			self.treeDia.heading('#1', text = 'Id',)
+			self.treeDia.heading('#2', text = 'Día')
+			self.treeDia.column('#1', width=50)
+			self.treeDia.column('#2', width=120)
+			self.scrollbarDia = ttk.Scrollbar(self.frameDia, orient=tk.VERTICAL, command=self.treeDia.yview)
+			self.treeDia.configure(yscroll=self.scrollbarDia.set)
+			self.scrollbarDia.grid(column=1,row=0, sticky='ns')
+
+			self.frameHoraInicial = ttk.Labelframe(self.container)
+			self.frameHoraInicial.grid(column=2,row=1,pady=0,padx=5)
+			self.treeHoraInicial = ttk.Treeview(self.frameHoraInicial, columns=['#1',"#2"],show='headings',height=3)
+			self.treeHoraInicial.grid(row=0,column=0)
+			self.treeHoraInicial.heading('#1', text = 'Id',)
+			self.treeHoraInicial.heading('#2', text = 'Hora Inicial')
+			self.treeHoraInicial.column('#1', width=50)
+			self.treeHoraInicial.column('#2', width=120)
+			self.scrollbarHoraInicial = ttk.Scrollbar(self.frameHoraInicial, orient=tk.VERTICAL, command=self.treeHoraInicial.yview)
+			self.treeHoraInicial.configure(yscroll=self.scrollbarHoraInicial.set)
+			self.scrollbarHoraInicial.grid(column=1,row=0, sticky='ns')
+
+			self.frameHoraFinal = ttk.Labelframe(self.container)
+			self.frameHoraFinal.grid(column=3,row=1,pady=0,padx=5)
+			self.treeHoraFinal = ttk.Treeview(self.frameHoraFinal, columns=['#1',"#2"],show='headings',height=3)
+			self.treeHoraFinal.grid(row=0,column=0)
+			self.treeHoraFinal.heading('#1', text = 'Id',)
+			self.treeHoraFinal.heading('#2', text = 'Hora final')
+			self.treeHoraFinal.column('#1', width=50)
+			self.treeHoraFinal.column('#2', width=120)
+			self.scrollbarHoraFinal = ttk.Scrollbar(self.frameHoraFinal, orient=tk.VERTICAL, command=self.treeHoraFinal.yview)
+			self.treeHoraFinal.configure(yscroll=self.scrollbarHoraFinal.set)
+			self.scrollbarHoraFinal.grid(column=1,row=0, sticky='ns')
+
+			self.frameUnidadCurricular = ttk.Labelframe(self.container)
+			self.frameUnidadCurricular.grid(column=4,row=1,pady=0,padx=5)
+			self.treeUnidadCurricular = ttk.Treeview(self.frameUnidadCurricular, columns=['#1',"#2"],show='headings',height=3)
+			self.treeUnidadCurricular.grid(row=0,column=0)
+			self.treeUnidadCurricular.heading('#1', text = 'Id',)
+			self.treeUnidadCurricular.heading('#2', text = 'Unidad Curricular')
+			self.treeUnidadCurricular.column('#1', width=50)
+			self.treeUnidadCurricular.column('#2', width=250)
+			self.scrollbarUnidadCurricular = ttk.Scrollbar(self.frameUnidadCurricular, orient=tk.VERTICAL, command=self.treeUnidadCurricular.yview)
+			self.treeUnidadCurricular.configure(yscroll=self.scrollbarUnidadCurricular.set)
+			self.scrollbarUnidadCurricular.grid(column=1,row=0, sticky='ns')
+
+			ttk.Button(self.new, text='REGISTRAR MATERIA', command=self.registrarMateria).grid(row=1,column=0,)
+
+			self.frameGestionar = ttk.Labelframe(self.new)
+			self.frameGestionar.grid(column=0,row=2,pady=0,padx=10)
+			self.treeGestionar = ttk.Treeview(self.frameGestionar, columns = ['#1','#2','#3','#4','#5','#6','#7','#8','#9','#10','#11','#12'], show='headings',height=14)
+			self.treeGestionar.grid(row=0,column=0,padx=0,pady=10)
+			self.treeGestionar.heading('#1', text = 'Id',)
+			self.treeGestionar.heading('#2', text = 'Nombre y Apellido')
+			self.treeGestionar.heading('#3', text = 'Lapso Académico')
+			self.treeGestionar.heading('#4', text = 'Cohorte')
+			self.treeGestionar.heading('#5', text = 'Trayecto')
+			self.treeGestionar.heading('#6', text = 'Trimestre')
+			self.treeGestionar.heading('#7', text = 'Sección')
+			self.treeGestionar.heading('#8', text = 'Turno')
+			self.treeGestionar.heading('#9', text = 'Día')
+			self.treeGestionar.heading('#10', text = 'Hora Inicial')
+			self.treeGestionar.heading('#11', text = 'Hora Final')
+			self.treeGestionar.heading('#12', text = 'Unidad Curricular')
+			self.treeGestionar.column('#1', width=40)
+			self.treeGestionar.column('#2', width=120)
+			self.treeGestionar.column('#3', width=120)
+			self.treeGestionar.column('#4', width=100)
+			self.treeGestionar.column('#5', width=80)
+			self.treeGestionar.column('#6', width=80)
+			self.treeGestionar.column('#7', width=80)
+			self.treeGestionar.column('#8', width=80)
+			self.treeGestionar.column('#9', width=80)
+			self.treeGestionar.column('#10', width=100)
+			self.treeGestionar.column('#11', width=100)
+			self.treeGestionar.column('#12', width=250)
+			self.scrollbarGestionar = ttk.Scrollbar(self.frameGestionar, orient=tk.VERTICAL, command=self.treeGestionar.yview)
+			self.treeGestionar.configure(yscroll=self.scrollbarGestionar.set)
+			self.scrollbarGestionar.grid(column=1,row=0, sticky='ns')
+
+			ttk.Button(self.frameGestionar, text='EDITAR MATERIA', command=self.editarMateria).grid(row=1,column=0,sticky = tk.W + tk.E)
+			ttk.Button(self.frameGestionar, text='ELIMINAR MATERIA', command=self.eliminarMateria).grid(row=2,column=0,sticky = tk.W + tk.E)
+			
+			self.MostrarDatosGestionar()
+			self.MostrarLapsoAcademico()
+			self.MostrarCohorte()
+			self.MostrarTrayecto()
+			self.MostrarTrimestre()
+			self.MostrarSeccion()
+			self.MostrarTurno()
+			self.MostrarDia()
+			self.MostrarHoraInicial()
+			self.MostrarHoraFinal()
+			self.MostrarUnidadCurricular()
+			
+			self.new.mainloop()
+		else:
+			messagebox.showinfo(title='Info', message='Selecione un docente')
+
+	def limpiarTablaGestionar(self):
+		self.DeleteChildren = self.treeGestionar.get_children()
+		for element in self.DeleteChildren:
+			self.treeGestionar.delete(element)
+
+	def limpiarTablaLapsoAcademico(self):
+		self.DeleteChildren = self.treeLapsoAcademico.get_children()
+		for element in self.DeleteChildren:
+			self.treeLapsoAcademico.delete(element)
+
+	def limpiarTablaCohorte(self):
+		self.DeleteChildren = self.treeCohorte.get_children()
+		for element in self.DeleteChildren:
+			self.treeCohorte.delete(element)
+
+	def limpiarTablaTrayecto(self):
+		self.DeleteChildren = self.treeTrayecto.get_children()
+		for element in self.DeleteChildren:
+			self.treeTrayecto.delete(element)
+
+	def limpiarTablaTrimestre(self):
+		self.DeleteChildren = self.treeTrimestre.get_children()
+		for element in self.DeleteChildren:
+			self.treeTrimestre.delete(element)
+
+	def limpiarTablaSeccion(self):
+		self.DeleteChildren = self.treeSeccion.get_children()
+		for element in self.DeleteChildren:
+			self.treeSeccion.delete(element)
+
+	def limpiarTablaTurno(self):
+		self.DeleteChildren = self.treeTurno.get_children()
+		for element in self.DeleteChildren:
+			self.treeTurno.delete(element)
+
+	def limpiarTablaDia(self):
+		self.DeleteChildren = self.treeDia.get_children()
+		for element in self.DeleteChildren:
+			self.treeDia.delete(element)
+
+	def limpiarTablaHoraInicial(self):
+		self.DeleteChildren = self.treeHoraInicial.get_children()
+		for element in self.DeleteChildren:
+			self.treeHoraInicial.delete(element)
+
+	def limpiarTablaHoraFinal(self):
+		self.DeleteChildren = self.treeHoraFinal.get_children()
+		for element in self.DeleteChildren:
+			self.treeHoraFinal.delete(element)
+
+	def limpiarTablaUnidadCurricular(self):
+		self.DeleteChildren = self.treeUnidadCurricular.get_children()
+		for element in self.DeleteChildren:
+			self.treeUnidadCurricular.delete(element)
+
+	def MostrarDatosGestionar(self):
+		self.limpiarTablaGestionar()
+		self.query = ("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno,semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ?")
+		self.parametros = self.seleccion
+		self.mostrar =  self.conexion(self.query, (self.parametros,))
+		self.rows = self.mostrar.fetchall()
+		for row in self.rows:
+			self.treeGestionar.insert('',tk.END,values=row)
+
+	def MostrarLapsoAcademico(self):
+		self.limpiarTablaLapsoAcademico()
+		self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+		for row in self.rows:
+			self.treeLapsoAcademico.insert('',tk.END,values=row)
+	
+	def MostrarCohorte(self):
+		self.limpiarTablaCohorte()
+		self.rows = self.TraerDatos("SELECT * FROM cohorte")
+		for row in self.rows:
+			self.treeCohorte.insert('',tk.END,values=row)
+
+	def MostrarTrayecto(self):
+		self.limpiarTablaTrayecto()
+		self.rows = self.TraerDatos("SELECT * FROM trayecto")
+		for row in self.rows:
+			self.treeTrayecto.insert('',tk.END,values=row)
+
+	def MostrarTrimestre(self):
+		self.limpiarTablaTrimestre()
+		self.rows = self.TraerDatos("SELECT * FROM trimestre")
+		for row in self.rows:
+			self.treeTrimestre.insert('',tk.END,values=row)
+
+	def MostrarSeccion(self):
+		self.limpiarTablaSeccion()
+		self.rows = self.TraerDatos("SELECT * FROM seccion")
+		for row in self.rows:
+			self.treeSeccion.insert('',tk.END,values=row)
+
+	def MostrarTurno(self):
+		self.limpiarTablaTurno()
+		self.rows = self.TraerDatos("SELECT * FROM modalidad")
+		for row in self.rows:
+			self.treeTurno.insert('',tk.END,values=row)
+
+	def MostrarDia(self):
+		self.limpiarTablaDia()
+		self.rows = self.TraerDatos("SELECT * FROM semana")
+		for row in self.rows:
+			self.treeDia.insert('',tk.END,values=row)
+
+	def MostrarHoraInicial(self):
+		self.limpiarTablaHoraInicial()
+		self.rows = self.TraerDatos("SELECT * FROM hora_inicial")
+		for row in self.rows:
+			self.treeHoraInicial.insert('',tk.END,values=row)
+
+	def MostrarHoraFinal(self):
+		self.limpiarTablaHoraFinal()
+		self.rows = self.TraerDatos("SELECT * FROM hora_final")
+		for row in self.rows:
+			self.treeHoraFinal.insert('',tk.END,values=row)
+
+	def MostrarUnidadCurricular(self):
+		self.limpiarTablaUnidadCurricular()
+		self.rows = self.TraerDatos("SELECT Id,UnidadCurricular COLLATE utf8_spanish2_ci FROM unidad_curricular ORDER BY UnidadCurricular")
+		for row in self.rows:
+			self.treeUnidadCurricular.insert('',tk.END,values=row)
+
+	def registrarMateria(self):
+		if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
+			if messagebox.askyesno('Registrar','¿Añadir selección?'):
+				self.queryValidar = ("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?")
+				self.parametros = (
+					self.seleccion,
+					self.selecionarFilaLapsoAcademico(),
+					self.selecionarFilaCohorte(),
+					self.selecionarFilaTrayecto(),
+					self.selecionarFilaTrimestre(),
+					self.selecionarFilaSeccion(),
+					self.selecionarFilaTurno(),
+					self.selecionarFilaDia(),
+					self.selecionarFilaHoraInicial(),
+					self.selecionarFilaHoraFinal(),
+					self.selecionarFilaUnidadCurricular())
+				self.mostrar =  self.conexion(self.queryValidar,self.parametros)
+				if self.mostrar.fetchall():
+					messagebox.showwarning(title='warning', message="Registro ya exixte")	
+				else:
+					self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
+					self.conexion(self.query,self.parametros)
+					self.MostrarDatosGestionar()
+					messagebox.showinfo(title='info', message='Materia registrada correctamente')
+			else:
+				self.MostrarDatosGestionar()
+		else:
+			messagebox.showwarning(title='Warning', message='Seleccione todas las celdas')
+
+	def selecionarFilaLapsoAcademico(self):
+		self.item = self.treeLapsoAcademico.focus()
+		self.data = self.treeLapsoAcademico.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+	
+	def selecionarFilaCohorte(self):
+		self.item = self.treeCohorte.focus()
+		self.data = self.treeCohorte.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaTrayecto(self):
+		self.item = self.treeTrayecto.focus()
+		self.data = self.treeTrayecto.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaTrimestre(self):
+		self.item = self.treeTrimestre.focus()
+		self.data = self.treeTrimestre.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaSeccion(self):
+		self.item = self.treeSeccion.focus()
+		self.data = self.treeSeccion.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaTurno(self):
+		self.item = self.treeTurno.focus()
+		self.data = self.treeTurno.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaDia(self):
+		self.item = self.treeDia.focus()
+		self.data = self.treeDia.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaHoraInicial(self):
+		self.item = self.treeHoraInicial.focus()
+		self.data = self.treeHoraInicial.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaHoraFinal(self):
+		self.item = self.treeHoraFinal.focus()
+		self.data = self.treeHoraFinal.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def selecionarFilaUnidadCurricular(self):
+		self.item = self.treeUnidadCurricular.focus()
+		self.data = self.treeUnidadCurricular.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+	
+	def eliminarMateria(self):
+		if self.treeGestionar.selection():
+			if messagebox.askyesno('Delete','¿Desea eliminar la materia selecionada?'):
+				self.query = 'DELETE FROM materias_asignadas WHERE Id = ?'
+				self.parametros = self.selecionarFilaGestionar()
+				self.conexion(self.query, (self.parametros,))
+				self.MostrarDatosGestionar()
+				messagebox.showinfo(title='Info', message='Materia eliminada correctamente.')
+			else:
+				self.MostrarDatosGestionar()
+		else:
+			messagebox.showwarning(title='Wanning', message='Seleccione una materia a eliminar.')
+		pass
+
+	def selecionarFilaGestionar(self):
+		self.item = self.treeGestionar.focus()
+		self.data = self.treeGestionar.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+
+	def editarMateria(self):
+		if self.treeGestionar.selection():
+			if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
+				if messagebox.askyesno('Delete','¿Desea editar el registro seleccionado?'):
+					self.query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+					self.query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+					self.query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+					self.query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+					self.query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+					self.query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+					self.query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+					self.query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+					self.query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+					self.query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+					self.conexion(self.query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+					self.conexion(self.query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+					self.conexion(self.query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+					self.conexion(self.query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+					self.conexion(self.query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+					self.conexion(self.query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+					self.conexion(self.query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+					self.conexion(self.query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+					self.conexion(self.query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+					self.conexion(self.query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+					self.MostrarDatosGestionar()
+					self.MostrarLapsoAcademico()
+					self.MostrarCohorte()
+					self.MostrarTrayecto()
+					self.MostrarTrimestre()
+					self.MostrarSeccion()
+					self.MostrarTurno()
+					self.MostrarDia()
+					self.MostrarHoraInicial()
+					self.MostrarHoraFinal()
+					self.MostrarUnidadCurricular()
+					messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+				else:
+					self.MostrarDatosGestionar()
+			else:
+				messagebox.showwarning(title='Wanning', message='Seleccione datos a editar.')
+		else:
+			messagebox.showwarning(title='Wanning', message='Seleccione una registro a editar.')
