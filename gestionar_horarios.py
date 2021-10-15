@@ -12,14 +12,13 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
-import json
 
 class Horarios(tk.Toplevel):
     def __init__(self,master):
         super().__init__(master)
         # Config:
         self.title('Horarios')
-        self.geometry('460x615')
+        self.geometry('980x440')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
@@ -27,8 +26,8 @@ class Horarios(tk.Toplevel):
         self.notebook.pack(pady=0,padx=0,expand=True)
 
         # create frames
-        self.noteHorariosClases = ttk.Frame(self.notebook, width=400, height=400)
-        self.noteHorariosLaboratorios = ttk.Frame(self.notebook,width=400, height=400)
+        self.noteHorariosClases = ttk.Frame(self.notebook, width=980, height=480)
+        self.noteHorariosLaboratorios = ttk.Frame(self.notebook,width=980, height=480)
 
         # create frames
         self.noteHorariosClases.pack(fill='both', expand=True)
@@ -38,10 +37,10 @@ class Horarios(tk.Toplevel):
         self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
         self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
-        ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO',font=('Helvetica',14)).place(x=130,y=5)
+        ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASE',font=('Helvetica',14)).place(x=350,y=5)
         # LapsoAcademico
         self.container = ttk.Labelframe(self.noteHorariosClases)
-        self.container.grid(column=0,row=0,padx=15, pady=30)
+        self.container.grid(column=0,row=0,ipadx=10,ipady=15,padx=30,pady=10)
 
         self.frameLapsoAcademico = ttk.Labelframe(self.container)
         self.frameLapsoAcademico.grid(column=0,row=0,pady=5,padx=5)
@@ -115,8 +114,10 @@ class Horarios(tk.Toplevel):
         self.treeSeccion.configure(yscroll=self.scrollbarSeccion.set)
         self.scrollbarSeccion.grid(column=1,row=0, sticky='ns')
 
+        ttk.Button(self.container, text='GENERAR HORARIO DE CLASES',command=self.generarHorarioClases).grid(column=0,row=3,pady=5,padx=5, sticky = tk.W + tk.E)
+
         self.frameContenedor = ttk.Labelframe(self.noteHorariosClases)
-        self.frameContenedor.grid(column=0, row=1)
+        self.frameContenedor.grid(column=1, row=0,ipadx=5,ipady=5,pady=30,padx=10)
 
         ttk.Label(self.frameContenedor, text='Inicio clase').grid(column=0, row=0,pady=5,padx=5)
         self.entryInicio = ttk.Entry(self.frameContenedor, state=DISABLED)
@@ -127,7 +128,7 @@ class Horarios(tk.Toplevel):
         ttk.Label(self.frameContenedor, text='Inicio Pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
         self.entryPausa = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryPausa.grid(column=1,row=1,pady=5,padx=5)
-        self.activarPausa = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarIPausa).grid(column=2,row=1)
+        self.activarPausa = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarPausa).grid(column=2,row=1)
         self.desactivarPausa = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarPausa).grid(column=3,row=1)
 
         ttk.Label(self.frameContenedor, text='Rinicio clase').grid(column=0, row=2,pady=5,padx=5)
@@ -142,13 +143,48 @@ class Horarios(tk.Toplevel):
         self.activarCulminacion = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarCuminacion).grid(column=2,row=3)
         self.desactivarCulminacion = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarCulminacion).grid(column=3,row=3)
 
-        ttk.Label(self.frameContenedor, text='Inicio clase').grid(column=0, row=4,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Aula').grid(column=0, row=4,pady=5,padx=5)
         self.entryAula = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryAula.grid(column=1,row=4,pady=5,padx=5)
         self.activarAula = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarAula).grid(column=2,row=4)
         self.desactivarAula = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarAula).grid(column=3,row=4)
 
-        ttk.Button(self.noteHorariosClases, text='GENERAR HORARIO',command=self.generarHorarioClases).grid(column=0,row=2,pady=10)
+        ttk.Label(self.frameContenedor, text='Nota').grid(column=0, row=5,pady=5,padx=5)
+        self.entryNota = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryNota.grid(column=1,row=5,pady=5,padx=5)
+        self.activarNota = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarNota).grid(column=2,row=5)
+        self.desactivarNota = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarNota).grid(column=3,row=5)
+
+        ttk.Label(self.frameContenedor, text='Lunes').grid(column=0, row=6,pady=5,padx=5)
+        self.entryLunes = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryLunes.grid(column=1,row=6,pady=5,padx=5)
+        self.activarLunes = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarLunes).grid(column=2,row=6)
+        self.desactivarLunes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarLunes).grid(column=3,row=6)
+
+        ttk.Label(self.frameContenedor, text='Martes').grid(column=0, row=7,pady=7,padx=5)
+        self.entryMartes = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryMartes.grid(column=1,row=7,pady=5,padx=5)
+        self.activarMartes = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarMartes).grid(column=2,row=7)
+        self.desactivarMartes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarMartes).grid(column=3,row=7)
+
+        ttk.Label(self.frameContenedor, text='Miercoles').grid(column=0, row=8,pady=5,padx=5)
+        self.entryMiercoles = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryMiercoles.grid(column=1,row=8,pady=5,padx=5)
+        self.activarMiercoles = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarMiercoles).grid(column=2,row=8)
+        self.desactivarMiercoles = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarMiercoles).grid(column=3,row=8)
+
+        ttk.Label(self.frameContenedor, text='Jueves').grid(column=0, row=9,pady=5,padx=5)
+        self.entryJueves = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryJueves.grid(column=1,row=9,pady=5,padx=5)
+        self.activarJueves = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarJueves).grid(column=2,row=9)
+        self.desactivarJueves = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarJueves).grid(column=3,row=9)
+
+        ttk.Label(self.frameContenedor, text='Viernes').grid(column=0, row=10,pady=5,padx=5)
+        self.entryViernes = ttk.Entry(self.frameContenedor, state=DISABLED)
+        self.entryViernes.grid(column=1,row=10,pady=5,padx=5)
+        self.activarViernes = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarViernes).grid(column=2,row=10)
+        self.desactivarViernes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarViernes).grid(column=3,row=10)
+
 
         self.MostrarLapsoAcademico()
         self.MostrarModalidad()
@@ -209,7 +245,7 @@ class Horarios(tk.Toplevel):
     def botonDesactivarInicio(self):
         self.entryInicio.config(state=DISABLED)
 
-    def botonActivarIPausa(self):
+    def botonActivarPausa(self):
         self.entryPausa.config(state=NORMAL)
         self.entryPausa.focus()
 
@@ -236,6 +272,48 @@ class Horarios(tk.Toplevel):
 
     def botonDesactivarAula(self):
         self.entryAula.config(state=DISABLED)
+
+    def botonActivarNota(self):
+        self.entryNota.config(state=NORMAL)
+        self.entryNota.focus()
+
+    def botonDesactivarNota(self):
+        self.entryNota.config(state=DISABLED)
+
+    def botonActivarLunes(self):
+        self.entryLunes.config(state=NORMAL)
+        self.entryLunes.focus()
+
+    def botonDesactivarLunes(self):
+        self.entryLunes.config(state=DISABLED)
+
+    def botonActivarMartes(self):
+        self.entryMartes.config(state=NORMAL)
+        self.entryMartes.focus()
+
+    def botonDesactivarMartes(self):
+        self.entryMartes.config(state=DISABLED)
+
+    def botonActivarMiercoles(self):
+        self.entryMiercoles.config(state=NORMAL)
+        self.entryMiercoles.focus()
+
+    def botonDesactivarMiercoles(self):
+        self.entryMiercoles.config(state=DISABLED)
+
+    def botonActivarJueves(self):
+        self.entryJueves.config(state=NORMAL)
+        self.entryJueves.focus()
+
+    def botonDesactivarJueves(self):
+        self.entryJueves.config(state=DISABLED)
+
+    def botonActivarViernes(self):
+        self.entryViernes.config(state=NORMAL)
+        self.entryViernes.focus()
+
+    def botonDesactivarViernes(self):
+        self.entryViernes.config(state=DISABLED)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -415,6 +493,8 @@ class Horarios(tk.Toplevel):
                 self.pdf.drawString(70,527, 'Culminación clase: ' + self.entryCulminacion.get())
         if not self.entryAula.state():
             self.pdf.drawString(510,504, 'Aula: ' + self.entryAula.get())
+        if not self.entryNota.state():
+            self.pdf.drawString(70,487, 'NOTA: ' + self.entryNota.get())
 
     def validarCelda(self):
         if self.modalidad == 'Diurno':
@@ -592,6 +672,16 @@ class Horarios(tk.Toplevel):
             modalidad[celda].append(Paragraph(' ',self.center))
             print('DENEGADO CAMARADA')
 
+    def validarSemana(self,array,celda):
+        if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
+            array[celda].clear()
+            array[celda].append(Paragraph('bloque de horas mañana',self.center))
+            array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
+            array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
+            array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
+            array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
+            array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
+
     def obtenerHorarioDiurno(self):
         self.diurno = [
             [Paragraph('bloque de horas mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
@@ -608,6 +698,8 @@ class Horarios(tk.Toplevel):
             [Paragraph('4:25 - 5:10',self.center)],
             [Paragraph('5:15 - 6:00',self.center)]
         ] 
+
+        self.validarSemana(self.diurno,0)
 
         print('Primera linea ----------------')
         # Primera linea lunes
@@ -1239,6 +1331,8 @@ class Horarios(tk.Toplevel):
             [Paragraph('9:50 - 10:35',self.center)]
         ] 
         
+        self.validarSemana(self.nocturno,0)
+
         print('Primera linea ----------------')
         # Primera linea lunes
         self.celda1x6(
