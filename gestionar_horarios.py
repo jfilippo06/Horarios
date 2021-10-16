@@ -8,7 +8,7 @@ import traceback
 import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
-from reportlab.platypus import Paragraph, Table, TableStyle
+from reportlab.platypus import Paragraph, Table, TableStyle, Frame
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
@@ -27,14 +27,17 @@ class Horarios(tk.Toplevel):
 
         # create frames
         self.noteHorariosClases = ttk.Frame(self.notebook, width=980, height=480)
+        self.noteHorariosDocentes = ttk.Frame(self.notebook,width=980, height=480)
         self.noteHorariosLaboratorios = ttk.Frame(self.notebook,width=980, height=480)
 
         # create frames
         self.noteHorariosClases.pack(fill='both', expand=True)
+        self.noteHorariosDocentes.pack(fill='both', expand=True)
         self.noteHorariosLaboratorios.pack(fill='both', expand=True)
 
         # add frames to notebook
         self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
+        self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
         self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
         ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASE',font=('Helvetica',14)).place(x=350,y=5)
@@ -197,6 +200,7 @@ class Horarios(tk.Toplevel):
         self.styles = getSampleStyleSheet()
         self.center = self.styles["BodyText"]
         self.center.alignment = TA_CENTER
+        self.counter = 0
 
         self.setStyles = [
             ('GRID',(0,0),(-1,-1),0.5,colors.black),
@@ -465,9 +469,9 @@ class Horarios(tk.Toplevel):
         self.pdf.drawImage(logoPDF,680,485,width=100,height=100)
         self.validarTree()
         self.validarCelda()
-        self.validarModalidad()
+        self.validarModalidad()        
         self.tablaDocente()
-
+        
         self.pdf.save()
         
         self.setStyles.clear()
@@ -475,6 +479,8 @@ class Horarios(tk.Toplevel):
         self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
         self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
         self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+        
+        self.counter = 0
 
 
     def verificarLinea(self):
@@ -528,17 +534,111 @@ class Horarios(tk.Toplevel):
 
     def tablaDocente(self):
         if self.modalidad == 'Diurno':
-            self.tableDocente = Table(self.obtenertablaDocenteDiurno(),colWidths=237, rowHeights=20)
+            self.tableDocente = Table(self.obtenertablaDocenteDiurno(),colWidths=237, rowHeights=18)
             self.tableDocente.setStyle(TableStyle(self.setStylesCeldas))
             self.tableDocente.wrapOn(self.pdf,self.width,self.heigth)
-            self.tableDocente.drawOn(self.pdf,68,125)
-            return self.table
+            if self.counter == 15: 
+                self.tableDocente.drawOn(self.pdf,68,5)
+                print('-----------15')
+            elif self.counter == 14: 
+                self.tableDocente.drawOn(self.pdf,68,20)
+                print('-----------14')
+            elif self.counter == 13: 
+                self.tableDocente.drawOn(self.pdf,68,40)
+                print('-----------13')
+            elif self.counter == 12: 
+                self.tableDocente.drawOn(self.pdf,68,60)
+                print('-----------12')
+            elif self.counter == 11: 
+                self.tableDocente.drawOn(self.pdf,68,75)
+                print('-----------11')
+            elif self.counter == 10: 
+                self.tableDocente.drawOn(self.pdf,68,95)
+                print('-----------10')
+            elif self.counter == 9: 
+                self.tableDocente.drawOn(self.pdf,68,115)
+                print('-----------9')
+            elif self.counter == 8: 
+                self.tableDocente.drawOn(self.pdf,68,130)
+                print('-----------8')
+            elif self.counter == 7: 
+                self.tableDocente.drawOn(self.pdf,68,150)
+                print('-----------7')
+            elif self.counter == 6: 
+                self.tableDocente.drawOn(self.pdf,68,170)
+                print('-----------6')
+            elif self.counter == 5: 
+                self.tableDocente.drawOn(self.pdf,68,185)
+                print('-----------5')
+            elif self.counter == 4: 
+                self.tableDocente.drawOn(self.pdf,68,200)
+                print('-----------4')
+            elif self.counter == 3: 
+                self.tableDocente.drawOn(self.pdf,68,220)
+                print('-----------3')
+            elif self.counter == 2: 
+                self.tableDocente.drawOn(self.pdf,68,85)
+                print('-----------2')
+            elif self.counter == 1: 
+                self.tableDocente.drawOn(self.pdf,68,105)
+                print('-----------1')
+            else:
+                self.tableDocente.drawOn(self.pdf,68,125)
+                print('-----------0')
+            return self.tableDocente
         if self.modalidad == 'Nocturno':
-            self.tableDocente = Table(self.obtenertablaDocenteNocturno(),colWidths=237, rowHeights=20)
+            self.tableDocente = Table(self.obtenertablaDocenteNocturno(),colWidths=237, rowHeights=18)
             self.tableDocente.setStyle(TableStyle(self.setStylesCeldas))
             self.tableDocente.wrapOn(self.pdf,self.width,self.heigth)
-            self.tableDocente.drawOn(self.pdf,68,275)
-            return self.table
+            if self.counter == 15: 
+                self.tableDocente.drawOn(self.pdf,68,5)
+                print('-----------15')
+            elif self.counter == 14: 
+                self.tableDocente.drawOn(self.pdf,68,20)
+                print('-----------14')
+            elif self.counter == 13: 
+                self.tableDocente.drawOn(self.pdf,68,40)
+                print('-----------13')
+            elif self.counter == 12: 
+                self.tableDocente.drawOn(self.pdf,68,60)
+                print('-----------12')
+            elif self.counter == 11: 
+                self.tableDocente.drawOn(self.pdf,68,75)
+                print('-----------11')
+            elif self.counter == 10: 
+                self.tableDocente.drawOn(self.pdf,68,95)
+                print('-----------10')
+            elif self.counter == 9: 
+                self.tableDocente.drawOn(self.pdf,68,115)
+                print('-----------9')
+            elif self.counter == 8: 
+                self.tableDocente.drawOn(self.pdf,68,130)
+                print('-----------8')
+            elif self.counter == 7: 
+                self.tableDocente.drawOn(self.pdf,68,150)
+                print('-----------7')
+            elif self.counter == 6: 
+                self.tableDocente.drawOn(self.pdf,68,170)
+                print('-----------6')
+            elif self.counter == 5: 
+                self.tableDocente.drawOn(self.pdf,68,185)
+                print('-----------5')
+            elif self.counter == 4: 
+                self.tableDocente.drawOn(self.pdf,68,200)
+                print('-----------4')
+            elif self.counter == 3: 
+                self.tableDocente.drawOn(self.pdf,68,220)
+                print('-----------3')
+            elif self.counter == 2: 
+                self.tableDocente.drawOn(self.pdf,68,240)
+                print('-----------2')
+            elif self.counter == 1: 
+                self.tableDocente.drawOn(self.pdf,68,260)
+                print('-----------1')
+            else:
+                self.tableDocente.drawOn(self.pdf,68,280)
+                print('-----------0')
+            return self.tableDocente
 
     def materia(self,query,parametros):
         if self.conexion(query,parametros):
@@ -1670,9 +1770,6 @@ class Horarios(tk.Toplevel):
 
         return self.nocturno
 
-    def coorY(self,y):
-        return y
-
     def obtenertablaDocenteDiurno(self):
         self.tablaInformacion = [
             [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
@@ -1682,7 +1779,8 @@ class Horarios(tk.Toplevel):
             self.parametros).fetchall()
         for row in self.tabla:
             self.tablaInformacion.append(row)
-            print(row)
+            self.counter = self.counter + 1
+            print(self.counter)
     
         return self.tablaInformacion
 
@@ -1696,6 +1794,7 @@ class Horarios(tk.Toplevel):
             self.parametros).fetchall()
         for row in self.tabla:
             self.tablaInformacion.append(row)
-            print(row)
+            self.counter = self.counter + 1
+            print(self.counter)
         
         return self.tablaInformacion
