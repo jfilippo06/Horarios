@@ -1,7 +1,7 @@
 import os
 
 # Principal
-rutaPrincipal = 'C:/xampp/htdocs/dashboard/Mis Proyectos/Python/Proyecto'
+rutaPrincipal = 'E:/Mis Proyectos/Python/Proyecto'
 
 # ICO
 ico = 'IMG/uptpc.ico'
@@ -17,3 +17,8 @@ fondo = os.path.abspath(fondo)
 routebd = 'tecnologico.db'
 baseDeDatos = os.path.join(rutaPrincipal,routebd)
 baseDeDatos = os.path.abspath(baseDeDatos)
+
+# logo PDF
+logo = 'IMG/uptpc.jpg'
+logoPDF = os.path.join(rutaPrincipal,logo)
+logoPDF = os.path.abspath(logoPDF)

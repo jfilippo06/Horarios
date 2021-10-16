@@ -28,7 +28,7 @@ class CargaAcademica(tk.Toplevel):
 		# Frame:
 		self.Frame = ttk.Labelframe(self)
 		self.Frame.grid(column=0,row=0,pady=30,padx=10)
-		ttk.Label(self, text='CARGA ARCADÉMICA',font=('Helvetica',14)).place(x=370,y=5)
+		ttk.Label(self, text='CARGA ACADÉMICA',font=('Helvetica',14)).place(x=370,y=5)
 		ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
 		self.EntryNombreApellido = ttk.Entry(self.Frame,width=45)
 		self.EntryNombreApellido.grid(column=1,row=0,padx=5,pady=5)
@@ -57,9 +57,12 @@ class CargaAcademica(tk.Toplevel):
 		ttk.Radiobutton(self.Frame, text='Contratado', value='Contratado',variable=self.CondicionLaboral).grid(column=2,row=4,padx=5,pady=5)
 		ttk.Label(self.Frame,text='Razón de la descarga:',font=('Helvetica',11)).grid(column=0,row=5,padx=5,pady=5)
 		self.EntryRazon = ttk.Entry(self.Frame,width=45)
-		self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)      
-		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=2,row=5,sticky = tk.W + tk.E ,padx=5,pady=5)
-		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=0,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
+		self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)
+		ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
+		self.EntryTelefono = ttk.Entry(self.Frame,width=45)
+		self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
+		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
 		# Treeview:
 		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
@@ -98,9 +101,10 @@ class CargaAcademica(tk.Toplevel):
 		self.DescargaAcademica.set(0)
 		self.CondicionLaboral.set(0)
 		self.EntryRazon.delete(0, tk.END)
+		self.EntryTelefono.delete(0, tk.END)
 
 	def ValidarCeldas(self):
-		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())      
+		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0       
 
 	def conexion(self,query,parametros = ()):
 		try:
@@ -131,8 +135,8 @@ class CargaAcademica(tk.Toplevel):
 
 	def RegistrarDocente(self):
 		if self.ValidarCeldas():
-			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?)'
-			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get())
+			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?)'
+			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get())
 			if self.conexion(self.query,self.parametros):
 				self.MostrarDatos()
 				self.LimpiarCeldas()
@@ -169,7 +173,7 @@ class CargaAcademica(tk.Toplevel):
 				self.seleccion = self.selecionarFila()
 				self.new = tk.Toplevel()
 				self.new.title('Editar Docente')
-				self.new.geometry('400x380')
+				self.new.geometry('400x400')
 				self.new.resizable(width=0,height=0)
 				self.new.iconbitmap(uptpc)
 				self.frame = ttk.Labelframe(self.new)
@@ -203,6 +207,9 @@ class CargaAcademica(tk.Toplevel):
 				ttk.Label(self.frame,text='Razon de la descarga:').grid(row=10,column=0,padx=5,pady=5)
 				self.entryEditarRazon = ttk.Entry(self.frame,width=40)
 				self.entryEditarRazon.grid(row=10,column=1,padx=5,pady=5)
+				ttk.Label(self.frame,text='Numero telefónico:').grid(row=11,column=0,padx=5,pady=5)
+				self.entryEditarTelefono = ttk.Entry(self.frame,width=40)
+				self.entryEditarTelefono.grid(row=11,column=1,padx=5,pady=5)
 				ttk.Button(self.new,text='Editar', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)				
 				self.new.mainloop()		
 			else:
@@ -212,7 +219,7 @@ class CargaAcademica(tk.Toplevel):
 	
 
 	def validarCeldasEditar(self):
-		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get())
+		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0
 	
 	def LimpiarCeldasEditar(self):
 		self.entryEditarNombre.delete(0, tk.END)
@@ -224,7 +231,7 @@ class CargaAcademica(tk.Toplevel):
 		self.DescargaAcademicaEditar.set(0)
 		self.CondicionLaboralEditar.set(0)
 		self.entryEditarRazon.delete(0, tk.END)
-
+		self.entryEditarTelefono.delete(0,tk.END)
 
 	def botonEditar(self):
 		if self.validarCeldasEditar():
@@ -237,6 +244,7 @@ class CargaAcademica(tk.Toplevel):
 			self.query7 = 'UPDATE docente SET DescargaAcademica = ? WHERE id = ?'
 			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
 			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
+			self.query9 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
 			self.id = self.seleccion
 			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
 			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
@@ -247,6 +255,7 @@ class CargaAcademica(tk.Toplevel):
 			self.conexion(self.query7,(self.DescargaAcademicaEditar.get(), self.id))
 			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
 			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
+			self.conexion(self.query9,(self.entryEditarTelefono.get(), self.id))
 			self.LimpiarCeldasEditar()
 			self.LimpiarCeldas()
 			self.new.destroy()

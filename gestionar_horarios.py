@@ -462,10 +462,11 @@ class Horarios(tk.Toplevel):
         self.pdf.drawString(388,529,'TRAYECTO ' + self.trayecto + ' TRIMESTRE ' + self.trimestre)
         self.verificarLinea()
         self.pdf.drawString(425,504, 'SECCIÓN: ' + self.seccion)
-
+        self.pdf.drawImage(logoPDF,680,485,width=100,height=100)
         self.validarTree()
         self.validarCelda()
         self.validarModalidad()
+        self.tablaDocente()
 
         self.pdf.save()
         
@@ -474,6 +475,7 @@ class Horarios(tk.Toplevel):
         self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
         self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
         self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -522,6 +524,20 @@ class Horarios(tk.Toplevel):
             self.table.setStyle(TableStyle(self.setStyles))
             self.table.wrapOn(self.pdf,self.width,self.heigth)
             self.table.drawOn(self.pdf,118,307)
+            return self.table
+
+    def tablaDocente(self):
+        if self.modalidad == 'Diurno':
+            self.tableDocente = Table(self.obtenertablaDocenteDiurno(),colWidths=237, rowHeights=20)
+            self.tableDocente.setStyle(TableStyle(self.setStylesCeldas))
+            self.tableDocente.wrapOn(self.pdf,self.width,self.heigth)
+            self.tableDocente.drawOn(self.pdf,68,125)
+            return self.table
+        if self.modalidad == 'Nocturno':
+            self.tableDocente = Table(self.obtenertablaDocenteNocturno(),colWidths=237, rowHeights=20)
+            self.tableDocente.setStyle(TableStyle(self.setStylesCeldas))
+            self.tableDocente.wrapOn(self.pdf,self.width,self.heigth)
+            self.tableDocente.drawOn(self.pdf,68,275)
             return self.table
 
     def materia(self,query,parametros):
@@ -673,18 +689,28 @@ class Horarios(tk.Toplevel):
             print('DENEGADO CAMARADA')
 
     def validarSemana(self,array,celda):
-        if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
-            array[celda].clear()
-            array[celda].append(Paragraph('bloque de horas mañana',self.center))
-            array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
-            array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
-            array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
-            array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
-            array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
+        if self.modalidad == 'Diurno':
+            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
+                array[celda].clear()
+                array[celda].append(Paragraph('bloque de horas diurno',self.center))
+                array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
+                array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
+                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
+        if self.modalidad == 'Nocturno':
+            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
+                array[celda].clear()
+                array[celda].append(Paragraph('bloque de horas nocturno',self.center))
+                array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
+                array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
+                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
 
     def obtenerHorarioDiurno(self):
         self.diurno = [
-            [Paragraph('bloque de horas mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
             [Paragraph('8:50 - 9:35',self.center)],
@@ -1322,7 +1348,7 @@ class Horarios(tk.Toplevel):
 
     def obtenerHorarioNocturno(self):
         self.nocturno = [
-            [Paragraph('bloque de horas mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('6:00 - 6:45',self.center)],
             [Paragraph('6:45 - 7:30',self.center)],
             [Paragraph('7:35 - 8:20',self.center)],
@@ -1643,4 +1669,33 @@ class Horarios(tk.Toplevel):
         )
 
         return self.nocturno
+
+    def coorY(self,y):
+        return y
+
+    def obtenertablaDocenteDiurno(self):
+        self.tablaInformacion = [
+            [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
+        ]
+        self.tabla = self.conexion(
+            'SELECT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
+            self.parametros).fetchall()
+        for row in self.tabla:
+            self.tablaInformacion.append(row)
+            print(row)
     
+        return self.tablaInformacion
+
+    
+    def obtenertablaDocenteNocturno(self):
+        self.tablaInformacion = [
+            [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
+        ]
+        self.tabla = self.conexion(
+            'SELECT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
+            self.parametros).fetchall()
+        for row in self.tabla:
+            self.tablaInformacion.append(row)
+            print(row)
+        
+        return self.tablaInformacion
