@@ -9,7 +9,7 @@ import traceback
 import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape
-from reportlab.platypus import Paragraph, Table, TableStyle, Frame
+from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
@@ -41,7 +41,7 @@ class Horarios(tk.Toplevel):
         self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
         self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
-        ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASE',font=('Helvetica',14)).place(x=350,y=5)
+        ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASES',font=('Helvetica',14)).place(x=350,y=5)
         # LapsoAcademico
         self.container = ttk.Labelframe(self.noteHorariosClases)
         self.container.grid(column=0,row=0,ipadx=10,ipady=15,padx=30,pady=10)
