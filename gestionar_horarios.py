@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from tkinter import messagebox
 import sqlite3
 from tkinter.constants import DISABLED, NORMAL
@@ -445,43 +446,49 @@ class Horarios(tk.Toplevel):
         return self.id
 
     def generarHorarioClases(self):
-        self.selecionarLaspoId = self.selecionarFilaLapsoAcademico()
-        self.selecionarModalidadId = self.selecionarFilaModalidad()
-        self.selecionarCohorteId = self.selecionarFilaCohorte()
-        self.selecionarTrayectoId = self.selecionarFilaTrayecto()
-        self.selecionarTrimestreId = self.selecionarFilaTrimestre()
-        self.selecionarSeccionId = self.selecionarFilaSeccion()
-        self.parametros = (self.selecionarLaspoId, self.selecionarModalidadId, self.selecionarCohorteId, self.selecionarTrayectoId, self.selecionarTrimestreId, self.selecionarSeccionId)
-        self.lapso = str(self.LapsoAcademico())
-        self.modalidad = str(self.Modalidad())
-        self.cohorte = str(self.Cohorte())
-        self.trayecto = str(self.Trayecto())
-        self.trimestre = str(self.Trimestre())
-        self.seccion = str(self.Seccion())
+        if self.treeLapsoAcademico.selection() and self.treeModalidad.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection():
+            self.selecionarLaspoId = self.selecionarFilaLapsoAcademico()
+            self.selecionarModalidadId = self.selecionarFilaModalidad()
+            self.selecionarCohorteId = self.selecionarFilaCohorte()
+            self.selecionarTrayectoId = self.selecionarFilaTrayecto()
+            self.selecionarTrimestreId = self.selecionarFilaTrimestre()
+            self.selecionarSeccionId = self.selecionarFilaSeccion()
+            self.parametros = (self.selecionarLaspoId, self.selecionarModalidadId, self.selecionarCohorteId, self.selecionarTrayectoId, self.selecionarTrimestreId, self.selecionarSeccionId)
+            self.lapso = str(self.LapsoAcademico())
+            self.modalidad = str(self.Modalidad())
+            self.cohorte = str(self.Cohorte())
+            self.trayecto = str(self.Trayecto())
+            self.trimestre = str(self.Trimestre())
+            self.seccion = str(self.Seccion())
 
-        self.pdf = canvas.Canvas('Prueba.pdf', pagesize = landscape(A4))
-        self.pdf.setFontSize(10)
-        self.pdf.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.lapso + ' (Cohorte' + self.cohorte + ')')
-        self.pdf.line(299,549,605,549)
-        self.pdf.drawString(388,529,'TRAYECTO ' + self.trayecto + ' TRIMESTRE ' + self.trimestre)
-        self.verificarLinea()
-        self.pdf.drawString(425,504, 'SECCIÓN: ' + self.seccion)
-        self.pdf.drawImage(logoPDF,680,485,width=100,height=100)
-        self.validarTree()
-        self.validarCelda()
-        self.validarModalidad()        
-        self.tablaDocente()
-        
-        self.pdf.save()
-        
-        self.setStyles.clear()
-        self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-        self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-        
-        self.counter = 0
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.archivo = open(self.guardar,'w')
 
+            self.pdf = canvas.Canvas(self.guardar, pagesize = landscape(A4))
+            self.pdf.setFontSize(10)
+            self.pdf.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.lapso + ' (Cohorte' + self.cohorte + ')')
+            self.pdf.line(299,549,605,549)
+            self.pdf.drawString(388,529,'TRAYECTO ' + self.trayecto + ' TRIMESTRE ' + self.trimestre)
+            self.verificarLinea()
+            self.pdf.drawString(425,504, 'SECCIÓN: ' + self.seccion)
+            self.pdf.drawImage(logoPDF,680,485,width=100,height=100)
+            self.validarTree()
+            self.validarCelda()
+            self.validarModalidad()        
+            self.tablaDocente()
+            
+            self.pdf.save()
+            self.archivo.close()
+            self.setStyles.clear()
+            self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+            self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+            self.counter = 0
+            
+            messagebox.showinfo(title='Horario', message='Horario generado correctamente')
+        else:
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -538,43 +545,53 @@ class Horarios(tk.Toplevel):
             self.tableDocente.setStyle(TableStyle(self.setStylesCeldas))
             self.tableDocente.wrapOn(self.pdf,self.width,self.heigth)
             if self.counter == 15: 
-                self.tableDocente.drawOn(self.pdf,68,5)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,270)
                 print('-----------15')
             elif self.counter == 14: 
-                self.tableDocente.drawOn(self.pdf,68,20)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,290)
                 print('-----------14')
             elif self.counter == 13: 
-                self.tableDocente.drawOn(self.pdf,68,40)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,310)
                 print('-----------13')
             elif self.counter == 12: 
-                self.tableDocente.drawOn(self.pdf,68,60)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,330)
                 print('-----------12')
             elif self.counter == 11: 
-                self.tableDocente.drawOn(self.pdf,68,75)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,350)
                 print('-----------11')
-            elif self.counter == 10: 
-                self.tableDocente.drawOn(self.pdf,68,95)
+            elif self.counter == 10:
+                self.pdf.showPage() 
+                self.tableDocente.drawOn(self.pdf,68,370)
                 print('-----------10')
             elif self.counter == 9: 
-                self.tableDocente.drawOn(self.pdf,68,115)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,390)
                 print('-----------9')
             elif self.counter == 8: 
-                self.tableDocente.drawOn(self.pdf,68,130)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,410)
                 print('-----------8')
             elif self.counter == 7: 
-                self.tableDocente.drawOn(self.pdf,68,150)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,430)
                 print('-----------7')
             elif self.counter == 6: 
-                self.tableDocente.drawOn(self.pdf,68,170)
+                self.pdf.showPage()
+                self.tableDocente.drawOn(self.pdf,68,450)
                 print('-----------6')
             elif self.counter == 5: 
-                self.tableDocente.drawOn(self.pdf,68,185)
+                self.tableDocente.drawOn(self.pdf,68,25)
                 print('-----------5')
             elif self.counter == 4: 
-                self.tableDocente.drawOn(self.pdf,68,200)
+                self.tableDocente.drawOn(self.pdf,68,45)
                 print('-----------4')
             elif self.counter == 3: 
-                self.tableDocente.drawOn(self.pdf,68,220)
+                self.tableDocente.drawOn(self.pdf,68,65)
                 print('-----------3')
             elif self.counter == 2: 
                 self.tableDocente.drawOn(self.pdf,68,85)
