@@ -37,8 +37,8 @@ class Horarios(tk.Toplevel):
         self.noteHorariosLaboratorios.pack(fill='both', expand=True)
 
         # add frames to notebook
-        self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
         self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
+        self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
         self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
         ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASES',font=('Helvetica',14)).place(x=350,y=5)
@@ -135,7 +135,7 @@ class Horarios(tk.Toplevel):
         self.activarPausa = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarPausa).grid(column=2,row=1)
         self.desactivarPausa = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarPausa).grid(column=3,row=1)
 
-        ttk.Label(self.frameContenedor, text='Rinicio clase').grid(column=0, row=2,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Reinicio clase').grid(column=0, row=2,pady=5,padx=5)
         self.entryReinicio = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryReinicio.grid(column=1,row=2,pady=5,padx=5)
         self.activarReinicio = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarReinicio).grid(column=2,row=2)
@@ -189,6 +189,117 @@ class Horarios(tk.Toplevel):
         self.activarViernes = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarViernes).grid(column=2,row=10)
         self.desactivarViernes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarViernes).grid(column=3,row=10)
 
+        self.container2 = ttk.Labelframe(self.noteHorariosDocentes)
+        self.container2.grid(column=0,row=0,ipadx=10,ipady=15,padx=30,pady=30)
+        
+        ttk.Label(self.noteHorariosDocentes, text='GENERAR HORARIO DE DOCENTES',font=('Helvetica',14)).place(x=350,y=5)
+        
+        self.frameDocente = ttk.Labelframe(self.container2)
+        self.frameDocente.grid(column=0,row=0,pady=5,padx=5)
+        self.treeDocente = ttk.Treeview(self.frameDocente, columns=['#1',"#2"],show='headings',height=2)
+        self.treeDocente.grid(row=0,column=0)
+        self.treeDocente.heading('#1', text = 'Id',)
+        self.treeDocente.heading('#2', text = 'Docente')
+        self.treeDocente.column('#1', width=50)
+        self.treeDocente.column('#2', width=120)
+        self.scrollbarDocente = ttk.Scrollbar(self.frameDocente, orient=tk.VERTICAL, command=self.treeDocente.yview)
+        self.treeDocente.configure(yscroll=self.scrollbarDocente.set)
+        self.scrollbarDocente.grid(column=1,row=0, sticky='ns')
+        
+        self.frameDocenteLapsoAcademico = ttk.Labelframe(self.container2)
+        self.frameDocenteLapsoAcademico.grid(column=1,row=0,pady=5,padx=5)
+        self.treeDocenteLapsoAcademico = ttk.Treeview(self.frameDocenteLapsoAcademico, columns=['#1',"#2"],show='headings',height=2)
+        self.treeDocenteLapsoAcademico.grid(row=0,column=0)
+        self.treeDocenteLapsoAcademico.heading('#1', text = 'Id',)
+        self.treeDocenteLapsoAcademico.heading('#2', text = 'LapsoAcademico')
+        self.treeDocenteLapsoAcademico.column('#1', width=50)
+        self.treeDocenteLapsoAcademico.column('#2', width=120)
+        self.scrollbarDocenteLapsoAcademico = ttk.Scrollbar(self.frameDocenteLapsoAcademico, orient=tk.VERTICAL, command=self.treeDocenteLapsoAcademico.yview)
+        self.treeDocenteLapsoAcademico.configure(yscroll=self.scrollbarDocenteLapsoAcademico.set)
+        self.scrollbarDocenteLapsoAcademico.grid(column=1,row=0, sticky='ns')
+        
+        self.frameDocenteModalidad = ttk.Labelframe(self.container2)
+        self.frameDocenteModalidad.grid(column=0,row=1,pady=5,padx=5)
+        self.treeDocenteModalidad = ttk.Treeview(self.frameDocenteModalidad, columns=['#1',"#2"],show='headings',height=2)
+        self.treeDocenteModalidad.grid(row=0,column=0)
+        self.treeDocenteModalidad.heading('#1', text = 'Id',)
+        self.treeDocenteModalidad.heading('#2', text = 'Modalidad')
+        self.treeDocenteModalidad.column('#1', width=50)
+        self.treeDocenteModalidad.column('#2', width=120)
+        self.scrollbarDocenteModalidad = ttk.Scrollbar(self.frameDocenteModalidad, orient=tk.VERTICAL, command=self.treeDocenteModalidad.yview)
+        self.treeDocenteModalidad.configure(yscroll=self.scrollbarDocenteModalidad.set)
+        self.scrollbarDocenteModalidad.grid(column=1,row=0, sticky='ns')
+        
+        ttk.Button(self.container2, text='GENERAR HORARIO DOCENTE',command='',width=30).grid(column=0,row=2,padx=5,pady=5)
+        
+        self.frameContenedor2 = ttk.Labelframe(self.noteHorariosDocentes)
+        self.frameContenedor2.grid(column=1, row=0,ipadx=5,ipady=5,pady=30,padx=10)
+
+        ttk.Label(self.frameContenedor2, text='Inicio clase').grid(column=0, row=0,pady=5,padx=5)
+        self.entryInicio2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryInicio2.grid(column=1,row=0,pady=5,padx=5)
+        self.activarInicio2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarInicio2).grid(column=2,row=0)
+        self.desactivarInicio2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarInicio2).grid(column=3,row=0)
+        
+        ttk.Label(self.frameContenedor2, text='Inicio Pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
+        self.entryPausa2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryPausa2.grid(column=1,row=1,pady=5,padx=5)
+        self.activarPausa2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarPausa2).grid(column=2,row=1)
+        self.desactivarPausa2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarPausa2).grid(column=3,row=1)
+
+        ttk.Label(self.frameContenedor2, text='Reinicio clase').grid(column=0, row=2,pady=5,padx=5)
+        self.entryReinicio2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryReinicio2.grid(column=1,row=2,pady=5,padx=5)
+        self.activarReinicio2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarReinicio2).grid(column=2,row=2)
+        self.desactivarReinicio2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarReinicio2).grid(column=3,row=2)
+
+        ttk.Label(self.frameContenedor2, text='Culminacion clases').grid(column=0, row=3,pady=5,padx=5)
+        self.entryCulminacion2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryCulminacion2.grid(column=1,row=3,pady=5,padx=5)
+        self.activarCulminacion2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarCuminacion2).grid(column=2,row=3)
+        self.desactivarCulminacion2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarCulminacion2).grid(column=3,row=3)
+
+        ttk.Label(self.frameContenedor2, text='Aula').grid(column=0, row=4,pady=5,padx=5)
+        self.entryAula2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryAula2.grid(column=1,row=4,pady=5,padx=5)
+        self.activarAula2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarAula2).grid(column=2,row=4)
+        self.desactivarAula2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarAula2).grid(column=3,row=4)
+
+        ttk.Label(self.frameContenedor2, text='Nota').grid(column=0, row=5,pady=5,padx=5)
+        self.entryNota2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryNota2.grid(column=1,row=5,pady=5,padx=5)
+        self.activarNota2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarNota2).grid(column=2,row=5)
+        self.desactivarNota2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarNota2).grid(column=3,row=5)
+
+        ttk.Label(self.frameContenedor2, text='Lunes').grid(column=0, row=6,pady=5,padx=5)
+        self.entryLunes2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryLunes2.grid(column=1,row=6,pady=5,padx=5)
+        self.activarLunes2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarLunes2).grid(column=2,row=6)
+        self.desactivarLunes2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarLunes2).grid(column=3,row=6)
+
+        ttk.Label(self.frameContenedor2, text='Martes').grid(column=0, row=7,pady=7,padx=5)
+        self.entryMartes2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryMartes2.grid(column=1,row=7,pady=5,padx=5)
+        self.activarMartes2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarMartes2).grid(column=2,row=7)
+        self.desactivarMartes2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarMartes2).grid(column=3,row=7)
+
+        ttk.Label(self.frameContenedor2, text='Miercoles').grid(column=0, row=8,pady=5,padx=5)
+        self.entryMiercoles2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryMiercoles2.grid(column=1,row=8,pady=5,padx=5)
+        self.activarMiercoles2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarMiercoles2).grid(column=2,row=8)
+        self.desactivarMiercoles2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarMiercoles2).grid(column=3,row=8)
+
+        ttk.Label(self.frameContenedor2, text='Jueves').grid(column=0, row=9,pady=5,padx=5)
+        self.entryJueves2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryJueves2.grid(column=1,row=9,pady=5,padx=5)
+        self.activarJueves2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarJueves2).grid(column=2,row=9)
+        self.desactivarJueves2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarJueves2).grid(column=3,row=9)
+
+        ttk.Label(self.frameContenedor2, text='Viernes').grid(column=0, row=10,pady=5,padx=5)
+        self.entryViernes2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
+        self.entryViernes2.grid(column=1,row=10,pady=5,padx=5)
+        self.activarViernes2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarViernes2).grid(column=2,row=10)
+        self.desactivarViernes2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarViernes2).grid(column=3,row=10)
 
         self.MostrarLapsoAcademico()
         self.MostrarModalidad()
@@ -319,6 +430,85 @@ class Horarios(tk.Toplevel):
 
     def botonDesactivarViernes(self):
         self.entryViernes.config(state=DISABLED)
+        
+    # Pantalla Docente-------------------------------------
+    
+    def botonActivarInicio2(self):
+        self.entryInicio2.config(state=NORMAL)
+        self.entryInicio2.focus()
+
+    def botonDesactivarInicio2(self):
+        self.entryInicio2.config(state=DISABLED)
+
+    def botonActivarPausa2(self):
+        self.entryPausa2.config(state=NORMAL)
+        self.entryPausa2.focus()
+
+    def botonDesactivarPausa2(self):
+        self.entryPausa2.config(state=DISABLED)
+
+    def botonActivarReinicio2(self):
+        self.entryReinicio2.config(state=NORMAL)
+        self.entryReinicio2.focus()
+
+    def botonDesactivarReinicio2(self):
+        self.entryReinicio2.config(state=DISABLED)
+
+    def botonActivarCuminacion2(self):
+        self.entryCulminacion2.config(state=NORMAL)
+        self.entryCulminacion2.focus()
+
+    def botonDesactivarCulminacion2(self):
+        self.entryCulminacion2.config(state=DISABLED)
+
+    def botonActivarAula2(self):
+        self.entryAula2.config(state=NORMAL)
+        self.entryAula2.focus()
+
+    def botonDesactivarAula2(self):
+        self.entryAula2.config(state=DISABLED)
+
+    def botonActivarNota2(self):
+        self.entryNota2.config(state=NORMAL)
+        self.entryNota2.focus()
+
+    def botonDesactivarNota2(self):
+        self.entryNota2.config(state=DISABLED)
+
+    def botonActivarLunes2(self):
+        self.entryLunes2.config(state=NORMAL)
+        self.entryLunes2.focus()
+
+    def botonDesactivarLunes2(self):
+        self.entryLunes2.config(state=DISABLED)
+
+    def botonActivarMartes2(self):
+        self.entryMartes2.config(state=NORMAL)
+        self.entryMartes2.focus()
+
+    def botonDesactivarMartes2(self):
+        self.entryMartes2.config(state=DISABLED)
+
+    def botonActivarMiercoles2(self):
+        self.entryMiercoles2.config(state=NORMAL)
+        self.entryMiercoles2.focus()
+
+    def botonDesactivarMiercoles2(self):
+        self.entryMiercoles2.config(state=DISABLED)
+
+    def botonActivarJueves2(self):
+        self.entryJueves2.config(state=NORMAL)
+        self.entryJueves2.focus()
+
+    def botonDesactivarJueves2(self):
+        self.entryJueves2.config(state=DISABLED)
+
+    def botonActivarViernes2(self):
+        self.entryViernes2.config(state=NORMAL)
+        self.entryViernes2.focus()
+
+    def botonDesactivarViernes2(self):
+        self.entryViernes2.config(state=DISABLED)
 
     def conexion(self,query,parametros = ()):
         try:
