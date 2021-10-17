@@ -190,13 +190,13 @@ class Horarios(tk.Toplevel):
         self.desactivarViernes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarViernes).grid(column=3,row=10)
 
         self.container2 = ttk.Labelframe(self.noteHorariosDocentes)
-        self.container2.grid(column=0,row=0,ipadx=10,ipady=15,padx=30,pady=30)
+        self.container2.grid(column=0,row=0,ipadx=10,ipady=20,padx=30,pady=30)
         
         ttk.Label(self.noteHorariosDocentes, text='GENERAR HORARIO DE DOCENTES',font=('Helvetica',14)).place(x=350,y=5)
         
         self.frameDocente = ttk.Labelframe(self.container2)
         self.frameDocente.grid(column=0,row=0,pady=5,padx=5)
-        self.treeDocente = ttk.Treeview(self.frameDocente, columns=['#1',"#2"],show='headings',height=2)
+        self.treeDocente = ttk.Treeview(self.frameDocente, columns=['#1',"#2"],show='headings',height=6)
         self.treeDocente.grid(row=0,column=0)
         self.treeDocente.heading('#1', text = 'Id',)
         self.treeDocente.heading('#2', text = 'Docente')
@@ -208,7 +208,7 @@ class Horarios(tk.Toplevel):
         
         self.frameDocenteLapsoAcademico = ttk.Labelframe(self.container2)
         self.frameDocenteLapsoAcademico.grid(column=1,row=0,pady=5,padx=5)
-        self.treeDocenteLapsoAcademico = ttk.Treeview(self.frameDocenteLapsoAcademico, columns=['#1',"#2"],show='headings',height=2)
+        self.treeDocenteLapsoAcademico = ttk.Treeview(self.frameDocenteLapsoAcademico, columns=['#1',"#2"],show='headings',height=6)
         self.treeDocenteLapsoAcademico.grid(row=0,column=0)
         self.treeDocenteLapsoAcademico.heading('#1', text = 'Id',)
         self.treeDocenteLapsoAcademico.heading('#2', text = 'LapsoAcademico')
@@ -230,7 +230,7 @@ class Horarios(tk.Toplevel):
         self.treeDocenteModalidad.configure(yscroll=self.scrollbarDocenteModalidad.set)
         self.scrollbarDocenteModalidad.grid(column=1,row=0, sticky='ns')
         
-        ttk.Button(self.container2, text='GENERAR HORARIO DOCENTE',command='',width=30).grid(column=0,row=2,padx=5,pady=5)
+        ttk.Button(self.container2, text='GENERAR HORARIO DOCENTE',command=self.generarHorariosDocentes,width=30).grid(column=0,row=2,padx=5,pady=5)
         
         self.frameContenedor2 = ttk.Labelframe(self.noteHorariosDocentes)
         self.frameContenedor2.grid(column=1, row=0,ipadx=5,ipady=5,pady=30,padx=10)
@@ -307,6 +307,9 @@ class Horarios(tk.Toplevel):
         self.MostrarTrayecto()
         self.MostrarTrimestre()
         self.MostrarSeccion()
+        self.MostrarDocente()
+        self.MostrarDocenteLapsoAcademico()
+        self.MostrarDocenteModalidad()
 
         self.width, self.heigth = A4
         self.styles = getSampleStyleSheet()
@@ -563,6 +566,21 @@ class Horarios(tk.Toplevel):
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
             
+    def MostrarDocente(self):
+        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
+        for row in self.rows:
+            self.treeDocente.insert('',tk.END,values=row)
+            
+    def MostrarDocenteLapsoAcademico(self):
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        for row in self.rows:
+            self.treeDocenteLapsoAcademico.insert('',tk.END,values=row)
+
+    def MostrarDocenteModalidad(self):
+        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        for row in self.rows:
+            self.treeDocenteModalidad.insert('',tk.END,values=row)
+            
     def selecionarFilaLapsoAcademico(self):
         self.item = self.treeLapsoAcademico.focus()
         self.data = self.treeLapsoAcademico.item(self.item)
@@ -596,6 +614,24 @@ class Horarios(tk.Toplevel):
     def selecionarFilaSeccion(self):
         self.item = self.treeSeccion.focus()
         self.data = self.treeSeccion.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+    
+    def selecionarFilaDocente(self):
+        self.item = self.treeDocente.focus()
+        self.data = self.treeDocente.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+    
+    def selecionarFilaDocenteLapsoAcademico(self):
+        self.item = self.treeDocenteLapsoAcademico.focus()
+        self.data = self.treeDocenteLapsoAcademico.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+        
+    def selecionarFilaDocenteModalidad(self):
+        self.item = self.treeDocenteModalidad.focus()
+        self.data = self.treeDocenteModalidad.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -632,6 +668,24 @@ class Horarios(tk.Toplevel):
     def Seccion(self):
         self.item = self.treeSeccion.focus()
         self.data = self.treeSeccion.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+    
+    def Docente(self):
+        self.item = self.treeDocente.focus()
+        self.data = self.treeDocente.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+    
+    def DocenteLapsoAcademico(self):
+        self.item = self.treeDocenteLapsoAcademico.focus()
+        self.data = self.treeDocenteLapsoAcademico.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+        
+    def DocenteModalidad(self):
+        self.item = self.treeDocenteModalidad.focus()
+        self.data = self.treeDocenteModalidad.item(self.item)
         self.id = self.data['values'][1]
         return self.id
 
@@ -679,6 +733,19 @@ class Horarios(tk.Toplevel):
             messagebox.showinfo(title='Horario', message='Horario generado correctamente')
         else:
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
+            
+    def generarHorariosDocentes(self):
+        self.docenteId = self.selecionarFilaDocente()
+        self.lapsoAcademicoId = self.selecionarFilaDocenteLapsoAcademico()
+        self.modalidadId = self.selecionarFilaDocenteModalidad()
+        self.parametrosDocentes = (self.docenteId, self.lapsoAcademicoId, self.modalidadId)
+        self.dataDocente = self.Docente()
+        self.dataLapso = self.DocenteLapsoAcademico()
+        self.dataModalidad = self.DocenteModalidad()
+        
+        
+        
+        pass
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
