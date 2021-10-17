@@ -743,9 +743,24 @@ class Horarios(tk.Toplevel):
         self.dataLapso = self.DocenteLapsoAcademico()
         self.dataModalidad = self.DocenteModalidad()
         
+        self.pdfDocente = canvas.Canvas('PruebaDocente.pdf', pagesize = landscape(A4))
+        self.pdfDocente.setFontSize(10)
+        self.pdfDocente.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLapso)
+        self.pdfDocente.line(299,549,530,549)
+        self.pdfDocente.drawString(300,535,'Docente: ' + self.dataDocente)
+        self.pdfDocente.drawString(300,525,'Modalidad: ' + self.dataModalidad)
+        self.validarTreeDocente()
+        self.validarCeldaDocente()
+        self.validarModalidadDocente()         
         
+        self.pdfDocente.drawImage(logoPDF,680,485,width=100,height=100)
         
-        pass
+        self.pdfDocente.save()
+        self.setStyles.clear()
+        self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+        self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+        self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+        self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -767,6 +782,21 @@ class Horarios(tk.Toplevel):
             self.pdf.drawString(510,504, 'Aula: ' + self.entryAula.get())
         if not self.entryNota.state():
             self.pdf.drawString(70,487, 'NOTA: ' + self.entryNota.get())
+            
+    def validarTreeDocente(self):
+        if not self.entryInicio2.state() and not self.entryPausa2.state()  and not self.entryReinicio2.state() and not self.entryCulminacion2.state():
+            self.pdfDocente.drawString(70,537, 'Inicio clase: ' + self.entryInicio2.get()) 
+            self.pdfDocente.drawString(70,527, 'Pausa vacacional: ' + self.entryPausa2.get()) 
+            self.pdfDocente.drawString(70,517, 'Reinicio: ' + self.entryReinicio2.get()) 
+            self.pdfDocente.drawString(70,507, 'Culminación clase: ' + self.entryCulminacion2.get())
+        else:
+            if not self.entryInicio2.state() and not self.entryCulminacion2.state():
+                self.pdfDocente.drawString(70,537, 'Inicio clase: ' + self.entryInicio2.get()) 
+                self.pdfDocente.drawString(70,527, 'Culminación clase: ' + self.entryCulminacion2.get())
+        if not self.entryAula2.state():
+            self.pdfDocente.drawString(510,504, 'Aula: ' + self.entryAula2.get())
+        if not self.entryNota2.state():
+            self.pdfDocente.drawString(70,487, 'NOTA: ' + self.entryNota2.get())
 
     def validarCelda(self):
         if self.modalidad == 'Diurno':
@@ -781,6 +811,20 @@ class Horarios(tk.Toplevel):
             self.celda.wrapOn(self.pdf,self.width,self.heigth)
             self.celda.drawOn(self.pdf,68,307)
             return self.celda
+        
+    def validarCeldaDocente(self):
+        if self.dataModalidad == 'Diurno':
+            self.celda = Table(self.celdaDiurno,colWidths=50, rowHeights=25)
+            self.celda.setStyle(TableStyle(self.setStylesCeldas))
+            self.celda.wrapOn(self.pdfDocente,self.width,self.heigth)
+            self.celda.drawOn(self.pdfDocente,68,157)
+            return self.celda
+        if self.dataModalidad == 'Nocturno':
+            self.celda = Table(self.celdaNocturno,colWidths=50, rowHeights=25)
+            self.celda.setStyle(TableStyle(self.setStylesCeldas))
+            self.celda.wrapOn(self.pdfDocente,self.width,self.heigth)
+            self.celda.drawOn(self.pdfDocente,68,307)
+            return self.celda
 
     def validarModalidad(self):
         if self.modalidad == 'Diurno':
@@ -794,6 +838,20 @@ class Horarios(tk.Toplevel):
             self.table.setStyle(TableStyle(self.setStyles))
             self.table.wrapOn(self.pdf,self.width,self.heigth)
             self.table.drawOn(self.pdf,118,307)
+            return self.table
+        
+    def validarModalidadDocente(self):
+        if self.dataModalidad == 'Diurno':
+            self.table = Table(self.obtenerHorarioDiurnoDocente(),colWidths=110, rowHeights=25)
+            self.table.setStyle(TableStyle(self.setStyles))
+            self.table.wrapOn(self.pdfDocente,self.width,self.heigth)
+            self.table.drawOn(self.pdfDocente,118,157)
+            return self.table
+        if self.dataModalidad == 'Nocturno':
+            self.table = Table(self.obtenerHorarioNocturnoDocente(),colWidths=110, rowHeights=25)
+            self.table.setStyle(TableStyle(self.setStyles))
+            self.table.wrapOn(self.pdfDocente,self.width,self.heigth)
+            self.table.drawOn(self.pdfDocente,118,307)
             return self.table
 
     def tablaDocente(self):
@@ -2072,3 +2130,35 @@ class Horarios(tk.Toplevel):
             print(self.counter)
         
         return self.tablaInformacion
+    
+    def obtenerHorarioDiurnoDocente(self):
+        self.diurnoDocente = [
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('7:10 - 7:55',self.center)],
+            [Paragraph('8:00 - 8:45',self.center)],
+            [Paragraph('8:50 - 9:35',self.center)],
+            [Paragraph('9:40 - 10:25',self.center)],
+            [Paragraph('10:30 - 11:15',self.center)],
+            [Paragraph('11:20 - 12:05',self.center)],
+            [Paragraph('1:05 - 1:55',self.center)],
+            [Paragraph('1:55 - 2:40',self.center)],
+            [Paragraph('2:45 - 3:30',self.center)],
+            [Paragraph('3:45 - 4:20',self.center)],
+            [Paragraph('4:25 - 5:10',self.center)],
+            [Paragraph('5:15 - 6:00',self.center)]
+        ]
+        
+        return self.diurnoDocente
+    
+    def obtenerHorarioNocturnoDocente(self):
+        self.nocturnoDocente = [
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('6:00 - 6:45',self.center)],
+            [Paragraph('6:45 - 7:30',self.center)],
+            [Paragraph('7:35 - 8:20',self.center)],
+            [Paragraph('8:20 - 9:05',self.center)],
+            [Paragraph('9:05 - 9:50',self.center)],
+            [Paragraph('9:50 - 10:35',self.center)]
+        ]
+        
+        return self.nocturnoDocente 
