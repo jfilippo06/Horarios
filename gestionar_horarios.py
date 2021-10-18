@@ -37,8 +37,8 @@ class Horarios(tk.Toplevel):
         self.noteHorariosLaboratorios.pack(fill='both', expand=True)
 
         # add frames to notebook
-        self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
         self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
+        self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
         self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
         ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASES',font=('Helvetica',14)).place(x=350,y=5)
@@ -735,32 +735,41 @@ class Horarios(tk.Toplevel):
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
             
     def generarHorariosDocentes(self):
-        self.docenteId = self.selecionarFilaDocente()
-        self.lapsoAcademicoId = self.selecionarFilaDocenteLapsoAcademico()
-        self.modalidadId = self.selecionarFilaDocenteModalidad()
-        self.parametrosDocentes = (self.docenteId, self.lapsoAcademicoId, self.modalidadId)
-        self.dataDocente = self.Docente()
-        self.dataLapso = self.DocenteLapsoAcademico()
-        self.dataModalidad = self.DocenteModalidad()
+        if self.treeDocente.selection() and self.treeDocenteLapsoAcademico.selection() and self.treeDocenteModalidad.selection():
+            self.docenteId = self.selecionarFilaDocente()
+            self.lapsoAcademicoId = self.selecionarFilaDocenteLapsoAcademico()
+            self.modalidadId = self.selecionarFilaDocenteModalidad()
+            self.parametrosDocentes = (self.docenteId, self.lapsoAcademicoId, self.modalidadId)
+            self.dataDocente = self.Docente()
+            self.dataLapso = self.DocenteLapsoAcademico()
+            self.dataModalidad = self.DocenteModalidad()
+            
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.archivo = open(self.guardar,'w')
+            
+            self.pdfDocente = canvas.Canvas(self.guardar, pagesize = landscape(A4))
+            self.pdfDocente.setFontSize(10)
+            self.pdfDocente.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLapso)
+            self.pdfDocente.line(299,549,530,549)
+            self.pdfDocente.drawString(300,535,'Docente: ' + self.dataDocente)
+            self.pdfDocente.drawString(300,525,'Modalidad: ' + self.dataModalidad)
+            self.validarTreeDocente()
+            self.validarCeldaDocente()
+            self.validarModalidadDocente()         
+            
+            self.pdfDocente.drawImage(logoPDF,680,485,width=100,height=100)
+            
+            self.pdfDocente.save()
+            self.archivo.close()
+            self.setStyles.clear()
+            self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+            self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
         
-        self.pdfDocente = canvas.Canvas('PruebaDocente.pdf', pagesize = landscape(A4))
-        self.pdfDocente.setFontSize(10)
-        self.pdfDocente.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLapso)
-        self.pdfDocente.line(299,549,530,549)
-        self.pdfDocente.drawString(300,535,'Docente: ' + self.dataDocente)
-        self.pdfDocente.drawString(300,525,'Modalidad: ' + self.dataModalidad)
-        self.validarTreeDocente()
-        self.validarCeldaDocente()
-        self.validarModalidadDocente()         
-        
-        self.pdfDocente.drawImage(logoPDF,680,485,width=100,height=100)
-        
-        self.pdfDocente.save()
-        self.setStyles.clear()
-        self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-        self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+            messagebox.showinfo(title='Horario', message='Horario docente generado correctamente')
+        else:
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -2706,6 +2715,109 @@ class Horarios(tk.Toplevel):
             9,self.diurnoDocente            
         )
         
+        
+        print('Decima linea ----------------')
+        # Decima linea lunes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            1,10,1,11,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            1,10,1,12,
+            10,self.diurnoDocente            
+        )
+        
+        # Decima linea Martes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            2,10,2,11,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            2,10,2,12,
+            10,self.diurnoDocente            
+        )
+        
+        # Decima linea Miercoles
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            3,10,3,11,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            3,10,3,12,
+            10,self.diurnoDocente            
+        )
+        
+        # Decima linea Jueves
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            4,10,4,11,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            4,10,4,12,
+            10,self.diurnoDocente            
+        )
+        
+        # Decima linea Viernes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            5,10,5,11,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            5,10,5,12,
+            10,self.diurnoDocente            
+        )
+        
+        print('Decima primera linea ----------------')
+        # Decima primera linea lunes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            1,11,1,12,
+            11,self.diurnoDocente            
+        )
+        
+        # Decima primera linea Martes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            2,11,2,12,
+            11,self.diurnoDocente            
+        )
+        
+        # Decima primera linea Miercoles
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            3,11,3,12,
+            11,self.diurnoDocente            
+        )
+        
+        # Decima primera linea Jueves
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            4,11,4,12,
+            11,self.diurnoDocente            
+        )
+        
+        # Decima primera linea Viernes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            5,11,5,12,
+            11,self.diurnoDocente            
+        )
+        
         return self.diurnoDocente
     
     def obtenerHorarioNocturnoDocente(self):
@@ -2736,5 +2848,317 @@ class Horarios(tk.Toplevel):
             'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
             1,1,1,6,
             1,self.nocturnoDocente          
+        )
+        
+        # Primera linea Martes
+        
+        self.celda1x6(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            2,1,2,2,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            2,1,2,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            2,1,2,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            2,1,2,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            2,1,2,6,
+            1,self.nocturnoDocente          
+        )
+        
+        # Primera linea Miercoles
+        
+        self.celda1x6(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            3,1,3,2,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            3,1,3,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            3,1,3,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            3,1,3,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            3,1,3,6,
+            1,self.nocturnoDocente          
+        )
+        
+        # Primera linea Jueves
+        
+        self.celda1x6(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            4,1,4,2,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            4,1,4,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            4,1,4,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            4,1,4,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            4,1,4,6,
+            1,self.nocturnoDocente          
+        )
+        
+        # Primera linea Viernes
+        
+        self.celda1x6(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            5,1,5,2,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            5,1,5,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            5,1,5,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            5,1,5,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            5,1,5,6,
+            1,self.nocturnoDocente          
+        )
+        
+        print('Segunda linea ----------------')
+        # Segunda linea lunes
+        
+        self.celda1x5(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            1,2,1,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            1,2,1,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            1,2,1,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            1,2,1,6,
+            2,self.nocturnoDocente          
+        )
+        
+        # Segunda linea Martes
+        
+        self.celda1x5(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            2,2,2,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            2,2,2,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            2,2,2,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            2,2,2,6,
+            2,self.nocturnoDocente          
+        )
+        
+        # Segunda linea Miercoles
+        
+        self.celda1x5(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            3,2,3,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            3,2,3,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            3,2,3,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            3,2,3,6,
+            2,self.nocturnoDocente          
+        )
+        
+        # Segunda linea Jueves
+        
+        self.celda1x5(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            4,2,4,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            4,2,4,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            4,2,4,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            4,2,4,6,
+            2,self.nocturnoDocente          
+        )
+        
+        # Segunda linea Viernes
+        
+        self.celda1x5(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            5,2,5,3,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            5,2,5,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            5,2,5,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            5,2,5,6,
+            2,self.nocturnoDocente          
+        )
+        
+        print('Tercera linea ----------------')
+        # Tercera linea lunes
+        
+        self.celda1x4(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            1,3,1,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            1,3,1,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            1,3,1,6,
+            3,self.nocturnoDocente          
+        )
+        
+        # Tercera linea Martes
+        
+        self.celda1x4(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            2,3,2,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            2,3,2,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            2,3,2,6,
+            3,self.nocturnoDocente          
+        )
+        
+        # Tercera linea Miercoles
+        
+        self.celda1x4(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            3,3,3,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            3,3,3,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            3,3,3,6,
+            3,self.nocturnoDocente          
+        )
+        
+        # Tercera linea Jueves
+        
+        self.celda1x4(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            4,3,4,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            4,3,4,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            4,3,4,6,
+            3,self.nocturnoDocente          
+        )
+        
+        # Tercera linea Viernes
+        
+        self.celda1x4(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            5,3,5,4,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            5,3,5,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            5,3,5,6,
+            3,self.nocturnoDocente          
+        )
+        
+        print('Cuarta linea ----------------')
+        # Cuarta linea lunes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            1,4,1,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            1,4,1,6,
+            4,self.nocturnoDocente          
+        )
+        
+        # Cuarta linea Martes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            2,4,2,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            2,4,2,6,
+            4,self.nocturnoDocente          
+        )
+        
+        # Cuarta linea Miercoles
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            3,4,3,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            3,4,3,6,
+            4,self.nocturnoDocente          
+        )
+        
+        # Cuarta linea Jueves
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            4,4,4,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            4,4,4,6,
+            4,self.nocturnoDocente          
+        )
+        
+        # Cuarta linea Viernes
+        
+        self.celda1x3(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            5,4,5,5,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            5,4,5,6,
+            4,self.nocturnoDocente          
+        )
+        
+        print('Quinta linea ----------------')
+        # Quinta linea lunes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            1,5,1,6,
+            5,self.nocturnoDocente          
+        )
+        
+        # Quinta linea Martes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            2,5,2,6,
+            5,self.nocturnoDocente          
+        )
+        
+        # Quinta linea Miercoles
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            3,5,3,6,
+            5,self.nocturnoDocente          
+        )
+        
+        # Quinta linea Jueves
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            4,5,4,6,
+            5,self.nocturnoDocente          
+        )
+        
+        # Quinta linea Viernes
+        
+        self.celda1x2(
+            self.parametrosDocentes,
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            5,5,5,6,
+            5,self.nocturnoDocente          
         )
         return self.nocturnoDocente 
