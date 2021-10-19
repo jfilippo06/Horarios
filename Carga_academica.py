@@ -159,9 +159,11 @@ class CargaAcademica(tk.Toplevel):
 				self.query1 = 'DELETE FROM docente WHERE Id = ?'
 				self.query2 = 'DELETE FROM materias_asignadas WHERE materias_asignadas.Id_docente = ?'
 				self.query3 = 'DELETE FROM materias_docentes WHERE materias_docentes.Id_docente = ?'
+				self.query4 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_docente = ?'
 				self.conexion(self.query1, (self.parametros,))
 				self.conexion(self.query2, (self.parametros,))
 				self.conexion(self.query3, (self.parametros,))
+				self.conexion(self.query4, (self.parametros,))
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente eliminado correctamente.')
 			else:
@@ -899,7 +901,7 @@ class CargaAcademica(tk.Toplevel):
 								self.MostrarHoraFinal()
 								self.MostrarUnidadCurricular()
 								messagebox.showinfo(title='Info', message='Registro editado correctamente.')
-								pass
+								
 							else:
 								messagebox.showwarning(title='Warning', message='Seleccione la casilla')
 				else:
