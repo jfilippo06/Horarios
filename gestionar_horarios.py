@@ -305,9 +305,21 @@ class Horarios(tk.Toplevel):
         self.container3.grid(column=0,row=0,ipadx=10,ipady=20,padx=30,pady=10)
         
         ttk.Label(self.noteHorariosLaboratorios, text='GENERAR HORARIO DE LABORATORIOS',font=('Helvetica',14)).place(x=325,y=5)
+
+        self.frameLaboratorio = ttk.Labelframe(self.container3)
+        self.frameLaboratorio.grid(column=0,row=0,pady=5,padx=5)
+        self.treeLaboratorio = ttk.Treeview(self.frameLaboratorio, columns=['#1',"#2"],show='headings',height=6)
+        self.treeLaboratorio.grid(row=0,column=0)
+        self.treeLaboratorio.heading('#1', text = 'Id',)
+        self.treeLaboratorio.heading('#2', text = 'Laboratorio')
+        self.treeLaboratorio.column('#1', width=50)
+        self.treeLaboratorio.column('#2', width=120)
+        self.scrollbarLaboratorio = ttk.Scrollbar(self.frameLaboratorio, orient=tk.VERTICAL, command=self.treeLaboratorio.yview)
+        self.treeLaboratorio.configure(yscroll=self.scrollbarLaboratorio.set)
+        self.scrollbarLaboratorio.grid(column=1,row=0, sticky='ns')
         
         self.frameLaboratorioLapso = ttk.Labelframe(self.container3)
-        self.frameLaboratorioLapso.grid(column=0,row=0,pady=5,padx=5)
+        self.frameLaboratorioLapso.grid(column=1,row=0,pady=5,padx=5)
         self.treeLaboratorioLapso = ttk.Treeview(self.frameLaboratorioLapso, columns=['#1',"#2"],show='headings',height=6)
         self.treeLaboratorioLapso.grid(row=0,column=0)
         self.treeLaboratorioLapso.heading('#1', text = 'Id',)
@@ -319,8 +331,8 @@ class Horarios(tk.Toplevel):
         self.scrollbarLaboratorioLapso.grid(column=1,row=0, sticky='ns')
 
         self.frameLaboratorioModalidad = ttk.Labelframe(self.container3)
-        self.frameLaboratorioModalidad.grid(column=1,row=0,pady=5,padx=5)
-        self.treeLaboratorioModalidad = ttk.Treeview(self.frameLaboratorioModalidad, columns=['#1',"#2"],show='headings',height=6)
+        self.frameLaboratorioModalidad.grid(column=0,row=2,pady=5,padx=5)
+        self.treeLaboratorioModalidad = ttk.Treeview(self.frameLaboratorioModalidad, columns=['#1',"#2"],show='headings',height=2)
         self.treeLaboratorioModalidad.grid(row=0,column=0)
         self.treeLaboratorioModalidad.heading('#1', text = 'Id',)
         self.treeLaboratorioModalidad.heading('#2', text = 'Modalidad')
@@ -330,7 +342,7 @@ class Horarios(tk.Toplevel):
         self.treeLaboratorioModalidad.configure(yscroll=self.scrollbarLaboratorioModalidad.set)
         self.scrollbarLaboratorioModalidad.grid(column=1,row=0, sticky='ns')
 
-        ttk.Button(self.container3, text='GENERAR HORARIO LABORATORIO',command=self.generarHorariosLaboratorio,width=30).grid(column=0,row=1,padx=5,pady=5)
+        ttk.Button(self.container3, text='GENERAR HORARIO LABORATORIO',command=self.generarHorariosLaboratorio,width=30).grid(column=0,row=3,padx=5,pady=5)
         
         self.frameContenedor3 = ttk.Labelframe(self.noteHorariosLaboratorios)
         self.frameContenedor3.grid(column=1, row=0,ipadx=5,ipady=5,pady=30,padx=10)
@@ -401,7 +413,6 @@ class Horarios(tk.Toplevel):
         self.activarViernes3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarViernes3).grid(column=2,row=10)
         self.desactivarViernes3 = ttk.Button(self.frameContenedor3, text='DESACTIVAR', command=self.botonDesactivarViernes3).grid(column=3,row=10)
 
-
         self.MostrarLapsoAcademico()
         self.MostrarModalidad()
         self.MostrarCohorte()
@@ -413,6 +424,7 @@ class Horarios(tk.Toplevel):
         self.MostrarDocenteModalidad()
         self.MostrarLaboratorioLapsoAcademico()
         self.MostrarLaboratorioModalidad()
+        self.MostrarLaboratorio()
 
         self.width, self.heigth = A4
         self.styles = getSampleStyleSheet()
@@ -763,6 +775,11 @@ class Horarios(tk.Toplevel):
         for row in self.rows:
             self.treeDocenteModalidad.insert('',tk.END,values=row)
 
+    def MostrarLaboratorio(self):
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        for row in self.rows:
+            self.treeLaboratorio.insert('',tk.END,values=row)
+
     def MostrarLaboratorioLapsoAcademico(self):
         self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
         for row in self.rows:
@@ -824,6 +841,12 @@ class Horarios(tk.Toplevel):
     def selecionarFilaDocenteModalidad(self):
         self.item = self.treeDocenteModalidad.focus()
         self.data = self.treeDocenteModalidad.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
+    def selecionarFilaLaboratorio(self):
+        self.item = self.treeLaboratorio.focus()
+        self.data = self.treeLaboratorio.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -890,6 +913,12 @@ class Horarios(tk.Toplevel):
     def DocenteModalidad(self):
         self.item = self.treeDocenteModalidad.focus()
         self.data = self.treeDocenteModalidad.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+
+    def Laboratorio(self):
+        self.item = self.treeLaboratorio.focus()
+        self.data = self.treeLaboratorio.item(self.item)
         self.id = self.data['values'][1]
         return self.id
 
@@ -987,20 +1016,23 @@ class Horarios(tk.Toplevel):
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
 
     def generarHorariosLaboratorio(self):
+        self.laboratorioId = self.selecionarFilaLaboratorio()
         self.laboratorioLapsoId = self.selecionarFilaLaboratorioLapso()
         self.laboratorioModalidadId = self.selecionarFilaLaboratorioModalidad()
-        self.parametrosLaboratorios = (self.laboratorioLapsoId, self.laboratorioModalidadId)
+        self.parametrosLaboratorios = (self.laboratorioId,self.laboratorioLapsoId, self.laboratorioModalidadId)
+        self.dataLaboratorio = self.Laboratorio()
         self.dataLaboratorioLapso = self.LaboratorioLapso()
         self.dataLaboratorioModalidad = self.LaboratorioModalidad()
 
         self.pdfLaboratorio = canvas.Canvas('Laboratorio.pdf', pagesize = landscape(A4))
         self.pdfLaboratorio.setFontSize(10)
-        self.pdfLaboratorio.drawString(390,550,'PNF EN INFORMÁTICA')
-        self.pdfLaboratorio.line(389,549,500,549)
-        self.pdfLaboratorio.drawString(390,535,'Laboratorio: ' + self.dataLaboratorioLapso)
-        self.pdfLaboratorio.drawString(390,525,'Modalidad: ' + self.dataLaboratorioModalidad)
+        self.pdfLaboratorio.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLaboratorioLapso)
+        self.pdfLaboratorio.line(299,549,530,549)
+        self.pdfLaboratorio.drawString(300,535,'Laboratorio: ' + self.dataLaboratorio)
+        self.pdfLaboratorio.drawString(300,525,'Modalidad: ' + self.dataLaboratorioModalidad)
         self.pdfLaboratorio.drawImage(logoPDF,680,485,width=100,height=100)
         self.validarTreeLaboratorio()
+        
         
         self.pdfLaboratorio.save()  
         self.setStyles.clear()
