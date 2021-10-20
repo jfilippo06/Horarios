@@ -11,21 +11,22 @@ class Gestor(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Gestionar Tablas')
-        self.geometry('430x415')
+        self.geometry('470x425')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
         
         # create a notebook
         self.notebook = ttk.Notebook(self)
-        self.notebook.pack(pady=0,padx=0,expand=True)
+        self.notebook.pack(pady=0,padx=5,expand=True)
 
         # create frames
-        self.noteCohorte = ttk.Frame(self.notebook, width=400, height=400)
-        self.noteLapsoAcademico = ttk.Frame(self.notebook,width=400, height=400)
-        self.noteTrayecto = ttk.Frame(self.notebook, width=400, height=400)
-        self.noteTrimestre = ttk.Frame(self.notebook, width=400, height=400)
-        self.noteSeccion = ttk.Frame(self.notebook, width=400, height=400)
-        self.noteUnidadCurricular = ttk.Frame(self.notebook, width=400, height=400)
+        self.noteCohorte = ttk.Frame(self.notebook, width=470, height=425)
+        self.noteLapsoAcademico = ttk.Frame(self.notebook,width=470, height=425)
+        self.noteTrayecto = ttk.Frame(self.notebook, width=470, height=425)
+        self.noteTrimestre = ttk.Frame(self.notebook, width=470, height=425)
+        self.noteSeccion = ttk.Frame(self.notebook, width=470, height=425)
+        self.noteUnidadCurricular = ttk.Frame(self.notebook, width=470, height=425)
+        self.noteLaboratorio = ttk.Frame(self.notebook, width=470, height=425)
 
         # create frames
         self.noteCohorte.pack(fill='both', expand=True)
@@ -34,6 +35,7 @@ class Gestor(tk.Toplevel):
         self.noteTrimestre.pack(fill='both', expand=True)
         self.noteSeccion.pack(fill='both', expand=True)
         self.noteUnidadCurricular.pack(fill='both', expand=True)
+        self.noteLaboratorio.pack(fill='both', expand=True)
 
         # add frames to notebook
         self.notebook.add(self.noteCohorte, text='Cohorte')
@@ -42,17 +44,18 @@ class Gestor(tk.Toplevel):
         self.notebook.add(self.noteTrimestre, text='Trimestre')
         self.notebook.add(self.noteSeccion, text='sección')
         self.notebook.add(self.noteUnidadCurricular, text='Unidad Curricular')
+        self.notebook.add(self.noteLaboratorio, text='Laboratorio')
             
         # Pantalla Cohorte 0/3
         self.frameCohorte = ttk.LabelFrame(self.noteCohorte)
-        self.frameCohorte.grid(column=0,row=0,pady=10)
+        self.frameCohorte.grid(column=0,row=0,pady=10, padx=15)
 
         # Cohorte frame 1/3
         ttk.Label(self.frameCohorte,text='Cohorte').grid(column=0,row=0)
         self.entryCohorte = ttk.Entry(self.frameCohorte,width=45)
         self.entryCohorte.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameCohorte, text='Registrar Cohorte', command= self.RegistrarCohorte).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameCohorte, text='Editar Cohorte', command=self.editarCohorte2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameCohorte, text='REGISTRAR COHORTE', command= self.RegistrarCohorte).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameCohorte, text='EDITAR COHORTE', command=self.editarCohorte2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Cohorte Tabla 2/3
         self.treeCohorte = ttk.Treeview(self.noteCohorte,columns = ['#1','#2'], show='headings')
@@ -69,14 +72,14 @@ class Gestor(tk.Toplevel):
 
         # Pantalla LapsoAcademico 0/3
         self.frameLapsoAcademico = ttk.LabelFrame(self.noteLapsoAcademico)
-        self.frameLapsoAcademico.grid(column=0,row=0,pady=10)
+        self.frameLapsoAcademico.grid(column=0,row=0,pady=10, padx=3)
 
         # Cohorte frame 1/3
         ttk.Label(self.frameLapsoAcademico,text='Lapso Académico').grid(column=0,row=0)
         self.entryLapsoAcademico = ttk.Entry(self.frameLapsoAcademico,width=40)
         self.entryLapsoAcademico.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameLapsoAcademico, text='Registrar Lapso Académico', command=self.RegistrarLapsoAcademico).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameLapsoAcademico, text='Editar Lapso Académico', command=self.editarLapsoAcademico2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameLapsoAcademico, text='REGISTRAR LAPSO ACADÉMICO', command=self.RegistrarLapsoAcademico).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameLapsoAcademico, text='EDITAR LAPSO ACADÉMICO', command=self.editarLapsoAcademico2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Cohorte Tabla 2/3
         self.treeLapsoAcademico = ttk.Treeview(self.noteLapsoAcademico,columns = ['#1','#2'], show='headings')
@@ -93,14 +96,14 @@ class Gestor(tk.Toplevel):
 
         # Pantalla Trayecto 0/3
         self.frameTrayecto = ttk.LabelFrame(self.noteTrayecto)
-        self.frameTrayecto.grid(column=0,row=0,pady=10)
+        self.frameTrayecto.grid(column=0,row=0,pady=10,padx=12)
 
         # Trayecto frame 1/3
         ttk.Label(self.frameTrayecto,text='Trayecto').grid(column=0,row=0)
         self.entryTrayecto = ttk.Entry(self.frameTrayecto,width=45)
         self.entryTrayecto.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameTrayecto, text='Registrar Trayecto', command= self.RegistrarTrayecto).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameTrayecto, text='Editar Trayecto', command= self.editarTrayecto2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameTrayecto, text='REGISTRAR TRAYECTO', command= self.RegistrarTrayecto).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameTrayecto, text='EDITAR TRAYECTO', command= self.editarTrayecto2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Trayecto Tabla 2/3
         self.treeTrayecto = ttk.Treeview(self.noteTrayecto,columns = ['#1','#2'], show='headings')
@@ -115,16 +118,16 @@ class Gestor(tk.Toplevel):
         ttk.Button(self.noteTrayecto,text = 'EDITAR TRAYECTO', command =self.editarTrayecto).grid(column=0,row=2, sticky = tk.W + tk.E)
         ttk.Button(self.noteTrayecto,text = 'ELIMINAR TRAYECTO', command = self.eliminarTrayecto).grid(column=0,row=3,sticky = tk.W + tk.E)
 
-            # Pantalla trimestre 0/3
+        # Pantalla trimestre 0/3
         self.frameTrimestre = ttk.LabelFrame(self.noteTrimestre)
-        self.frameTrimestre.grid(column=0,row=0,pady=10)
+        self.frameTrimestre.grid(column=0,row=0,pady=10,padx=11)
 
         # Trimestre frame 1/3
         ttk.Label(self.frameTrimestre,text='Trimestre').grid(column=0,row=0)
         self.entryTrimestre = ttk.Entry(self.frameTrimestre,width=45)
         self.entryTrimestre.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameTrimestre, text='Registrar Trimestre', command= self.RegistrarTrimestre).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameTrimestre, text='Editar Trimestre', command= self.editarTrimestre2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameTrimestre, text='REGISTRAR TRIMESTRE', command= self.RegistrarTrimestre).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameTrimestre, text='EDITAR TRIMESTRE', command= self.editarTrimestre2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Trimestre Tabla 2/3
         self.treeTrimestre = ttk.Treeview(self.noteTrimestre,columns =['#1','#2'], show='headings')
@@ -141,20 +144,20 @@ class Gestor(tk.Toplevel):
         
         # Pantalla Seccion 0/3
         self.frameSeccion = ttk.LabelFrame(self.noteSeccion)
-        self.frameSeccion.grid(column=0,row=0,pady=10)
+        self.frameSeccion.grid(column=0,row=0,pady=10,padx=22)
 
         # Seccion frame 1/3
         ttk.Label(self.frameSeccion,text='Sección').grid(column=0,row=0)
         self.entrySeccion = ttk.Entry(self.frameSeccion,width=45)
         self.entrySeccion.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameSeccion, text='Registrar Sección', command= self.RegistrarSeccion).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameSeccion, text='Editar Sección', command=  self.editarSeccion2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameSeccion, text='REGISTAR SECCIÓN', command= self.RegistrarSeccion).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameSeccion, text='EDITAR SECCIÓN', command=  self.editarSeccion2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Seccion Tabla 2/3
         self.treeSeccion = ttk.Treeview(self.noteSeccion,columns = ['#1','#2'], show='headings')
         self.treeSeccion.grid(column=0,row=1, sticky='nsew')
         self.treeSeccion.heading('#1', text = 'Id')
-        self.treeSeccion.heading('#2', text = 'Seccion')
+        self.treeSeccion.heading('#2', text = 'Sección')
         self.scrollbarSeccion = ttk.Scrollbar(self.noteSeccion, orient=tk.VERTICAL, command=self.treeSeccion.yview)
         self.treeSeccion.configure(yscroll=self.scrollbarSeccion.set)
         self.scrollbarSeccion.grid(column=1,row=1, sticky='ns')
@@ -165,14 +168,14 @@ class Gestor(tk.Toplevel):
 
         # Pantalla Unidad Curricular 0/3
         self.frameUnidadCurricular = ttk.LabelFrame(self.noteUnidadCurricular)
-        self.frameUnidadCurricular.grid(column=0,row=0,pady=10)
+        self.frameUnidadCurricular.grid(column=0,row=0,pady=10,padx=5)
 
         # Unidad Curricular frame 1/3
         ttk.Label(self.frameUnidadCurricular,text='Unidad Curricular').grid(column=0,row=0)
         self.entryUnidadCurricular = ttk.Entry(self.frameUnidadCurricular,width=38)
         self.entryUnidadCurricular.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameUnidadCurricular, text='Registrar Unidad Curricular', command= self.RegistrarUnidadCurricular).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameUnidadCurricular, text='Editar Unidad Curricular', command= self.editarUnidadCurricular2).grid(row=1,column=1, sticky = tk.W + tk.E)
+        ttk.Button(self.frameUnidadCurricular, text='REGISTRAR UNIDAD CURRICULAR', command= self.RegistrarUnidadCurricular).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICULAR', command= self.editarUnidadCurricular2).grid(row=1,column=1, sticky = tk.W + tk.E)
 
         # Unidad Curricular Tabla 2/3
         self.treeUnidadCurricular = ttk.Treeview(self.noteUnidadCurricular,columns =['#1','#2'], show='headings')
@@ -188,12 +191,39 @@ class Gestor(tk.Toplevel):
         ttk.Button(self.noteUnidadCurricular,text = 'EDITAR UNIDAD CURRICULAR', command =self.editarUnidadCurricular).grid(column=0,row=2, sticky = tk.W + tk.E)
         ttk.Button(self.noteUnidadCurricular,text = 'ELIMINAR UNIDAD CURRICULAR', command = self.eliminarUnidadCurricular).grid(column=0,row=3,sticky = tk.W + tk.E)
 
+        # Pantalla Laboratorio 0/3
+        self.frameLaboratorio = ttk.LabelFrame(self.noteLaboratorio)
+        self.frameLaboratorio.grid(column=0,row=0,pady=10,padx=23)
+
+        # UnidadLaboratorio 1/3
+        ttk.Label(self.frameLaboratorio,text='Laboratorio').grid(column=0,row=0)
+        self.entryLaboratorio = ttk.Entry(self.frameLaboratorio,width=38)
+        self.entryLaboratorio.grid(column=1,row=0,padx=0,pady=5)
+        ttk.Button(self.frameLaboratorio, text='REGISTRAR LABORATOIRO', command= self.RegistrarLaboratorio).grid(row=1,column=0, sticky = tk.W + tk.E)
+        ttk.Button(self.frameLaboratorio, text='EDITAR LABORATORIO ', command= self.editarLaboratorio2).grid(row=1,column=1, sticky = tk.W + tk.E)
+
+        # UnidadLaboratorio 2/3
+        self.treeLaboratorio = ttk.Treeview(self.noteLaboratorio,columns =['#1','#2'], show='headings')
+        self.treeLaboratorio.grid(column=0,row=1, sticky='nsew')
+        self.treeLaboratorio.heading('#1', text = 'Id')
+        self.treeLaboratorio.heading('#2', text = 'Laboratorio')
+        self.treeLaboratorio.column('#1',width=60)
+        self.scrollbarLaboratorio = ttk.Scrollbar(self.noteLaboratorio, orient=tk.VERTICAL, command=self.treeLaboratorio.yview)
+        self.treeLaboratorio.configure(yscroll=self.scrollbarLaboratorio.set)
+        self.scrollbarLaboratorio.grid(column=1,row=1, sticky='ns')
+
+        # Unidad CLaboratorio 3/3
+        ttk.Button(self.noteLaboratorio,text = 'EDITAR LABORATORIO', command =self.editarLaboratorio).grid(column=0,row=2, sticky = tk.W + tk.E)
+        ttk.Button(self.noteLaboratorio,text = 'ELIMINAR LABORATORIO', command = self.eliminarLaboratorio).grid(column=0,row=3,sticky = tk.W + tk.E)
+
+
         self.MostrarDatosCohorte()
         self.MostrarDatosLapsoAcademico()
         self.MostrarDatosTrayecto()
         self.MostrarDatosTrimestre()
         self.MostrarDatosSeccion()
         self.MostrarDatosUnidadCurricular()
+        self.MostrarDatosLaboratorio()
 
     def conexion(self,query,parametros = ()):
         try:
@@ -248,6 +278,11 @@ class Gestor(tk.Toplevel):
         self.DeleteChildren = self.treeUnidadCurricular.get_children()
         for element in self.DeleteChildren:
             self.treeUnidadCurricular.delete(element)
+
+    def limpiarTablaLaboratorio(self):
+        self.DeleteChildren = self.treeLaboratorio.get_children()
+        for element in self.DeleteChildren:
+            self.treeLaboratorio.delete(element)
         
     def MostrarDatosCohorte(self):
         self.limpiarTablaCohorte()
@@ -285,6 +320,12 @@ class Gestor(tk.Toplevel):
         for row in self.rows:
             self.treeUnidadCurricular.insert('',tk.END,values=row)
 
+    def MostrarDatosLaboratorio(self):
+        self.limpiarTablaLaboratorio()
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        for row in self.rows:
+            self.treeLaboratorio.insert('',tk.END,values=row)
+
     def selecionarFilaCohorte(self):
         self.item = self.treeCohorte.focus()
         self.data = self.treeCohorte.item(self.item)
@@ -318,6 +359,12 @@ class Gestor(tk.Toplevel):
     def selecionarFilaUnidadCurricular(self):
         self.item = self.treeUnidadCurricular.focus()
         self.data = self.treeUnidadCurricular.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
+    def selecionarFilaLaboratorio(self):
+        self.item = self.treeLaboratorio.focus()
+        self.data = self.treeLaboratorio.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -397,7 +444,20 @@ class Gestor(tk.Toplevel):
             else:
                 self.MostrarDatosUnidadCurricular()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un unidad curricular a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a eliminar.')
+
+    def eliminarLaboratorio(self):
+        if self.treeLaboratorio.selection():
+            if messagebox.askyesno('Delete','¿Desea eliminar el laboratoiro selecionado?'):
+                self.query = 'DELETE FROM laboratorio WHERE Id = ?'
+                self.parametros = self.selecionarFilaLaboratorio()
+                self.conexion(self.query, (self.parametros,)) 
+                self.MostrarDatosLaboratorio()
+                messagebox.showinfo(title='Info', message='Laboratorio eliminado correctamente.')
+            else:
+                self.MostrarDatosLaboratorio()
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione un laboratorio a eliminar.')
  
     def ValidarCeldaCohorte(self):
         return len(self.entryCohorte.get())
@@ -417,6 +477,9 @@ class Gestor(tk.Toplevel):
     def ValidarCeldaUnidadCirricular(self):
         return len(self.entryUnidadCurricular.get())
 
+    def ValidarCeldaLaboratorio(self):
+        return len(self.entryLaboratorio.get())
+
     def LimpiarCeldaCohorte(self):
         self.entryCohorte.delete(0, tk.END)
 
@@ -434,6 +497,9 @@ class Gestor(tk.Toplevel):
 
     def LimpiarCeldaUnidadCurricular(self):
         self.entryUnidadCurricular.delete(0, tk.END)
+
+    def LimpiarCeldaLaboratorio(self):
+        self.entryLaboratorio.delete(0, tk.END)
 
     def RegistrarCohorte(self):
         if self.ValidarCeldaCohorte():
@@ -510,6 +576,19 @@ class Gestor(tk.Toplevel):
                 messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
             else:
                 messagebox.showwarning(title='Warning', message='Unidad curricular ya esta registrada.')
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+
+    def RegistrarLaboratorio(self):
+        if self.ValidarCeldaLaboratorio():
+            self.query = 'INSERT INTO laboratorio VALUES (NUll,?)'
+            self.parametros = (self.entryLaboratorio.get())
+            if self.conexion(self.query,(self.parametros,)):
+                self.MostrarDatosLaboratorio()
+                self.LimpiarCeldaLaboratorio()
+                messagebox.showinfo(title='Info', message='Laboratorio Registrado.')
+            else:
+                messagebox.showwarning(title='Warning', message='Laboratorio ya esta registrado.')
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor.')
 
@@ -722,3 +801,38 @@ class Gestor(tk.Toplevel):
                 self.LimpiarCeldaUnidadCurricular()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione la unidad curricular a editar.')
+
+    def editarLaboratorio(self):
+        if self.treeLaboratorio.selection():
+            if messagebox.askyesno('Edit','¿Desea editar el laboratorio selecionado?'):
+                if self.ValidarCeldaLaboratorio():
+                    self.LimpiarCeldaLaboratorio()
+                    self.item = self.treeLaboratorio.focus()
+                    self.data = self.treeLaboratorio.item(self.item)
+                    self.id = self.data['values'][1]
+                    self.entryLaboratorio.insert(0,self.id)
+                else:
+                    self.item = self.treeLaboratorio.focus()
+                    self.data = self.treeLaboratorio.item(self.item)
+                    self.id = self.data['values'][1]
+                    self.entryLaboratorio.insert(0,self.id)
+            else:
+                self.MostrarDatosLaboratorio()
+        else: 
+            messagebox.showwarning(title='Wanning', message='Seleccione un laboratorio a editar.')
+
+    def editarLaboratorio2(self):
+        if self.ValidarCeldaLaboratorio() and self.treeLaboratorio.selection():
+            if messagebox.askyesno('Edit','¿Desea editar el laboratorio selecionado?'):
+                self.query = 'UPDATE laboratorio SET Laboratorio = ? WHERE id = ?'
+                self.parametros = (self.entryLaboratorio.get())
+                self.id = self.selecionarFilaLaboratorio()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosLaboratorio()
+                self.LimpiarCeldaLaboratorio()
+                messagebox.showinfo(title='Info', message='Laboratorio Editado Correctamente.')
+            else:
+                self.MostrarDatosLaboratorio()
+                self.LimpiarCeldaLaboratorio()
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el laboratorio a editar.')
