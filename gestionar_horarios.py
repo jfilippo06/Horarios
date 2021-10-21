@@ -1032,7 +1032,8 @@ class Horarios(tk.Toplevel):
         self.pdfLaboratorio.drawString(300,525,'Modalidad: ' + self.dataLaboratorioModalidad)
         self.pdfLaboratorio.drawImage(logoPDF,680,485,width=100,height=100)
         self.validarTreeLaboratorio()
-        
+        self.validarCeldaLaboratorio()
+        self.validarModalidadLaboratorio()     
         
         self.pdfLaboratorio.save()  
         self.setStyles.clear()
@@ -1120,6 +1121,20 @@ class Horarios(tk.Toplevel):
             self.celda.drawOn(self.pdfDocente,68,230)
             return self.celda
 
+    def validarCeldaLaboratorio(self):
+        if self.dataLaboratorioModalidad == 'Diurno':
+            self.celda = Table(self.celdaDiurno,colWidths=50, rowHeights=36)
+            self.celda.setStyle(TableStyle(self.setStylesCeldas))
+            self.celda.wrapOn(self.pdfLaboratorio,self.width,self.heigth)
+            self.celda.drawOn(self.pdfLaboratorio,68,14)
+            return self.celda
+        if self.dataLaboratorioModalidad == 'Nocturno':
+            self.celda = Table(self.celdaNocturno,colWidths=50, rowHeights=36)
+            self.celda.setStyle(TableStyle(self.setStylesCeldas))
+            self.celda.wrapOn(self.pdfLaboratorio,self.width,self.heigth)
+            self.celda.drawOn(self.pdfLaboratorio,68,230)
+            return self.celda
+
     def validarModalidad(self):
         if self.modalidad == 'Diurno':
             self.table = Table(self.obtenerHorarioDiurno(),colWidths=110, rowHeights=25)
@@ -1146,6 +1161,20 @@ class Horarios(tk.Toplevel):
             self.table.setStyle(TableStyle(self.setStyles))
             self.table.wrapOn(self.pdfDocente,self.width,self.heigth)
             self.table.drawOn(self.pdfDocente,118,230)
+            return self.table
+
+    def validarModalidadLaboratorio(self):
+        if self.dataLaboratorioModalidad == 'Diurno':
+            self.table = Table(self.obtenerHorarioDiurnoLaboratorio(),colWidths=110, rowHeights=36)
+            self.table.setStyle(TableStyle(self.setStyles))
+            self.table.wrapOn(self.pdfLaboratorio,self.width,self.heigth)
+            self.table.drawOn(self.pdfLaboratorio,118,14)
+            return self.table
+        if self.dataLaboratorioModalidad == 'Nocturno':
+            self.table = Table(self.obtenerHorarioNocturnoLaboratorio(),colWidths=110, rowHeights=36)
+            self.table.setStyle(TableStyle(self.setStyles))
+            self.table.wrapOn(self.pdfLaboratorio,self.width,self.heigth)
+            self.table.drawOn(self.pdfLaboratorio,118,230)
             return self.table
 
     def tablaDocente(self):
@@ -1453,6 +1482,26 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles2.get() + ')',self.center))
+
+    def validarSemanaLaboratorio(self,array,celda):
+        if self.dataLaboratorioModalidad == 'Diurno':
+            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
+                array[celda].clear()
+                array[celda].append(Paragraph('bloque de horas diurno',self.center))
+                array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
+                array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
+                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
+        if self.dataLaboratorioModalidad == 'Nocturno':
+            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
+                array[celda].clear()
+                array[celda].append(Paragraph('bloque de horas nocturno',self.center))
+                array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
+                array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
+                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
 
     def obtenerHorarioDiurno(self):
         self.diurno = [
@@ -3447,3 +3496,124 @@ class Horarios(tk.Toplevel):
             5,self.nocturnoDocente          
         )
         return self.nocturnoDocente 
+
+    def obtenerHorarioDiurnoLaboratorio(self):
+        self.diurnoLaboratorio = [
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('7:10 - 7:55',self.center)],
+            [Paragraph('8:00 - 8:45',self.center)],
+            [Paragraph('8:50 - 9:35',self.center)],
+            [Paragraph('9:40 - 10:25',self.center)],
+            [Paragraph('10:30 - 11:15',self.center)],
+            [Paragraph('11:20 - 12:05',self.center)],
+            [Paragraph('1:05 - 1:55',self.center)],
+            [Paragraph('1:55 - 2:40',self.center)],
+            [Paragraph('2:45 - 3:30',self.center)],
+            [Paragraph('3:45 - 4:20',self.center)],
+            [Paragraph('4:25 - 5:10',self.center)],
+            [Paragraph('5:15 - 6:00',self.center)]
+        ]
+        self.validarSemanaLaboratorio(self.diurnoLaboratorio,0)
+
+        print('Primera linea ----------------')
+        # Primera linea lunes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            1,1,1,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            1,1,1,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            1,1,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            1,1,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            1,1,1,6,
+            1,self.diurnoLaboratorio
+        )
+
+        # Primera linea Martes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            2,1,2,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            2,1,2,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            2,1,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            2,1,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            2,1,2,6,
+            1,self.diurnoLaboratorio
+        )
+
+        # Primera linea Miercoles
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            3,1,3,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            3,1,3,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            3,1,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            3,1,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            3,1,3,6,
+            1,self.diurnoLaboratorio
+        )
+
+        # Primera linea Jueves
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            4,1,4,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            4,1,4,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            4,1,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            4,1,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4 AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            4,1,4,6,
+            1,self.diurnoLaboratorio
+        )
+
+        # Primera linea Viernes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            5,1,5,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            5,1,5,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            5,1,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            5,1,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            5,1,5,6,
+            1,self.diurnoLaboratorio
+        )
+
+        return self.diurnoLaboratorio
+
+    
+    def obtenerHorarioNocturnoLaboratorio(self):
+        self.nocturnoLabolatorio = [
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('6:00 - 6:45',self.center)],
+            [Paragraph('6:45 - 7:30',self.center)],
+            [Paragraph('7:35 - 8:20',self.center)],
+            [Paragraph('8:20 - 9:05',self.center)],
+            [Paragraph('9:05 - 9:50',self.center)],
+            [Paragraph('9:50 - 10:35',self.center)]
+        ]
+        self.validarSemanaLaboratorio(self.nocturnoLabolatorio,0)
+
+        return self.nocturnoLabolatorio
