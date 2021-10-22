@@ -37,9 +37,9 @@ class Horarios(tk.Toplevel):
         self.noteHorariosLaboratorios.pack(fill='both', expand=True)
 
         # add frames to notebook
-        self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
         self.notebook.add(self.noteHorariosClases, text='Horarios de clases')
         self.notebook.add(self.noteHorariosDocentes, text='Horarios de docentes')
+        self.notebook.add(self.noteHorariosLaboratorios, text='Horarios de laboratorios')
 
         ttk.Label(self.noteHorariosClases, text='GENERAR HORARIO DE CLASES',font=('Helvetica',14)).place(x=350,y=5)
         # LapsoAcademico
@@ -1016,31 +1016,40 @@ class Horarios(tk.Toplevel):
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
 
     def generarHorariosLaboratorio(self):
-        self.laboratorioId = self.selecionarFilaLaboratorio()
-        self.laboratorioLapsoId = self.selecionarFilaLaboratorioLapso()
-        self.laboratorioModalidadId = self.selecionarFilaLaboratorioModalidad()
-        self.parametrosLaboratorios = (self.laboratorioId,self.laboratorioLapsoId, self.laboratorioModalidadId)
-        self.dataLaboratorio = self.Laboratorio()
-        self.dataLaboratorioLapso = self.LaboratorioLapso()
-        self.dataLaboratorioModalidad = self.LaboratorioModalidad()
+        if self.treeLaboratorio.selection()  and self.treeLaboratorioLapso.selection() and self.treeLaboratorioModalidad.selection():
+            self.laboratorioId = self.selecionarFilaLaboratorio()
+            self.laboratorioLapsoId = self.selecionarFilaLaboratorioLapso()
+            self.laboratorioModalidadId = self.selecionarFilaLaboratorioModalidad()
+            self.parametrosLaboratorios = (self.laboratorioId,self.laboratorioLapsoId, self.laboratorioModalidadId)
+            self.dataLaboratorio = self.Laboratorio()
+            self.dataLaboratorioLapso = self.LaboratorioLapso()
+            self.dataLaboratorioModalidad = self.LaboratorioModalidad()
 
-        self.pdfLaboratorio = canvas.Canvas('Laboratorio.pdf', pagesize = landscape(A4))
-        self.pdfLaboratorio.setFontSize(10)
-        self.pdfLaboratorio.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLaboratorioLapso)
-        self.pdfLaboratorio.line(299,549,530,549)
-        self.pdfLaboratorio.drawString(300,535,'Laboratorio: ' + self.dataLaboratorio)
-        self.pdfLaboratorio.drawString(300,525,'Modalidad: ' + self.dataLaboratorioModalidad)
-        self.pdfLaboratorio.drawImage(logoPDF,680,485,width=100,height=100)
-        self.validarTreeLaboratorio()
-        self.validarCeldaLaboratorio()
-        self.validarModalidadLaboratorio()     
-        
-        self.pdfLaboratorio.save()  
-        self.setStyles.clear()
-        self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-        self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-        self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))     
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.archivo = open(self.guardar,'w')
+
+            self.pdfLaboratorio = canvas.Canvas(self.guardar, pagesize = landscape(A4))
+            self.pdfLaboratorio.setFontSize(10)
+            self.pdfLaboratorio.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLaboratorioLapso)
+            self.pdfLaboratorio.line(299,549,530,549)
+            self.pdfLaboratorio.drawString(300,535,'Laboratorio: ' + self.dataLaboratorio)
+            self.pdfLaboratorio.drawString(300,525,'Modalidad: ' + self.dataLaboratorioModalidad)
+            self.pdfLaboratorio.drawImage(logoPDF,680,485,width=100,height=100)
+            self.validarTreeLaboratorio()
+            self.validarCeldaLaboratorio()
+            self.validarModalidadLaboratorio()     
+            
+            self.pdfLaboratorio.save()
+            self.archivo.close()  
+            self.setStyles.clear()
+            self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+            self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+            self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+            messagebox.showinfo(title='Horario', message='Horario Laboratorio generado correctamente')
+        else:
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')     
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -3601,6 +3610,580 @@ class Horarios(tk.Toplevel):
             1,self.diurnoLaboratorio
         )
 
+        print('Segunda linea ----------------')
+        # Segunda linea lunes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            1,2,1,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            1,2,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            1,2,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            1,2,1,6,
+            2,self.diurnoLaboratorio
+        )
+
+        # Segunda linea Martes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            2,2,2,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            2,2,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            2,2,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            2,2,2,6,
+            2,self.diurnoLaboratorio
+        )
+
+        # Segunda linea Miercoles
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            3,2,3,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            3,2,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            3,2,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            3,2,3,6,
+            2,self.diurnoLaboratorio
+        )
+
+        # Segunda linea Jueves
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            4,2,4,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            4,2,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            4,2,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            4,2,4,6,
+            2,self.diurnoLaboratorio
+        )
+
+        # Segunda linea Viernes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            5,2,5,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            5,2,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            5,2,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            5,2,5,6,
+            2,self.diurnoLaboratorio
+        )
+
+        print('Tercera linea ----------------')
+        # Tercera linea lunes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            1,3,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            1,3,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            1,3,1,6,
+            3,self.diurnoLaboratorio
+        )
+
+        # Tercera linea Martes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            2,3,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            2,3,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            2,3,2,6,
+            3,self.diurnoLaboratorio
+        )
+
+        # Tercera linea Miercoles
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            3,3,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            3,3,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            3,3,3,6,
+            3,self.diurnoLaboratorio
+        )
+
+        # Tercera linea Jueves
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            4,3,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            4,3,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            4,3,4,6,
+            3,self.diurnoLaboratorio
+        )
+
+        # Tercera linea Viernes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            5,3,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            5,3,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            5,3,5,6,
+            3,self.diurnoLaboratorio
+        )
+
+        print('Cuarta linea ----------------')
+        # Cuarta linea lunes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            1,4,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            1,4,1,6,
+            4,self.diurnoLaboratorio
+        )
+
+        # Cuarta linea Martes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            2,4,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            2,4,2,6,
+            4,self.diurnoLaboratorio
+        )
+
+        # Cuarta linea Miercoles
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            3,4,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            3,4,3,6,
+            4,self.diurnoLaboratorio
+        )
+
+        # Cuarta linea Jueves
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            4,4,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            4,4,4,6,
+            4,self.diurnoLaboratorio
+        )
+
+        # Cuarta linea Viernes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            5,4,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            5,4,5,6,
+            4,self.diurnoLaboratorio
+        )
+
+        print('Quinta linea ----------------')
+        # Quinta linea lunes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            1,5,1,6,
+            5,self.diurnoLaboratorio
+        )
+
+        # Quinta linea Martes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            2,5,2,6,
+            5,self.diurnoLaboratorio
+        )
+
+        # Quinta linea Miercoles
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            3,5,3,6,
+            5,self.diurnoLaboratorio
+        )
+
+        # Quinta linea Jueves
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            4,5,4,6,
+            5,self.diurnoLaboratorio
+        )
+
+        # Quinta linea Viernes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            5,5,5,6,
+            5,self.diurnoLaboratorio
+        )
+
+        print('Septima linea ----------------')
+        # Septima linea lunes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            1,7,1,8,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            1,7,1,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            1,7,1,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            1,7,1,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            1,7,1,12,
+            7,self.diurnoLaboratorio
+        )
+
+        # Septima linea Martes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            2,7,2,8,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            2,7,2,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            2,7,2,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            2,7,2,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            2,7,2,12,
+            7,self.diurnoLaboratorio
+        )
+
+        # Septima linea Miercoles
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            3,7,3,8,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            3,7,3,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            3,7,3,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            3,7,3,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            3,7,3,12,
+            7,self.diurnoLaboratorio
+        )
+
+        # Septima linea Jueves
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            4,7,4,8,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            4,7,4,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            4,7,4,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            4,7,4,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            4,7,4,12,
+            7,self.diurnoLaboratorio
+        )
+
+        # Septima linea Viernes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            5,7,5,8,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            5,7,5,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            5,7,5,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            5,7,5,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            5,7,5,12,
+            7,self.diurnoLaboratorio
+        )
+
+        print('Octava linea ----------------')
+        # Octava linea lunes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            1,8,1,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            1,8,1,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            1,8,1,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            1,8,1,12,
+            8,self.diurnoLaboratorio
+        )
+
+        # Octava linea Martes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            2,8,2,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            2,8,2,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            2,8,2,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            2,8,2,12,
+            8,self.diurnoLaboratorio
+        )
+
+        # Octava linea Miercoles
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            3,8,3,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            3,8,3,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            3,8,3,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            3,8,3,12,
+            8,self.diurnoLaboratorio
+        )
+
+        # Octava linea Jueves
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            4,8,4,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            4,8,4,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            4,8,4,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            4,8,4,12,
+            8,self.diurnoLaboratorio
+        )
+
+        # Octava linea Viernes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            5,8,5,9,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            5,8,5,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            5,8,5,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            5,8,5,12,
+            8,self.diurnoLaboratorio
+        )
+
+        print('Octava linea ----------------')
+        # Octava linea lunes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            1,9,1,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            1,9,1,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            1,9,1,12,
+            9,self.diurnoLaboratorio
+        )
+
+        # Octava linea Martes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            2,9,2,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            2,9,2,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            2,9,2,12,
+            9,self.diurnoLaboratorio
+        )
+
+        # Octava linea Miercoles
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            3,9,3,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            3,9,3,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            3,9,3,12,
+            9,self.diurnoLaboratorio
+        )
+
+        # Octava linea Jueves
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            4,9,4,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            4,9,4,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            4,9,4,12,
+            9,self.diurnoLaboratorio
+        )
+
+        # Octava linea Viernes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            5,9,5,10,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            5,9,5,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            5,9,5,12,
+            9,self.diurnoLaboratorio
+        )
+
+        print('Decima linea ----------------')
+        # Decima linea lunes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            1,10,1,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            1,10,1,12,
+            10,self.diurnoLaboratorio
+        )
+
+        # Decima linea Martes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            2,10,2,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            2,10,2,12,
+            10,self.diurnoLaboratorio
+        )
+
+        # Decima linea Miercoles
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            3,10,3,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            3,10,3,12,
+            10,self.diurnoLaboratorio
+        )
+
+        # Decima linea Jueves
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            4,10,4,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            4,10,4,12,
+            10,self.diurnoLaboratorio
+        )
+
+        # Decima linea Viernes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            5,10,5,11,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            5,10,5,12,
+            10,self.diurnoLaboratorio
+        )
+
+        print('Decima primera linea ----------------')
+        # Decima primera linea lunes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            1,11,1,12,
+            11,self.diurnoLaboratorio
+        )
+
+        # Decima primera linea Martes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            2,11,2,12,
+            11,self.diurnoLaboratorio
+        )
+
+        # Decima primera linea Miercoles
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            3,11,3,12,
+            11,self.diurnoLaboratorio
+        )
+
+        # Decima primera linea Jueves
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            4,11,4,12,
+            11,self.diurnoLaboratorio
+        )
+
+        # Decima primera linea Viernes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            5,11,5,12,
+            11,self.diurnoLaboratorio
+        )
+
         return self.diurnoLaboratorio
 
     
@@ -3615,5 +4198,335 @@ class Horarios(tk.Toplevel):
             [Paragraph('9:50 - 10:35',self.center)]
         ]
         self.validarSemanaLaboratorio(self.nocturnoLabolatorio,0)
+
+        print('Primera linea ----------------')
+        # Primera linea lunes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            1,1,1,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            1,1,1,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            1,1,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            1,1,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            1,1,1,6,
+            1,self.nocturnoLabolatorio
+        )
+
+        # Primera linea Martes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            2,1,2,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            2,1,2,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            2,1,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            2,1,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            2,1,2,6,
+            1,self.nocturnoLabolatorio
+        )
+
+        # Primera linea Miercoles
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            3,1,3,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            3,1,3,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            3,1,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            3,1,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            3,1,3,6,
+            1,self.nocturnoLabolatorio
+        )
+
+        # Primera linea Jueves
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            4,1,4,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            4,1,4,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            4,1,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            4,1,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            4,1,4,6,
+            1,self.nocturnoLabolatorio
+        )
+
+        # Primera linea Viernes
+
+        self.celda1x6(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            5,1,5,2,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            5,1,5,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            5,1,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            5,1,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            5,1,5,6,
+            1,self.nocturnoLabolatorio
+        )
+
+        print('Segunda linea ----------------')
+        # Segunda linea lunes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            1,2,1,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            1,2,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            1,2,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            1,2,1,6,
+            2,self.nocturnoLabolatorio
+        )
+
+        # Segunda linea Martes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            2,2,2,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            2,2,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            2,2,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            2,2,2,6,
+            2,self.nocturnoLabolatorio
+        )
+
+        # Segunda linea Miercoles
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            3,2,3,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            3,2,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            3,2,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            3,2,3,6,
+            2,self.nocturnoLabolatorio
+        )
+
+        # Segunda linea Jueves
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            4,2,4,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            4,2,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            4,2,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            4,2,4,6,
+            2,self.nocturnoLabolatorio
+        )
+
+        # Segunda linea Viernes
+
+        self.celda1x5(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            5,2,5,3,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            5,2,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            5,2,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            5,2,5,6,
+            2,self.nocturnoLabolatorio
+        )
+
+        print('Tercera linea ----------------')
+        # Tercera linea lunes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            1,3,1,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            1,3,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            1,3,1,6,
+            3,self.nocturnoLabolatorio
+        )
+
+        # Tercera linea Martes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            2,3,2,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            2,3,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            2,3,2,6,
+            3,self.nocturnoLabolatorio
+        )
+
+        # Tercera linea Miercoles
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            3,3,3,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            3,3,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            3,3,3,6,
+            3,self.nocturnoLabolatorio
+        )
+
+        # Tercera linea Jueves
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            4,3,4,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            4,3,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            4,3,4,6,
+            3,self.nocturnoLabolatorio
+        )
+
+        # Tercera linea Viernes
+
+        self.celda1x4(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            5,3,5,4,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            5,3,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            5,3,5,6,
+            3,self.nocturnoLabolatorio
+        )
+
+        print('Cuarta linea ----------------')
+        # Cuarta linea lunes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            1,4,1,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            1,4,1,6,
+            4,self.nocturnoLabolatorio
+        )
+
+        # Cuarta linea Martes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            2,4,2,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            2,4,2,6,
+            4,self.nocturnoLabolatorio
+        )
+
+        # Cuarta linea Miercoles
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            3,4,3,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            3,4,3,6,
+            4,self.nocturnoLabolatorio
+        )
+
+        # Cuarta linea Jueves
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            4,4,4,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            4,4,4,6,
+            4,self.nocturnoLabolatorio
+        )
+
+        # Cuarta linea Viernes
+
+        self.celda1x3(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            5,4,5,5,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            5,4,5,6,
+            4,self.nocturnoLabolatorio
+        )
+
+        print('Quinta linea ----------------')
+        # Quinta linea lunes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            1,5,1,6,
+            5,self.nocturnoLabolatorio
+        )
+
+        # Quinta linea Martes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            2,5,2,6,
+            5,self.nocturnoLabolatorio
+        )
+
+        # Quinta linea Miercoles
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            3,5,3,6,
+            5,self.nocturnoLabolatorio
+        )
+
+        # Quinta linea Jueves
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            4,5,4,6,
+            5,self.nocturnoLabolatorio
+        )
+
+        # Quinta linea Viernes
+
+        self.celda1x2(
+            self.parametrosLaboratorios,
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            5,5,5,6,
+            5,self.nocturnoLabolatorio
+        )
 
         return self.nocturnoLabolatorio
