@@ -342,7 +342,7 @@ class Horarios(tk.Toplevel):
         self.treeLaboratorioModalidad.configure(yscroll=self.scrollbarLaboratorioModalidad.set)
         self.scrollbarLaboratorioModalidad.grid(column=1,row=0, sticky='ns')
 
-        ttk.Button(self.container3, text='GENERAR HORARIO LABORATORIO',command=self.generarHorariosLaboratorio,width=30).grid(column=0,row=3,padx=5,pady=5)
+        ttk.Button(self.container3, text='GENERAR HORARIO LABORATORIO',command=self.generarHorariosLaboratorio,width=32).grid(column=0,row=3,padx=5,pady=5)
         
         self.frameContenedor3 = ttk.Labelframe(self.noteHorariosLaboratorios)
         self.frameContenedor3.grid(column=1, row=0,ipadx=5,ipady=5,pady=30,padx=10)
