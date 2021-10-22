@@ -1,5 +1,4 @@
 # ignore ALL .log files
-*.db 
 *.sqbpro
 *.pyc
 
