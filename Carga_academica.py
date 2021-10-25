@@ -5,6 +5,12 @@ import sqlite3
 from rutas import *
 import traceback
 import sys
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import Paragraph, Table, TableStyle
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.enums import TA_CENTER
 
 class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
@@ -18,6 +24,8 @@ class CargaAcademica(tk.Toplevel):
 		# Menu:
 		self.menubar = tk.Menu(self)
 		self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
+		self.filemenu1.add_command(label="Reportes", command=self.reportes)
+		self.filemenu1.add_command(label="Información adicional docente", command=self.informacionAdcional)
 		self.filemenu1.add_command(label="Volver", command=self.volver)
 		self.filemenu1.add_command(label="Salir", command=self.salir)
 		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
@@ -949,3 +957,96 @@ class CargaAcademica(tk.Toplevel):
 				messagebox.showwarning(title='Wanning', message='Seleccione datos a editar.')
 		else:
 			messagebox.showwarning(title='Wanning', message='Seleccione una registro a editar.')
+
+	def reportes(self):
+		self.newReportes = tk.Toplevel()
+		self.newReportes.title('Reportes')
+		self.newReportes.geometry('350x360')
+		self.newReportes.resizable(width=0,height=0)
+		self.newReportes.iconbitmap(uptpc)
+		ttk.Label(self.newReportes, text='REPORTES DE DOCENTES',font=('Helvetica',14)).place(x=45,y=5)
+
+		self.framecontainer2 = ttk.Labelframe(self.newReportes)
+		self.framecontainer2.grid(column=0, row=0,ipadx=5,ipady=5,pady=35,padx=35)
+		
+		self.frameReportes = ttk.Labelframe(self.framecontainer2)
+		self.frameReportes.grid(column=0,row=0,pady=5,padx=5)
+		self.treeReportes = ttk.Treeview(self.frameReportes, columns=['#1',"#2"],show='headings',height=3)
+		self.treeReportes.grid(row=0,column=0,pady=5,padx=5)
+		self.treeReportes.heading('#1', text = 'Id',)
+		self.treeReportes.heading('#2', text = 'Docente')
+		self.treeReportes.column('#1', width=50)
+		self.treeReportes.column('#2', width=190)
+		self.scrollbarReportes = ttk.Scrollbar(self.frameReportes, orient=tk.VERTICAL, command=self.treeReportes.yview)
+		self.treeReportes.configure(yscroll=self.scrollbarReportes.set)
+		self.scrollbarReportes.grid(column=1,row=0, sticky='ns')
+
+		self.frameReportesLapso = ttk.Labelframe(self.framecontainer2)
+		self.frameReportesLapso.grid(column=0,row=1,pady=5,padx=5)
+		self.treeReportesLapso = ttk.Treeview(self.frameReportesLapso, columns=['#1',"#2"],show='headings',height=3)
+		self.treeReportesLapso.grid(row=0,column=0,pady=5,padx=5)
+		self.treeReportesLapso.heading('#1', text = 'Id',)
+		self.treeReportesLapso.heading('#2', text = 'Lapso académico')
+		self.treeReportesLapso.column('#1', width=50)
+		self.treeReportesLapso.column('#2', width=190)
+		self.scrollbarReportesLapso = ttk.Scrollbar(self.frameReportesLapso, orient=tk.VERTICAL, command=self.treeReportesLapso.yview)
+		self.treeReportesLapso.configure(yscroll=self.scrollbarReportesLapso.set)
+		self.scrollbarReportesLapso.grid(column=1,row=0, sticky='ns')
+
+		ttk.Button(self.framecontainer2, text='GENERAR REPORTE', command=self.generarReporte).grid(row=3,column=0,padx=0,pady=0)
+
+		self.MostrarReporteDocente()
+		self.MostrarReporteLapso()
+		
+		self.newReportes.mainloop()
+
+	def informacionAdcional(self):
+		pass
+
+	def generarReporte(self):
+		# self.docenteId = self.selecionarFilaReporteDocente()
+		# self.lapsoId = self.selecionarFilaReporteLapso()
+
+		# self.docente = self.ReporteDocente()
+		# self.lapso = self.ReporteLapso()
+
+		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A4)
+		self.pdf.setFontSize(10)
+		self.pdf.drawString(255,800,'CARGA ACADÉMICA')
+	
+		self.pdf.save()
+		pass
+
+	def MostrarReporteDocente(self):
+		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
+		for row in self.rows:
+			self.treeReportes.insert('',tk.END,values=row)
+			
+	def MostrarReporteLapso(self):
+		self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+		for row in self.rows:
+			self.treeReportesLapso.insert('',tk.END,values=row)
+
+	def selecionarFilaReporteDocente(self):
+		self.item = self.treeReportes.focus()
+		self.data = self.treeReportes.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+		
+	def selecionarFilaReporteLapso(self):
+		self.item = self.treeReportesLapso.focus()
+		self.data = self.treeReportesLapso.item(self.item)
+		self.id = self.data['values'][0]
+		return self.id
+		
+	def ReporteDocente(self):
+		self.item = self.treeReportes.focus()
+		self.data = self.treeReportes.item(self.item)
+		self.id = self.data['values'][1]
+		return self.id
+		
+	def ReporteLapso(self):
+		self.item = self.treeReportesLapso.focus()
+		self.data = self.treeReportesLapso.item(self.item)
+		self.id = self.data['values'][1]
+		return self.id
