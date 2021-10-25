@@ -1008,11 +1008,14 @@ class CargaAcademica(tk.Toplevel):
 		# self.lapsoId = self.selecionarFilaReporteLapso()
 
 		# self.docente = self.ReporteDocente()
-		# self.lapso = self.ReporteLapso()
+		self.lapso = self.ReporteLapso()
 
 		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A4)
 		self.pdf.setFontSize(10)
-		self.pdf.drawString(255,800,'CARGA ACADÉMICA')
+		self.pdf.drawString(255,760,'CARGA ACADÉMICA')
+		self.pdf.drawString(250,745,'Lapso Académico ' + self.lapso)
+		self.pdf.drawImage(logoPDF,490,760,width=80,height=80)
+
 	
 		self.pdf.save()
 		pass
