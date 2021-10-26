@@ -10,7 +10,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
 class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
@@ -256,7 +256,7 @@ class CargaAcademica(tk.Toplevel):
 			self.query7 = 'UPDATE docente SET DescargaAcademica = ? WHERE id = ?'
 			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
 			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
-			self.query9 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
+			self.query10 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
 			self.id = self.seleccion
 			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
 			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
@@ -267,7 +267,7 @@ class CargaAcademica(tk.Toplevel):
 			self.conexion(self.query7,(self.DescargaAcademicaEditar.get(), self.id))
 			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
 			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
-			self.conexion(self.query9,(self.entryEditarTelefono.get(), self.id))
+			self.conexion(self.query10,(self.entryEditarTelefono.get(), self.id))
 			self.LimpiarCeldasEditar()
 			self.LimpiarCeldas()
 			self.new.destroy()
@@ -997,6 +997,21 @@ class CargaAcademica(tk.Toplevel):
 
 		self.MostrarReporteDocente()
 		self.MostrarReporteLapso()
+
+		self.setStyles = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.width, self.heigth = A4
+		self.styles = getSampleStyleSheet()
+		self.center = self.styles["BodyText"]
+		self.center.alignment = TA_CENTER
+		self.left = self.styles["BodyText"]
+		self.left.alignment = TA_LEFT
+		self.counter = 0
 		
 		self.newReportes.mainloop()
 
@@ -1004,7 +1019,7 @@ class CargaAcademica(tk.Toplevel):
 		pass
 
 	def generarReporte(self):
-		# self.docenteId = self.selecionarFilaReporteDocente()
+		self.docenteId = self.selecionarFilaReporteDocente()
 		# self.lapsoId = self.selecionarFilaReporteLapso()
 
 		# self.docente = self.ReporteDocente()
@@ -1015,10 +1030,14 @@ class CargaAcademica(tk.Toplevel):
 		self.pdf.drawString(255,760,'CARGA ACADÉMICA')
 		self.pdf.drawString(250,745,'Lapso Académico ' + self.lapso)
 		self.pdf.drawImage(logoPDF,490,760,width=80,height=80)
-
+		self.tablaInicio()
 	
 		self.pdf.save()
-		pass
+		self.setStyles.clear()
+		self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -1053,3 +1072,57 @@ class CargaAcademica(tk.Toplevel):
 		self.data = self.treeReportesLapso.item(self.item)
 		self.id = self.data['values'][1]
 		return self.id
+		
+	def materia(self,query,parametros):
+		if self.conexion(query,parametros):
+			if self.conexion(query,parametros).fetchone():
+				self.data = self.conexion(query,parametros).fetchone()
+				return self.data[0]
+			else:
+				return ''
+
+	def tablaInicio(self):
+		self.table = Table(self.obtenerTablaInicio(),colWidths=140, rowHeights=15)
+		self.table.setStyle(TableStyle(self.setStyles))
+		self.table.wrapOn(self.pdf,self.width,self.heigth)
+		self.table.drawOn(self.pdf,20,615)
+		return self.table
+
+	def obtenerTablaInicio(self):
+		self.tabla1 = [
+            [Paragraph('Nombre y Apelido:',self.center)],
+            [Paragraph('Categoría:',self.center)],
+            [Paragraph('Dedicacíon:',self.center)],
+            [Paragraph('Título de Pre-Grado:',self.center)],
+            [Paragraph('Título de Post-grado',self.center)],
+            [Paragraph('Descarga Academica:',self.center)],
+            [Paragraph('Razon de la descarga:',self.center)]
+        ]
+		
+		self.nombre = self.materia('SELECT docente.NombreApellido from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[0].append(Paragraph(self.nombre,self.center))
+		self.tabla1[0].append(Paragraph('Cedula:',self.center))
+		self.cedula = self.materia('SELECT docente.Cedula from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[0].append(Paragraph(self.cedula,self.center))
+		self.categoria = self.materia('SELECT docente.Categoria from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[1].append(Paragraph(self.categoria,self.left))
+		self.setStyles.append(('SPAN',(1,1),(3,1)))
+		self.dedicacion = self.materia('SELECT docente.Dedicacion from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[2].append(Paragraph(self.dedicacion,self.left))
+		self.setStyles.append(('SPAN',(1,2),(3,2)))
+		self.pregrado = self.materia('SELECT docente.Pregrado from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[3].append(Paragraph(self.pregrado,self.left))
+		self.setStyles.append(('SPAN',(1,3),(3,3)))
+		self.postgrado = self.materia('SELECT docente.Postgrado from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[4].append(Paragraph(self.postgrado,self.left))
+		self.setStyles.append(('SPAN',(1,4),(3,4)))
+		self.descargaAcademica = self.materia('SELECT docente.DescargaAcademica from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[5].append(Paragraph(self.descargaAcademica,self.left))
+		self.tabla1[5].append(Paragraph('Condicion laboral:',self.left))
+		self.condicionLaboral = self.materia('SELECT docente.CondicionLaboral from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[5].append(Paragraph(self.condicionLaboral,self.left))
+		self.razonDescarga = self.materia('SELECT docente.RazonDescarga from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.tabla1[6].append(Paragraph(self.razonDescarga,self.left))
+		self.setStyles.append(('SPAN',(1,6),(3,6)))
+
+		return self.tabla1
