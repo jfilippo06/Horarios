@@ -2,6 +2,7 @@ import tkinter as tk
 from Carga_academica import CargaAcademica
 from Gestor_bd import Gestor
 from gestionar_horarios import Horarios
+from unidades_curriculares import unidades_curriculares
 from rutas import *
 
 class App(tk.Tk):
@@ -18,7 +19,8 @@ class App(tk.Tk):
         # Menu:
         self.menubar = tk.Menu(self)
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu1.add_command(label="Gestionar Tablas", command=self.OpenWindonwGestor)
+        self.filemenu1.add_command(label="Base de datos", command=self.gestor)
+        self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
         self.filemenu1.add_command(label="Salir", command=self.Salir)
         self.menubar.add_cascade(label="Adminitración del Sistema", menu=self.filemenu1)
         self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
@@ -26,19 +28,22 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Ayuda", menu=self.filemenu2)
         self.config(menu=self.menubar)
         # Label:
-        tk.Button(self, text="Carga Académica", width=15, height=2,command=self.OpenWindonw).place(x = 60,y = 160)
-        tk.Button(self, text="Gestionar Horarios",width=15, height=2, command=self.OpenHorarios).place(x = 60,y = 220)
+        tk.Button(self, text="Carga Académica", width=15, height=2,command=self.cargaAcademica).place(x = 60,y = 160)
+        tk.Button(self, text="Gestionar Horarios",width=15, height=2, command=self.horarios).place(x = 60,y = 220)
         
-    def OpenWindonw(self):
+    def cargaAcademica(self):
         self.lower()
         CargaAcademica(self)
 
-    def OpenWindonwGestor(self):
+    def gestor(self):
         Gestor(self)
 
-    def OpenHorarios(self):
+    def horarios(self):
         Horarios(self)
-        
+
+    def unidades_curriculares(self):
+        unidades_curriculares(self)
+                
     def Salir(self):
         self.destroy()
         

@@ -1005,6 +1005,13 @@ class CargaAcademica(tk.Toplevel):
             ('VALIGN',(0,0),(-1,-1),'MIDDLE')
         ]
 
+		self.setStyles2 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
 		self.width, self.heigth = A4
 		self.styles = getSampleStyleSheet()
 		self.center = self.styles["BodyText"]
@@ -1026,11 +1033,12 @@ class CargaAcademica(tk.Toplevel):
 		self.lapso = self.ReporteLapso()
 
 		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A4)
-		self.pdf.setFontSize(10)
-		self.pdf.drawString(255,760,'CARGA ACADÉMICA')
-		self.pdf.drawString(250,745,'Lapso Académico ' + self.lapso)
+		self.pdf.setFontSize(size=10)
+		self.pdf.drawString(255,800,'CARGA ACADÉMICA')
+		self.pdf.drawString(250,785,'Lapso Académico ' + self.lapso)
 		self.pdf.drawImage(logoPDF,490,760,width=80,height=80)
 		self.tablaInicio()
+		self.tablaMaterias()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1038,6 +1046,12 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
 		self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
 		self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles2.clear()
+		self.setStyles2.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -1082,11 +1096,11 @@ class CargaAcademica(tk.Toplevel):
 				return ''
 
 	def tablaInicio(self):
-		self.table = Table(self.obtenerTablaInicio(),colWidths=140, rowHeights=15)
-		self.table.setStyle(TableStyle(self.setStyles))
-		self.table.wrapOn(self.pdf,self.width,self.heigth)
-		self.table.drawOn(self.pdf,20,615)
-		return self.table
+		self.tableInicio = Table(self.obtenerTablaInicio(),colWidths=146, rowHeights=15)
+		self.tableInicio.setStyle(TableStyle(self.setStyles))
+		self.tableInicio.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableInicio.drawOn(self.pdf,5,665)
+		return self.tableInicio
 
 	def obtenerTablaInicio(self):
 		self.tabla1 = [
@@ -1126,3 +1140,31 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles.append(('SPAN',(1,6),(3,6)))
 
 		return self.tabla1
+
+	def tablaMaterias(self):
+		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=73, rowHeights=15)
+		self.tableMaterias.setStyle(TableStyle(self.setStyles2))
+		self.tableMaterias.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableMaterias.drawOn(self.pdf,5,560)
+		return self.tableMaterias
+
+	def obtenerTablaMaterias(self):
+		self.tabla2 = [
+			[Paragraph('Unidad Curricular',self.center),Paragraph('Sección',self.center),Paragraph('Horas',self.center),Paragraph('Departamento',self.center),Paragraph('Subsistemas de educación de pregrado:',self.center),'','',''],
+			['','','','','PNF','','',''],
+			['','','','','Cohorte','Trimestre','Trayecto',''],
+			['','','','','','','','']
+		]
+		self.setStyles2.append(('SPAN',(4,0),(7,0)))
+		self.setStyles2.append(('SPAN',(0,0),(0,3)))
+		self.setStyles2.append(('SPAN',(1,0),(1,3)))
+		self.setStyles2.append(('SPAN',(2,0),(2,3)))
+		self.setStyles2.append(('SPAN',(3,0),(3,3)))
+		self.setStyles2.append(('SPAN',(6,2),(6,3)))
+		# self.setStyles2.append(('SPAN',(7,1),(7,3)))
+		self.setStyles2.append(('SPAN',(4,1),(6,1)))
+		self.setStyles2.append(('SPAN',(4,2),(5,2)))
+		self.setStyles2.append(('SPAN',(4,2),(4,3)))
+		self.setStyles2.append(('SPAN',(5,2),(5,3)))
+
+		return self.tabla2
