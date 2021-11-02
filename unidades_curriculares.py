@@ -6,7 +6,7 @@ from rutas import *
 import traceback
 import sys
 
-class unidades_curriculares(tk.Toplevel):
+class Unidades_curriculares(tk.Toplevel):
     def __init__(self,master):
         super().__init__(master)
         # Config:

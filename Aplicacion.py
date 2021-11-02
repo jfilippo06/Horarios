@@ -1,8 +1,8 @@
 import tkinter as tk
-from Carga_academica import CargaAcademica
-from Gestor_bd import Gestor
+from carga_academica import CargaAcademica
+from gestor_bd import Gestor
 from gestionar_horarios import Horarios
-from unidades_curriculares import unidades_curriculares
+from unidades_curriculares import Unidades_curriculares
 from rutas import *
 
 class App(tk.Tk):
@@ -42,7 +42,7 @@ class App(tk.Tk):
         Horarios(self)
 
     def unidades_curriculares(self):
-        unidades_curriculares(self)
+        Unidades_curriculares(self)
                 
     def Salir(self):
         self.destroy()
