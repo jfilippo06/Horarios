@@ -67,7 +67,7 @@ class Horarios(tk.Toplevel):
         self.treeModalidad.column('#1', width=50)
         self.treeModalidad.column('#2', width=120)
         self.scrollbarModalidad = ttk.Scrollbar(self.frameModalidad, orient=tk.VERTICAL, command=self.treeModalidad.yview)
-        self.treeModalidad.configure(yscroll=self.scrollbarLapsoAcademico.set)
+        self.treeModalidad.configure(yscroll=self.scrollbarModalidad.set)
         self.scrollbarModalidad.grid(column=1,row=0, sticky='ns')
         # Cohorte
         self.frameCohorte = ttk.Labelframe(self.container)

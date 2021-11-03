@@ -568,7 +568,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarUnidadCurricular(self):
         if self.ValidarCeldaUnidadCirricular():
-            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"6","")'
+            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"","","")'
             self.parametros = (self.entryUnidadCurricular.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosUnidadCurricular()
