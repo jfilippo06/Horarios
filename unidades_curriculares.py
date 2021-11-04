@@ -23,7 +23,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeHora = ttk.Treeview(self.frameHora, columns=['#1',"#2"],show='headings',height=5)
         self.treeHora.grid(row=0,column=0)
         self.treeHora.heading('#1', text = 'Id',)
-        self.treeHora.heading('#2', text = 'Horas')
+        self.treeHora.heading('#2', text = 'Hora')
         self.treeHora.column('#1', width=50)
         self.treeHora.column('#2', width=110)
         self.scrollbarHora = ttk.Scrollbar(self.frameHora, orient=tk.VERTICAL, command=self.treeHora.yview)
@@ -58,17 +58,17 @@ class Unidades_curriculares(tk.Toplevel):
         self.frameDEntry = ttk.Labelframe(self.container)
         self.frameDEntry.grid(column=3,row=0)
         ttk.Label(self.frameDEntry,text='Departamento').grid(column=0,row=0)
-        self.entryDepartamento = ttk.Entry(self.frameDEntry,width=15)
-        self.entryDepartamento.grid(column=1,row=0)
-        ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command='',width=26).grid(row=1,column=0)
+        self.entryDEntry = ttk.Entry(self.frameDEntry,width=15)
+        self.entryDEntry.grid(column=1,row=0)
+        ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command=self.RegistrarDepartamento,width=26).grid(row=1,column=0)
         ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command='',width=26).grid(row=2,column=0)
         ttk.Button(self.frameDEntry, text='ELIMINAR DEPARTAMENTO', command='',width=26).grid(row=3,column=0)
 
         self.framePEntry = ttk.Labelframe(self.container)
         self.framePEntry.grid(column=4,row=0)
         ttk.Label(self.framePEntry,text='Pt').grid(column=0,row=0)
-        self.entryPt = ttk.Entry(self.framePEntry,width=15)
-        self.entryPt.grid(column=1,row=0)
+        self.entryPEntry = ttk.Entry(self.framePEntry,width=15)
+        self.entryPEntry.grid(column=1,row=0)
         ttk.Button(self.framePEntry, text='REGISTRAR PT', command='',width=15).grid(row=1,column=0)
         ttk.Button(self.framePEntry, text='EDITAR PT', command='',width=15).grid(row=2,column=0)
         ttk.Button(self.framePEntry, text='ELIMINAR PT', command='',width=15).grid(row=3,column=0)
@@ -79,7 +79,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares.grid(row=0,column=0)
         self.treeUnidadesCurriculares.heading('#1', text = 'Id',)
         self.treeUnidadesCurriculares.heading('#2', text = 'Unidad Curricular')
-        self.treeUnidadesCurriculares.heading('#3', text = 'Horas')
+        self.treeUnidadesCurriculares.heading('#3', text = 'Hora')
         self.treeUnidadesCurriculares.heading('#4', text = 'Departamento')
         self.treeUnidadesCurriculares.heading('#5', text = 'PT')
         self.treeUnidadesCurriculares.column('#1', width=50)
@@ -96,3 +96,100 @@ class Unidades_curriculares(tk.Toplevel):
         ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - HORA',width=55).grid(row=0,column=0)
         ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - DEPARTAMENTO',width=55).grid(row=0,column=1)
         ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - PT',width=55).grid(row=0,column=2)
+
+        self.MostrarDatosHora()
+        self.MostrarDatosDepartamento()
+        self.MostrarDatosPt()
+        self.MostrarDatosUnidadesCurriculares()
+
+    def conexion(self,query,parametros = ()):
+        try:
+            self.con = sqlite3.connect(baseDeDatos)
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query,parametros)
+            self.con.commit()
+            return self.cursor
+        except sqlite3.IntegrityError:
+            pass
+        except IndexError:
+            pass
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
+    def TraerDatos(self,query):
+        self.mostrar = self.conexion(query)
+        self.rows = self.mostrar.fetchall()
+        return self.rows
+
+    def limpiarTablaHora(self):
+        self.DeleteChildren = self.treeHora.get_children()
+        for element in self.DeleteChildren:
+            self.treeHora.delete(element)
+    
+    def limpiarTablaDepartamento(self):
+        self.DeleteChildren = self.treeDepartamento.get_children()
+        for element in self.DeleteChildren:
+            self.treeDepartamento.delete(element)
+
+    def limpiarTablaPt(self):
+        self.DeleteChildren = self.treePt.get_children()
+        for element in self.DeleteChildren:
+            self.treePt.delete(element)
+    
+    def limpiarTablaUnidadesCurriculares(self):
+        self.DeleteChildren = self.treeUnidadesCurriculares.get_children()
+        for element in self.DeleteChildren:
+            self.treeUnidadesCurriculares.delete(element)
+
+    def MostrarDatosHora(self):
+        self.limpiarTablaHora()
+        self.rows = self.TraerDatos("SELECT * FROM hora")
+        for row in self.rows:
+            self.treeHora.insert('',tk.END,values=row)
+    
+    def MostrarDatosDepartamento(self):
+        self.limpiarTablaDepartamento()
+        self.rows = self.TraerDatos("SELECT * FROM departamento")
+        for row in self.rows:
+            self.treeDepartamento.insert('',tk.END,values=row)
+
+    def MostrarDatosPt(self):
+        self.limpiarTablaPt()
+        self.rows = self.TraerDatos("SELECT * FROM pt")
+        for row in self.rows:
+            self.treePt.insert('',tk.END,values=row)
+
+    def MostrarDatosUnidadesCurriculares(self):
+        self.limpiarTablaUnidadesCurriculares()
+        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular,Hora,Departamento,Pt COLLATE utf8_spanish2_ci FROM unidad_curricular ORDER BY UnidadCurricular")
+        for row in self.rows:
+            self.treeUnidadesCurriculares.insert('',tk.END,values=row)
+
+    def ValidarCeldaDEntry(self):
+        return len(self.entryDEntry.get())
+
+    def ValidarCeldaPEntry(self):
+        return len(self.entryPEntry.get())
+
+    def LimpiarCeldaDEntry(self):
+        self.entryDEntry.delete(0, tk.END)
+
+    def LimpiarCeldaPEntry(self):
+        self.entryPEntry.delete(0, tk.END) 
+
+    def RegistrarDepartamento(self):
+        if self.ValidarCeldaDEntry():
+            self.query = 'INSERT INTO departamento VALUES (NUll,?)'
+            self.parametros = (self.entryDEntry.get())
+            if self.conexion(self.query,(self.parametros,)):
+                self.MostrarDatosDepartamento()
+                self.LimpiarCeldaDEntry()
+                messagebox.showinfo(title='Info', message='Departamento Registrado.')
+            else:
+                messagebox.showwarning(title='Warning', message='Departamento ya esta registrado.')
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor.')
