@@ -1,7 +1,7 @@
 import os
 
 # Principal
-rutaPrincipal = 'C:/Mis Proyectos/Python/Proyecto'
+rutaPrincipal = 'C:/MisProyectos/Python/Proyecto'
 
 # ICO
 ico = 'IMG/uptpc.ico'

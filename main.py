@@ -1,4 +1,4 @@
-from Aplicacion import App
+from aplicacion import App
  
 if __name__ == '__main__':
     root = App()
