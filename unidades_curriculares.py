@@ -70,7 +70,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryPEntry = ttk.Entry(self.framePEntry,width=15)
         self.entryPEntry.grid(column=1,row=0)
         ttk.Button(self.framePEntry, text='REGISTRAR PT', command=self.RegistrarPt,width=15).grid(row=1,column=0)
-        ttk.Button(self.framePEntry, text='EDITAR PT', command='',width=15).grid(row=2,column=0)
+        ttk.Button(self.framePEntry, text='EDITAR PT', command=self.editarPt,width=15).grid(row=2,column=0)
         ttk.Button(self.framePEntry, text='ELIMINAR PT', command='',width=15).grid(row=3,column=0)
 
         self.frameUnidadesCurriculares = ttk.Labelframe(self)
@@ -258,3 +258,19 @@ class Unidades_curriculares(tk.Toplevel):
                 self.LimpiarCeldaDEntry()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el departamento a editar.')
+
+    def editarPt(self):
+        if self.ValidarCeldaPEntry() and self.treePt.selection():
+            if messagebox.askyesno('Edit','¿Desea editar el PT selecionado?'):
+                self.query = 'UPDATE pt SET Pt = ? WHERE Id = ?'
+                self.parametros = (self.entryPEntry.get())
+                self.id = self.selecionarFilaPt()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosPt()
+                self.LimpiarCeldaPEntry()
+                messagebox.showinfo(title='Info', message='PT Editado Correctamente.')
+            else:
+                self.MostrarDatosPt()
+                self.LimpiarCeldaPEntry()
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el PT a editar.')
