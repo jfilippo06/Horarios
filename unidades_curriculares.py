@@ -61,7 +61,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryDEntry = ttk.Entry(self.frameDEntry,width=15)
         self.entryDEntry.grid(column=1,row=0)
         ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command=self.RegistrarDepartamento,width=26).grid(row=1,column=0)
-        ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command='',width=26).grid(row=2,column=0)
+        ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command=self.editarDepartamento,width=26).grid(row=2,column=0)
         ttk.Button(self.frameDEntry, text='ELIMINAR DEPARTAMENTO', command='',width=26).grid(row=3,column=0)
 
         self.framePEntry = ttk.Labelframe(self.container)
@@ -69,7 +69,7 @@ class Unidades_curriculares(tk.Toplevel):
         ttk.Label(self.framePEntry,text='Pt').grid(column=0,row=0)
         self.entryPEntry = ttk.Entry(self.framePEntry,width=15)
         self.entryPEntry.grid(column=1,row=0)
-        ttk.Button(self.framePEntry, text='REGISTRAR PT', command='',width=15).grid(row=1,column=0)
+        ttk.Button(self.framePEntry, text='REGISTRAR PT', command=self.RegistrarPt,width=15).grid(row=1,column=0)
         ttk.Button(self.framePEntry, text='EDITAR PT', command='',width=15).grid(row=2,column=0)
         ttk.Button(self.framePEntry, text='ELIMINAR PT', command='',width=15).grid(row=3,column=0)
 
@@ -181,6 +181,42 @@ class Unidades_curriculares(tk.Toplevel):
     def LimpiarCeldaPEntry(self):
         self.entryPEntry.delete(0, tk.END) 
 
+    def hora(self):
+        self.item = self.treeHora.focus()
+        self.data = self.treeHora.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+
+    def departamento(self):
+        self.item = self.treeDepartamento.focus()
+        self.data = self.treeDepartamento.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+
+    def pt(self):
+        self.item = self.treePt.focus()
+        self.data = self.treePt.item(self.item)
+        self.id = self.data['values'][1]
+        return self.id
+
+    def selecionarFilaDepartamento(self):
+        self.item = self.treeDepartamento.focus()
+        self.data = self.treeDepartamento.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
+    def selecionarFilaPt(self):
+        self.item = self.treePt.focus()
+        self.data = self.treePt.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
+    def selecionarFilaUnidadesCurriculares(self):
+        self.item = self.treeUnidadesCurriculares.focus()
+        self.data = self.treeUnidadesCurriculares.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
     def RegistrarDepartamento(self):
         if self.ValidarCeldaDEntry():
             self.query = 'INSERT INTO departamento VALUES (NUll,?)'
@@ -193,3 +229,32 @@ class Unidades_curriculares(tk.Toplevel):
                 messagebox.showwarning(title='Warning', message='Departamento ya esta registrado.')
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+
+    def RegistrarPt(self):
+        if self.ValidarCeldaPEntry():
+            self.query = 'INSERT INTO pt VALUES (NUll,?)'
+            self.parametros = (self.entryPEntry.get())
+            if self.conexion(self.query,(self.parametros,)):
+                self.MostrarDatosPt()
+                self.LimpiarCeldaPEntry()
+                messagebox.showinfo(title='Info', message='PT Registrado.')
+            else:
+                messagebox.showwarning(title='Warning', message='PT ya esta registrado.')
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+
+    def editarDepartamento(self):
+        if self.ValidarCeldaDEntry() and self.treeDepartamento.selection():
+            if messagebox.askyesno('Edit','¿Desea editar el departamento selecionado?'):
+                self.query = 'UPDATE departamento SET Departamento = ? WHERE Id = ?'
+                self.parametros = (self.entryDEntry.get())
+                self.id = self.selecionarFilaDepartamento()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosDepartamento()
+                self.LimpiarCeldaDEntry()
+                messagebox.showinfo(title='Info', message='Departamento Editado Correctamente.')
+            else:
+                self.MostrarDatosDepartamento()
+                self.LimpiarCeldaDEntry()
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el departamento a editar.')
