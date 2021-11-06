@@ -6,7 +6,7 @@ from rutas import *
 import traceback
 import sys
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A3
 from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
@@ -1012,7 +1012,7 @@ class CargaAcademica(tk.Toplevel):
             ('VALIGN',(0,0),(-1,-1),'MIDDLE')
         ]
 
-		self.width, self.heigth = A4
+		self.width, self.heigth = A3
 		self.styles = getSampleStyleSheet()
 		self.center = self.styles["BodyText"]
 		self.center.alignment = TA_CENTER
@@ -1032,12 +1032,13 @@ class CargaAcademica(tk.Toplevel):
 		# self.docente = self.ReporteDocente()
 		self.lapso = self.ReporteLapso()
 
-		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A4)
-		self.pdf.setFontSize(size=10)
-		self.pdf.drawString(255,800,'CARGA ACADÉMICA')
-		self.pdf.drawString(250,785,'Lapso Académico ' + self.lapso)
-		self.pdf.drawImage(logoPDF,490,760,width=80,height=80)
+		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A3)
+		self.pdf.setFontSize(size=12)
+		self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
+		self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
+		self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
 		self.tablaInicio()
+		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
 	
 		self.pdf.save()
@@ -1096,10 +1097,10 @@ class CargaAcademica(tk.Toplevel):
 				return ''
 
 	def tablaInicio(self):
-		self.tableInicio = Table(self.obtenerTablaInicio(),colWidths=146, rowHeights=15)
+		self.tableInicio = Table(self.obtenerTablaInicio(),colWidths=206, rowHeights=15)
 		self.tableInicio.setStyle(TableStyle(self.setStyles))
 		self.tableInicio.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableInicio.drawOn(self.pdf,5,665)
+		self.tableInicio.drawOn(self.pdf,10,1000)
 		return self.tableInicio
 
 	def obtenerTablaInicio(self):
@@ -1142,16 +1143,16 @@ class CargaAcademica(tk.Toplevel):
 		return self.tabla1
 
 	def tablaMaterias(self):
-		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=73, rowHeights=15)
+		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=103, rowHeights=15)
 		self.tableMaterias.setStyle(TableStyle(self.setStyles2))
 		self.tableMaterias.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableMaterias.drawOn(self.pdf,5,560)
+		self.tableMaterias.drawOn(self.pdf,10,910)
 		return self.tableMaterias
 
 	def obtenerTablaMaterias(self):
 		self.tabla2 = [
 			[Paragraph('Unidad Curricular',self.center),Paragraph('Sección',self.center),Paragraph('Horas',self.center),Paragraph('Departamento',self.center),Paragraph('Subsistemas de educación de pregrado:',self.center),'','',''],
-			['','','','','PNF','','',''],
+			['','','','','PNF','','','PT'],
 			['','','','','Cohorte','Trimestre','Trayecto',''],
 			['','','','','','','','']
 		]
@@ -1161,7 +1162,7 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('SPAN',(2,0),(2,3)))
 		self.setStyles2.append(('SPAN',(3,0),(3,3)))
 		self.setStyles2.append(('SPAN',(6,2),(6,3)))
-		# self.setStyles2.append(('SPAN',(7,1),(7,3)))
+		self.setStyles2.append(('SPAN',(7,1),(7,3)))
 		self.setStyles2.append(('SPAN',(4,1),(6,1)))
 		self.setStyles2.append(('SPAN',(4,2),(5,2)))
 		self.setStyles2.append(('SPAN',(4,2),(4,3)))
