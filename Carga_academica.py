@@ -1033,6 +1033,20 @@ class CargaAcademica(tk.Toplevel):
             ('VALIGN',(0,0),(-1,-1),'MIDDLE')
         ]
 
+		self.setStyles6 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles7 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
 		self.width, self.heigth = A3
 		self.styles1 = getSampleStyleSheet()
 		self.styles2 = getSampleStyleSheet()
@@ -1049,9 +1063,8 @@ class CargaAcademica(tk.Toplevel):
 
 	def generarReporte(self):
 		self.docenteId = self.selecionarFilaReporteDocente()
-		# self.lapsoId = self.selecionarFilaReporteLapso()
-
-		# self.docente = self.ReporteDocente()
+		self.lapsoId = self.selecionarFilaReporteLapso()
+		self.docente = self.ReporteDocente()
 		self.lapso = self.ReporteLapso()
 
 		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A3)
@@ -1062,9 +1075,12 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaInicio()
 		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
+		self.pdf.drawString(375,880,'Horarios de clases')
 		self.tablaHorarioMorning()
 		self.tablaHorarioAfternon()
 		self.tablaHorarioNinght()
+		self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+		self.tablaHorarioAdcrispcion()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1096,6 +1112,20 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
 		self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
 		self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles6.clear()
+		self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles7.clear()
+		self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.counter = 0
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -1214,15 +1244,15 @@ class CargaAcademica(tk.Toplevel):
 		return self.tabla2
 
 	def tablaHorarioMorning(self):
-		self.tableHorarioMorning = Table(self.obtenerTablaHorarioMorning(),colWidths=137, rowHeights=17)
+		self.tableHorarioMorning = Table(self.obtenerTablaHorarioMorning(),colWidths=137, rowHeights=25)
 		self.tableHorarioMorning.setStyle(TableStyle(self.setStyles3))
 		self.tableHorarioMorning.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioMorning.drawOn(self.pdf,11,785)
+		self.tableHorarioMorning.drawOn(self.pdf,11,690)
 		return self.tableHorarioMorning
 
 	def obtenerTablaHorarioMorning(self):
 		self.morning = [
-            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('Horario de Clases Mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
             [Paragraph('8:50 - 9:35',self.center)],
@@ -1234,15 +1264,15 @@ class CargaAcademica(tk.Toplevel):
 		return self.morning
 
 	def tablaHorarioAfternon(self):
-		self.tableHorarioAfternon = Table(self.obtenerTablaHorarioAfternon(),colWidths=137, rowHeights=17)
+		self.tableHorarioAfternon = Table(self.obtenerTablaHorarioAfternon(),colWidths=137, rowHeights=25)
 		self.tableHorarioAfternon.setStyle(TableStyle(self.setStyles4))
 		self.tableHorarioAfternon.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioAfternon.drawOn(self.pdf,11,660)
+		self.tableHorarioAfternon.drawOn(self.pdf,11,510)
 		return self.tableHorarioAfternon
 
 	def obtenerTablaHorarioAfternon(self):
 		self.afternon = [
-            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('Horario de Clases Tarde',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('1:05 - 1:55',self.center)],
             [Paragraph('1:55 - 2:40',self.center)],
             [Paragraph('2:45 - 3:30',self.center)],
@@ -1254,15 +1284,15 @@ class CargaAcademica(tk.Toplevel):
 		return self.afternon
 
 	def tablaHorarioNinght(self):
-		self.tableHorarioNinght = Table(self.obtenerTablaHorarioNinght(),colWidths=137, rowHeights=17)
+		self.tableHorarioNinght = Table(self.obtenerTablaHorarioNinght(),colWidths=137, rowHeights=25)
 		self.tableHorarioNinght.setStyle(TableStyle(self.setStyles5))
 		self.tableHorarioNinght.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioNinght.drawOn(self.pdf,11,535)
+		self.tableHorarioNinght.drawOn(self.pdf,11,330)
 		return self.tableHorarioNinght
 
 	def obtenerTablaHorarioNinght(self):
 		self.ninght = [
-            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('Horario de Clases Noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('6:00 - 6:45',self.center)],
             [Paragraph('6:45 - 7:30',self.center)],
             [Paragraph('7:35 - 8:20',self.center)],
@@ -1272,3 +1302,30 @@ class CargaAcademica(tk.Toplevel):
         ]
 		
 		return self.ninght
+
+	def tablaHorarioAdcrispcion(self):
+		self.tableHorarioAdcrispcion = Table(self.obtenerTablaHorarioAdcrispcion(),colWidths=206, rowHeights=17)
+		self.tableHorarioAdcrispcion.setStyle(TableStyle(self.setStyles6))
+		self.tableHorarioAdcrispcion.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+		return self.tableHorarioAdcrispcion
+
+	def obtenerTablaHorarioAdcrispcion(self):
+		self.adcrispcion = [
+            [Paragraph('Departamento de Adscripción',self.center)],
+            [Paragraph('Horario elaborado por:',self.center)]
+        ]
+		
+		self.adcrispcion[0].append('')
+		self.setStyles6.append(('SPAN',(0,0),(1,0)))
+		self.adcrispcion[0].append(Paragraph('Informática',self.center))
+		self.adcrispcion[0].append('')
+		self.setStyles6.append(('SPAN',(2,0),(3,0)))
+		self.adcrispcion[1].append(Paragraph('jose',self.center))
+		self.adcrispcion[1].append(Paragraph('Cargo:',self.center))
+		self.adcrispcion[1].append(Paragraph('jefe',self.center))
+		
+
+		return self.adcrispcion
+
+	
