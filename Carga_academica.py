@@ -1012,11 +1012,33 @@ class CargaAcademica(tk.Toplevel):
             ('VALIGN',(0,0),(-1,-1),'MIDDLE')
         ]
 
+		self.setStyles3 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles4 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles5 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
 		self.width, self.heigth = A3
-		self.styles = getSampleStyleSheet()
-		self.center = self.styles["BodyText"]
+		self.styles1 = getSampleStyleSheet()
+		self.styles2 = getSampleStyleSheet()
+		self.center = self.styles1["BodyText"]
 		self.center.alignment = TA_CENTER
-		self.left = self.styles["BodyText"]
+		self.left = self.styles2["BodyText"]
 		self.left.alignment = TA_LEFT
 		self.counter = 0
 		
@@ -1040,6 +1062,7 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaInicio()
 		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
+		self.tablaHorarioDiurno()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1053,6 +1076,24 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
 		self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
 		self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles3.clear()
+		self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles4.clear()
+		self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles5.clear()
+		self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -1169,3 +1210,23 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('SPAN',(5,2),(5,3)))
 
 		return self.tabla2
+
+	def tablaHorarioDiurno(self):
+		self.tableHorarioDiurno = Table(self.obtenerTablaHorarioDiurno(),colWidths=137, rowHeights=17)
+		self.tableHorarioDiurno.setStyle(TableStyle(self.setStyles3))
+		self.tableHorarioDiurno.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioDiurno.drawOn(self.pdf,11,785)
+		return self.tableHorarioDiurno
+
+	def obtenerTablaHorarioDiurno(self):
+		self.diurno = [
+            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('7:10 - 7:55',self.center)],
+            [Paragraph('8:00 - 8:45',self.center)],
+            [Paragraph('8:50 - 9:35',self.center)],
+            [Paragraph('9:40 - 10:25',self.center)],
+            [Paragraph('10:30 - 11:15',self.center)],
+            [Paragraph('11:20 - 12:05',self.center)],
+        ]
+		
+		return self.diurno
