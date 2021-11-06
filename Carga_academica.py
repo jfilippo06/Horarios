@@ -1081,6 +1081,7 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaHorarioNinght()
 		self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
 		self.tablaHorarioAdcrispcion()
+		self.tablaHorarioObservacion()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1325,7 +1326,21 @@ class CargaAcademica(tk.Toplevel):
 		self.adcrispcion[1].append(Paragraph('Cargo:',self.center))
 		self.adcrispcion[1].append(Paragraph('jefe',self.center))
 		
-
 		return self.adcrispcion
+	
+	def tablaHorarioObservacion(self):
+		self.tableHorarioObservacion = Table(self.obtenerTablaHorarioObservacion(),colWidths=206, rowHeights=17)
+		self.tableHorarioObservacion.setStyle(TableStyle(self.setStyles7))
+		self.tableHorarioObservacion.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioObservacion.drawOn(self.pdf,10,180)
+		return self.tableHorarioObservacion
+
+	def obtenerTablaHorarioObservacion(self):
+		self.observacion = [
+            [Paragraph('Departamento de Adscripción',self.center)],
+            [Paragraph('Horario elaborado por:',self.center)]
+        ]
+		
+		return self.observacion
 
 	
