@@ -1062,7 +1062,9 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaInicio()
 		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
-		self.tablaHorarioDiurno()
+		self.tablaHorarioMorning()
+		self.tablaHorarioAfternon()
+		self.tablaHorarioNinght()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1211,15 +1213,15 @@ class CargaAcademica(tk.Toplevel):
 
 		return self.tabla2
 
-	def tablaHorarioDiurno(self):
-		self.tableHorarioDiurno = Table(self.obtenerTablaHorarioDiurno(),colWidths=137, rowHeights=17)
-		self.tableHorarioDiurno.setStyle(TableStyle(self.setStyles3))
-		self.tableHorarioDiurno.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioDiurno.drawOn(self.pdf,11,785)
-		return self.tableHorarioDiurno
+	def tablaHorarioMorning(self):
+		self.tableHorarioMorning = Table(self.obtenerTablaHorarioMorning(),colWidths=137, rowHeights=17)
+		self.tableHorarioMorning.setStyle(TableStyle(self.setStyles3))
+		self.tableHorarioMorning.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioMorning.drawOn(self.pdf,11,785)
+		return self.tableHorarioMorning
 
-	def obtenerTablaHorarioDiurno(self):
-		self.diurno = [
+	def obtenerTablaHorarioMorning(self):
+		self.morning = [
             [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
@@ -1229,4 +1231,44 @@ class CargaAcademica(tk.Toplevel):
             [Paragraph('11:20 - 12:05',self.center)],
         ]
 		
-		return self.diurno
+		return self.morning
+
+	def tablaHorarioAfternon(self):
+		self.tableHorarioAfternon = Table(self.obtenerTablaHorarioAfternon(),colWidths=137, rowHeights=17)
+		self.tableHorarioAfternon.setStyle(TableStyle(self.setStyles4))
+		self.tableHorarioAfternon.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioAfternon.drawOn(self.pdf,11,660)
+		return self.tableHorarioAfternon
+
+	def obtenerTablaHorarioAfternon(self):
+		self.afternon = [
+            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('1:05 - 1:55',self.center)],
+            [Paragraph('1:55 - 2:40',self.center)],
+            [Paragraph('2:45 - 3:30',self.center)],
+            [Paragraph('3:45 - 4:20',self.center)],
+            [Paragraph('4:25 - 5:10',self.center)],
+            [Paragraph('5:15 - 6:00',self.center)]
+        ]
+		
+		return self.afternon
+
+	def tablaHorarioNinght(self):
+		self.tableHorarioNinght = Table(self.obtenerTablaHorarioNinght(),colWidths=137, rowHeights=17)
+		self.tableHorarioNinght.setStyle(TableStyle(self.setStyles5))
+		self.tableHorarioNinght.wrapOn(self.pdf,self.width,self.heigth)
+		self.tableHorarioNinght.drawOn(self.pdf,11,535)
+		return self.tableHorarioNinght
+
+	def obtenerTablaHorarioNinght(self):
+		self.ninght = [
+            [Paragraph('Horario de Clases',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('6:00 - 6:45',self.center)],
+            [Paragraph('6:45 - 7:30',self.center)],
+            [Paragraph('7:35 - 8:20',self.center)],
+            [Paragraph('8:20 - 9:05',self.center)],
+            [Paragraph('9:05 - 9:50',self.center)],
+            [Paragraph('9:50 - 10:35',self.center)]
+        ]
+		
+		return self.ninght
