@@ -1067,6 +1067,8 @@ class CargaAcademica(tk.Toplevel):
 		self.docente = self.ReporteDocente()
 		self.lapso = self.ReporteLapso()
 
+		self.parametrosReportes = (self.docenteId, self.lapsoId)
+
 		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A3)
 		self.pdf.setFontSize(size=12)
 		self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
@@ -1242,6 +1244,15 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('SPAN',(4,2),(4,3)))
 		self.setStyles2.append(('SPAN',(5,2),(5,3)))
 
+		self.obtenermaterias = self.conexion(
+            'SELECT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
+            self.parametrosReportes).fetchall()
+		for row in self.obtenermaterias:
+			unidad = row[0]
+			self.tabla2.append(Paragraph(unidad,self.left))
+			self.counter = self.counter + 1
+			print(self.counter)
+
 		return self.tabla2
 
 	def tablaHorarioMorning(self):
@@ -1329,18 +1340,20 @@ class CargaAcademica(tk.Toplevel):
 		return self.adcrispcion
 	
 	def tablaHorarioObservacion(self):
-		self.tableHorarioObservacion = Table(self.obtenerTablaHorarioObservacion(),colWidths=206, rowHeights=17)
+		self.tableHorarioObservacion = Table(self.obtenerTablaHorarioObservacion(),colWidths=117, rowHeights=25)
 		self.tableHorarioObservacion.setStyle(TableStyle(self.setStyles7))
 		self.tableHorarioObservacion.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioObservacion.drawOn(self.pdf,10,180)
+		self.tableHorarioObservacion.drawOn(self.pdf,12,180)
 		return self.tableHorarioObservacion
 
 	def obtenerTablaHorarioObservacion(self):
 		self.observacion = [
-            [Paragraph('Departamento de Adscripción',self.center)],
-            [Paragraph('Horario elaborado por:',self.center)]
+            [Paragraph('Labora en otra empresa: ',self.center)],
+			[Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
         ]
 		
-		return self.observacion
+		self.observacion[0].append(Paragraph('Si',self.center))
+		self.observacion[0].append(Paragraph('Especifique:',self.center))
+		self.setStyles7.append(('SPAN',(3,0),(6,0)))
 
-	
+		return self.observacion
