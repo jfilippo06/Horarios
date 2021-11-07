@@ -1312,7 +1312,7 @@ class CargaAcademica(tk.Toplevel):
 			self.tableMaterias.drawOn(self.pdf,68,125)
 			print('materia-----3')
 		elif self.counter == 2: 
-			self.tableMaterias.drawOn(self.pdf,68,125)
+			self.tableMaterias.drawOn(self.pdf,10,890)
 			print('materia-----2')
 		elif self.counter == 1: 
 			self.tableMaterias.drawOn(self.pdf,10,890)
@@ -1345,10 +1345,193 @@ class CargaAcademica(tk.Toplevel):
 		self.obtenermaterias = self.conexion(
             'SELECT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
             self.parametrosReportes).fetchall()
+		array1 = []
+		array2 = []
+		array3 = []
+		array4 = []
+		array5 = []
+		array6 = []
+		array7 = []
+		array8 = []
+		array9 = []
+		array10 = []
 		for row in self.obtenermaterias:
-			self.tabla2.append(row)
-			self.counter = self.counter + 1
-			print(self.counter)
+			if self.counter == 0: 
+				array1.append(Paragraph(row[0],self.center))
+				array1.append(Paragraph(row[1],self.center))
+				array1.append(Paragraph(row[2],self.center))
+				array1.append(Paragraph(row[3],self.center))
+				array1.append(Paragraph(row[4],self.center))
+				array1.append(Paragraph(row[5],self.center))
+				array1.append(Paragraph(row[6],self.center))
+				array1.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 1:
+				array2.append(Paragraph(row[0],self.center))
+				array2.append(Paragraph(row[1],self.center))
+				array2.append(Paragraph(row[2],self.center))
+				array2.append(Paragraph(row[3],self.center))
+				array2.append(Paragraph(row[4],self.center))
+				array2.append(Paragraph(row[5],self.center))
+				array2.append(Paragraph(row[6],self.center))
+				array2.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 2:
+				array3.append(Paragraph(row[0],self.center))
+				array3.append(Paragraph(row[1],self.center))
+				array3.append(Paragraph(row[2],self.center))
+				array3.append(Paragraph(row[3],self.center))
+				array3.append(Paragraph(row[4],self.center))
+				array3.append(Paragraph(row[5],self.center))
+				array3.append(Paragraph(row[6],self.center))
+				array3.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 3:
+				array4.append(Paragraph(row[0],self.center))
+				array4.append(Paragraph(row[1],self.center))
+				array4.append(Paragraph(row[2],self.center))
+				array4.append(Paragraph(row[3],self.center))
+				array4.append(Paragraph(row[4],self.center))
+				array4.append(Paragraph(row[5],self.center))
+				array4.append(Paragraph(row[6],self.center))
+				array4.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 4:
+				array5.append(Paragraph(row[0],self.center))
+				array5.append(Paragraph(row[1],self.center))
+				array5.append(Paragraph(row[2],self.center))
+				array5.append(Paragraph(row[3],self.center))
+				array5.append(Paragraph(row[4],self.center))
+				array5.append(Paragraph(row[5],self.center))
+				array5.append(Paragraph(row[6],self.center))
+				array5.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 5:
+				array6.append(Paragraph(row[0],self.center))
+				array6.append(Paragraph(row[1],self.center))
+				array6.append(Paragraph(row[2],self.center))
+				array6.append(Paragraph(row[3],self.center))
+				array6.append(Paragraph(row[4],self.center))
+				array6.append(Paragraph(row[5],self.center))
+				array6.append(Paragraph(row[6],self.center))
+				array6.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 6:
+				array7.append(Paragraph(row[0],self.center))
+				array7.append(Paragraph(row[1],self.center))
+				array7.append(Paragraph(row[2],self.center))
+				array7.append(Paragraph(row[3],self.center))
+				array7.append(Paragraph(row[4],self.center))
+				array7.append(Paragraph(row[5],self.center))
+				array7.append(Paragraph(row[6],self.center))
+				array7.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 7:
+				array8.append(Paragraph(row[0],self.center))
+				array8.append(Paragraph(row[1],self.center))
+				array8.append(Paragraph(row[2],self.center))
+				array8.append(Paragraph(row[3],self.center))
+				array8.append(Paragraph(row[4],self.center))
+				array8.append(Paragraph(row[5],self.center))
+				array8.append(Paragraph(row[6],self.center))
+				array8.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 8:
+				array9.append(Paragraph(row[0],self.center))
+				array9.append(Paragraph(row[1],self.center))
+				array9.append(Paragraph(row[2],self.center))
+				array9.append(Paragraph(row[3],self.center))
+				array9.append(Paragraph(row[4],self.center))
+				array9.append(Paragraph(row[5],self.center))
+				array9.append(Paragraph(row[6],self.center))
+				array9.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 9:
+				array10.append(Paragraph(row[0],self.center))
+				array10.append(Paragraph(row[1],self.center))
+				array10.append(Paragraph(row[2],self.center))
+				array10.append(Paragraph(row[3],self.center))
+				array10.append(Paragraph(row[4],self.center))
+				array10.append(Paragraph(row[5],self.center))
+				array10.append(Paragraph(row[6],self.center))
+				array10.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)			
+		
+		if self.counter == 10:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+			self.tabla2.append(array6)
+			self.tabla2.append(array7)
+			self.tabla2.append(array8)
+			self.tabla2.append(array9)
+			self.tabla2.append(array10)
+		elif self.counter == 9:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+			self.tabla2.append(array6)
+			self.tabla2.append(array7)
+			self.tabla2.append(array8)
+			self.tabla2.append(array9)
+		elif self.counter == 8:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+			self.tabla2.append(array6)
+			self.tabla2.append(array7)
+			self.tabla2.append(array8)
+		elif self.counter == 7:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+			self.tabla2.append(array6)
+			self.tabla2.append(array7)
+		elif self.counter == 6:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+			self.tabla2.append(array6)
+		elif self.counter == 5:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+			self.tabla2.append(array5)
+		elif self.counter == 4:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+			self.tabla2.append(array4)
+		elif self.counter == 3:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+			self.tabla2.append(array3)
+		elif self.counter == 2:
+			self.tabla2.append(array1)
+			self.tabla2.append(array2)
+		elif self.counter == 1:
+			self.tabla2.append(array1)
 
 		return self.tabla2
 
