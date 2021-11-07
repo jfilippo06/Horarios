@@ -6,7 +6,7 @@ from rutas import *
 import traceback
 import sys
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A3
 from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
@@ -1012,11 +1012,54 @@ class CargaAcademica(tk.Toplevel):
             ('VALIGN',(0,0),(-1,-1),'MIDDLE')
         ]
 
-		self.width, self.heigth = A4
-		self.styles = getSampleStyleSheet()
-		self.center = self.styles["BodyText"]
+		self.setStyles3 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles4 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles5 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles6 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles7 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.setStyles8 = [
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('BBOX',(0,0),(-1,-1),0.5,colors.black),
+            ('ALIGN',(0,0),(-1,-1),'CENTER'),
+            ('VALIGN',(0,0),(-1,-1),'MIDDLE')
+        ]
+
+		self.width, self.heigth = A3
+		self.styles1 = getSampleStyleSheet()
+		self.styles2 = getSampleStyleSheet()
+		self.center = self.styles1["BodyText"]
 		self.center.alignment = TA_CENTER
-		self.left = self.styles["BodyText"]
+		self.left = self.styles2["BodyText"]
 		self.left.alignment = TA_LEFT
 		self.counter = 0
 		
@@ -1027,18 +1070,92 @@ class CargaAcademica(tk.Toplevel):
 
 	def generarReporte(self):
 		self.docenteId = self.selecionarFilaReporteDocente()
-		# self.lapsoId = self.selecionarFilaReporteLapso()
-
-		# self.docente = self.ReporteDocente()
+		self.lapsoId = self.selecionarFilaReporteLapso()
+		self.docente = self.ReporteDocente()
 		self.lapso = self.ReporteLapso()
 
-		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A4)
-		self.pdf.setFontSize(size=10)
-		self.pdf.drawString(255,800,'CARGA ACADÉMICA')
-		self.pdf.drawString(250,785,'Lapso Académico ' + self.lapso)
-		self.pdf.drawImage(logoPDF,490,760,width=80,height=80)
+		self.parametrosReportes = (self.docenteId, self.lapsoId)
+
+		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A3)
+		self.pdf.setFontSize(size=12)
+		self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
+		self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
+		self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
 		self.tablaInicio()
+		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
+		self.listadoMaterias()
+		if self.counter == 10: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---10')
+		elif self.counter == 9: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---9')
+		elif self.counter == 8: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---8')
+		elif self.counter == 7: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---7')
+		elif self.counter == 6: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---6')
+		elif self.counter == 5: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---5')
+		elif self.counter == 4: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---4')
+		elif self.counter == 3: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---3')
+		elif self.counter == 2: 
+			self.pdf.drawString(375,810,'Horarios de clases')
+			print('horario de clases---2')
+		elif self.counter == 1: 
+			self.pdf.drawString(375,850,'Horarios de clases')
+			print('horario de clases---1')
+		else:
+			self.pdf.drawString(375,850,'Horarios de clases')
+			print('horario de clases---0')
+		self.tablaHorarioMorning()
+		self.tablaHorarioAfternon()
+		self.tablaHorarioNinght()
+		if self.counter == 10: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---10')
+		elif self.counter == 9: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---9')
+		elif self.counter == 8: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---8')
+		elif self.counter == 7: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---7')
+		elif self.counter == 6: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---6')
+		elif self.counter == 5: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---5')
+		elif self.counter == 4: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---4')
+		elif self.counter == 3: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---3')
+		elif self.counter == 2: 
+			self.pdf.drawString(330,230,'Adscripción Académico-administrativa')
+			print('adscripcion---2')
+		elif self.counter == 1: 
+			self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+			print('adscripcion---1')
+		else:
+			self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+			print('adscripcion---0')
+		self.tablaHorarioAdcrispcion()
+		self.tablaHorarioObservacion()
 	
 		self.pdf.save()
 		self.setStyles.clear()
@@ -1052,6 +1169,44 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
 		self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
 		self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles3.clear()
+		self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles4.clear()
+		self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles5.clear()
+		self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles6.clear()
+		self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles7.clear()
+		self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.setStyles8.clear()
+		self.setStyles8.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles8.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+		self.setStyles8.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+		self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+		self.counter = 0
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -1096,10 +1251,10 @@ class CargaAcademica(tk.Toplevel):
 				return ''
 
 	def tablaInicio(self):
-		self.tableInicio = Table(self.obtenerTablaInicio(),colWidths=146, rowHeights=15)
+		self.tableInicio = Table(self.obtenerTablaInicio(),colWidths=206, rowHeights=15)
 		self.tableInicio.setStyle(TableStyle(self.setStyles))
 		self.tableInicio.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableInicio.drawOn(self.pdf,5,665)
+		self.tableInicio.drawOn(self.pdf,10,1000)
 		return self.tableInicio
 
 	def obtenerTablaInicio(self):
@@ -1142,16 +1297,17 @@ class CargaAcademica(tk.Toplevel):
 		return self.tabla1
 
 	def tablaMaterias(self):
-		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=73, rowHeights=15)
+		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=103, rowHeights=15)
 		self.tableMaterias.setStyle(TableStyle(self.setStyles2))
 		self.tableMaterias.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableMaterias.drawOn(self.pdf,5,560)
+		self.tableMaterias.drawOn(self.pdf,10,910)
+		
 		return self.tableMaterias
 
 	def obtenerTablaMaterias(self):
 		self.tabla2 = [
 			[Paragraph('Unidad Curricular',self.center),Paragraph('Sección',self.center),Paragraph('Horas',self.center),Paragraph('Departamento',self.center),Paragraph('Subsistemas de educación de pregrado:',self.center),'','',''],
-			['','','','','PNF','','',''],
+			['','','','','PNF','','','PT'],
 			['','','','','Cohorte','Trimestre','Trayecto',''],
 			['','','','','','','','']
 		]
@@ -1161,10 +1317,529 @@ class CargaAcademica(tk.Toplevel):
 		self.setStyles2.append(('SPAN',(2,0),(2,3)))
 		self.setStyles2.append(('SPAN',(3,0),(3,3)))
 		self.setStyles2.append(('SPAN',(6,2),(6,3)))
-		# self.setStyles2.append(('SPAN',(7,1),(7,3)))
+		self.setStyles2.append(('SPAN',(7,1),(7,3)))
 		self.setStyles2.append(('SPAN',(4,1),(6,1)))
 		self.setStyles2.append(('SPAN',(4,2),(5,2)))
 		self.setStyles2.append(('SPAN',(4,2),(4,3)))
 		self.setStyles2.append(('SPAN',(5,2),(5,3)))
 
 		return self.tabla2
+
+	def listadoMaterias(self):
+		self.listadoMateria = Table(self.obtenerlistadoMaterias(),colWidths=103, rowHeights=40)
+		self.listadoMateria.setStyle(TableStyle(self.setStyles3))
+		self.listadoMateria.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia----10')
+		elif self.counter == 9: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----9')
+		elif self.counter == 8: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----8')
+		elif self.counter == 7: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----7')
+		elif self.counter == 6: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----6')
+		elif self.counter == 5: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----5')
+		elif self.counter == 4: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----4')
+		elif self.counter == 3: 
+			self.listadoMateria.drawOn(self.pdf,68,125)
+			print('materia-----3')
+		elif self.counter == 2: 
+			self.listadoMateria.drawOn(self.pdf,10,830)
+			print('materia-----2')
+		elif self.counter == 1: 
+			self.listadoMateria.drawOn(self.pdf,10,870)
+			print('materia-----1')
+		else:
+			self.listadoMateria.drawOn(self.pdf,10,870)
+			print('materia-----0')
+		
+		return self.listadoMaterias
+
+	def obtenerlistadoMaterias(self):
+		self.listado = [
+			[Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center),Paragraph('',self.center)]
+		]
+
+		self.obtenermaterias = self.conexion(
+            'SELECT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
+            self.parametrosReportes).fetchall()
+
+		array1 = []
+		array2 = []
+		array3 = []
+		array4 = []
+		array5 = []
+		array6 = []
+		array7 = []
+		array8 = []
+		array9 = []
+		array10 = []
+
+		for row in self.obtenermaterias:
+			if self.counter == 0: 
+				array1.append(Paragraph(row[0],self.center))
+				array1.append(Paragraph(row[1],self.center))
+				array1.append(Paragraph(row[2],self.center))
+				array1.append(Paragraph(row[3],self.center))
+				array1.append(Paragraph(row[4],self.center))
+				array1.append(Paragraph(row[5],self.center))
+				array1.append(Paragraph(row[6],self.center))
+				array1.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 1:
+				array2.append(Paragraph(row[0],self.center))
+				array2.append(Paragraph(row[1],self.center))
+				array2.append(Paragraph(row[2],self.center))
+				array2.append(Paragraph(row[3],self.center))
+				array2.append(Paragraph(row[4],self.center))
+				array2.append(Paragraph(row[5],self.center))
+				array2.append(Paragraph(row[6],self.center))
+				array2.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 2:
+				array3.append(Paragraph(row[0],self.center))
+				array3.append(Paragraph(row[1],self.center))
+				array3.append(Paragraph(row[2],self.center))
+				array3.append(Paragraph(row[3],self.center))
+				array3.append(Paragraph(row[4],self.center))
+				array3.append(Paragraph(row[5],self.center))
+				array3.append(Paragraph(row[6],self.center))
+				array3.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 3:
+				array4.append(Paragraph(row[0],self.center))
+				array4.append(Paragraph(row[1],self.center))
+				array4.append(Paragraph(row[2],self.center))
+				array4.append(Paragraph(row[3],self.center))
+				array4.append(Paragraph(row[4],self.center))
+				array4.append(Paragraph(row[5],self.center))
+				array4.append(Paragraph(row[6],self.center))
+				array4.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 4:
+				array5.append(Paragraph(row[0],self.center))
+				array5.append(Paragraph(row[1],self.center))
+				array5.append(Paragraph(row[2],self.center))
+				array5.append(Paragraph(row[3],self.center))
+				array5.append(Paragraph(row[4],self.center))
+				array5.append(Paragraph(row[5],self.center))
+				array5.append(Paragraph(row[6],self.center))
+				array5.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 5:
+				array6.append(Paragraph(row[0],self.center))
+				array6.append(Paragraph(row[1],self.center))
+				array6.append(Paragraph(row[2],self.center))
+				array6.append(Paragraph(row[3],self.center))
+				array6.append(Paragraph(row[4],self.center))
+				array6.append(Paragraph(row[5],self.center))
+				array6.append(Paragraph(row[6],self.center))
+				array6.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 6:
+				array7.append(Paragraph(row[0],self.center))
+				array7.append(Paragraph(row[1],self.center))
+				array7.append(Paragraph(row[2],self.center))
+				array7.append(Paragraph(row[3],self.center))
+				array7.append(Paragraph(row[4],self.center))
+				array7.append(Paragraph(row[5],self.center))
+				array7.append(Paragraph(row[6],self.center))
+				array7.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 7:
+				array8.append(Paragraph(row[0],self.center))
+				array8.append(Paragraph(row[1],self.center))
+				array8.append(Paragraph(row[2],self.center))
+				array8.append(Paragraph(row[3],self.center))
+				array8.append(Paragraph(row[4],self.center))
+				array8.append(Paragraph(row[5],self.center))
+				array8.append(Paragraph(row[6],self.center))
+				array8.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 8:
+				array9.append(Paragraph(row[0],self.center))
+				array9.append(Paragraph(row[1],self.center))
+				array9.append(Paragraph(row[2],self.center))
+				array9.append(Paragraph(row[3],self.center))
+				array9.append(Paragraph(row[4],self.center))
+				array9.append(Paragraph(row[5],self.center))
+				array9.append(Paragraph(row[6],self.center))
+				array9.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)
+			elif self.counter == 9:
+				array10.append(Paragraph(row[0],self.center))
+				array10.append(Paragraph(row[1],self.center))
+				array10.append(Paragraph(row[2],self.center))
+				array10.append(Paragraph(row[3],self.center))
+				array10.append(Paragraph(row[4],self.center))
+				array10.append(Paragraph(row[5],self.center))
+				array10.append(Paragraph(row[6],self.center))
+				array10.append(Paragraph(row[7],self.center))
+				self.counter = self.counter + 1
+				print(self.counter)			
+		
+		if self.counter == 10:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+			self.listado.append(array6)
+			self.listado.append(array7)
+			self.listado.append(array8)
+			self.listado.append(array9)
+			self.listado.append(array10)
+		elif self.counter == 9:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+			self.listado.append(array6)
+			self.listado.append(array7)
+			self.listado.append(array8)
+			self.listado.append(array9)
+		elif self.counter == 8:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+			self.listado.append(array6)
+			self.listado.append(array7)
+			self.listado.append(array8)
+		elif self.counter == 7:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+			self.listado.append(array6)
+			self.listado.append(array7)
+		elif self.counter == 6:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+			self.listado.append(array6)
+		elif self.counter == 5:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+			self.listado.append(array5)
+		elif self.counter == 4:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+			self.listado.append(array4)
+		elif self.counter == 3:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+			self.listado.append(array3)
+		elif self.counter == 2:
+			self.listado.clear()
+			self.listado.append(array1)
+			self.listado.append(array2)
+		elif self.counter == 1:
+			self.listado.clear()
+			self.listado.append(array1)
+
+		return self.listado
+
+	def tablaHorarioMorning(self):
+		self.tableHorarioMorning = Table(self.obtenerTablaHorarioMorning(),colWidths=137, rowHeights=25)
+		self.tableHorarioMorning.setStyle(TableStyle(self.setStyles4))
+		self.tableHorarioMorning.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig----10')
+		elif self.counter == 9: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----9')
+		elif self.counter == 8: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----8')
+		elif self.counter == 7: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----7')
+		elif self.counter == 6: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----6')
+		elif self.counter == 5: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----5')
+		elif self.counter == 4: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----4')
+		elif self.counter == 3: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----3')
+		elif self.counter == 2: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,620)
+			print('mornig-----2')
+		elif self.counter == 1: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,660)
+			print('mornig-----1')
+		else:
+			self.tableHorarioMorning.drawOn(self.pdf,11,660)
+			print('mornig-----0')
+		return self.tableHorarioMorning
+
+	def obtenerTablaHorarioMorning(self):
+		self.morning = [
+            [Paragraph('Horario de Clases Mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('7:10 - 7:55',self.center)],
+            [Paragraph('8:00 - 8:45',self.center)],
+            [Paragraph('8:50 - 9:35',self.center)],
+            [Paragraph('9:40 - 10:25',self.center)],
+            [Paragraph('10:30 - 11:15',self.center)],
+            [Paragraph('11:20 - 12:05',self.center)],
+        ]
+		
+		return self.morning
+
+	def tablaHorarioAfternon(self):
+		self.tableHorarioAfternon = Table(self.obtenerTablaHorarioAfternon(),colWidths=137, rowHeights=25)
+		self.tableHorarioAfternon.setStyle(TableStyle(self.setStyles5))
+		self.tableHorarioAfternon.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon----10')
+		elif self.counter == 9: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----9')
+		elif self.counter == 8: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----8')
+		elif self.counter == 7: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----7')
+		elif self.counter == 6: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----6')
+		elif self.counter == 5: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----5')
+		elif self.counter == 4: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----4')
+		elif self.counter == 3: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----3')
+		elif self.counter == 2: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,440)
+			print('afternon-----2')
+		elif self.counter == 1: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,480)
+			print('afternon-----1')
+		else:
+			self.tableHorarioAfternon.drawOn(self.pdf,11,480)
+			print('afternon-----0')
+		return self.tableHorarioAfternon
+
+	def obtenerTablaHorarioAfternon(self):
+		self.afternon = [
+            [Paragraph('Horario de Clases Tarde',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('1:05 - 1:55',self.center)],
+            [Paragraph('1:55 - 2:40',self.center)],
+            [Paragraph('2:45 - 3:30',self.center)],
+            [Paragraph('3:45 - 4:20',self.center)],
+            [Paragraph('4:25 - 5:10',self.center)],
+            [Paragraph('5:15 - 6:00',self.center)]
+        ]
+		
+		return self.afternon
+
+	def tablaHorarioNinght(self):
+		self.tableHorarioNinght = Table(self.obtenerTablaHorarioNinght(),colWidths=137, rowHeights=25)
+		self.tableHorarioNinght.setStyle(TableStyle(self.setStyles6))
+		self.tableHorarioNinght.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght----10')
+		elif self.counter == 9: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----9')
+		elif self.counter == 8: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----8')
+		elif self.counter == 7: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----7')
+		elif self.counter == 6: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----6')
+		elif self.counter == 5: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----5')
+		elif self.counter == 4: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----4')
+		elif self.counter == 3: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,290)
+			print('ninght-----3')
+		elif self.counter == 2: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,260)
+			print('ninght-----2')
+		elif self.counter == 1: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,300)
+			print('ninght-----1')
+		else:
+			self.tableHorarioNinght.drawOn(self.pdf,11,300)
+			print('ninght-----0')
+		return self.tableHorarioNinght
+
+	def obtenerTablaHorarioNinght(self):
+		self.ninght = [
+            [Paragraph('Horario de Clases Noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('6:00 - 6:45',self.center)],
+            [Paragraph('6:45 - 7:30',self.center)],
+            [Paragraph('7:35 - 8:20',self.center)],
+            [Paragraph('8:20 - 9:05',self.center)],
+            [Paragraph('9:05 - 9:50',self.center)],
+            [Paragraph('9:50 - 10:35',self.center)]
+        ]
+		
+		return self.ninght
+
+	def tablaHorarioAdcrispcion(self):
+		self.tableHorarioAdcrispcion = Table(self.obtenerTablaHorarioAdcrispcion(),colWidths=206, rowHeights=17)
+		self.tableHorarioAdcrispcion.setStyle(TableStyle(self.setStyles7))
+		self.tableHorarioAdcrispcion.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe----10')
+		elif self.counter == 9: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----9')
+		elif self.counter == 8: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----8')
+		elif self.counter == 7: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----7')
+		elif self.counter == 6: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----6')
+		elif self.counter == 5: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----5')
+		elif self.counter == 4: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----4')
+		elif self.counter == 3: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----3')
+		elif self.counter == 2: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,185)
+			print('jefe-----2')
+		elif self.counter == 1: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,225)
+			print('jefe-----1')
+		else:
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,225)
+			print('jefe-----0')
+		return self.tableHorarioAdcrispcion
+
+	def obtenerTablaHorarioAdcrispcion(self):
+		self.adcrispcion = [
+            [Paragraph('Departamento de Adscripción',self.center)],
+            [Paragraph('Horario elaborado por:',self.center)]
+        ]
+		
+		self.adcrispcion[0].append('')
+		self.setStyles7.append(('SPAN',(0,0),(1,0)))
+		self.adcrispcion[0].append(Paragraph('Informática',self.center))
+		self.adcrispcion[0].append('')
+		self.setStyles7.append(('SPAN',(2,0),(3,0)))
+		self.adcrispcion[1].append(Paragraph('jose',self.center))
+		self.adcrispcion[1].append(Paragraph('Cargo:',self.center))
+		self.adcrispcion[1].append(Paragraph('jefe',self.center))
+		
+		return self.adcrispcion
+	
+	def tablaHorarioObservacion(self):
+		self.tableHorarioObservacion = Table(self.obtenerTablaHorarioObservacion(),colWidths=117, rowHeights=25)
+		self.tableHorarioObservacion.setStyle(TableStyle(self.setStyles8))
+		self.tableHorarioObservacion.wrapOn(self.pdf,self.width,self.heigth)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion----10')
+		elif self.counter == 9: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----9')
+		elif self.counter == 8: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----8')
+		elif self.counter == 7: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----7')
+		elif self.counter == 6: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----6')
+		elif self.counter == 5: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----5')
+		elif self.counter == 4: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----4')
+		elif self.counter == 3: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----3')
+		elif self.counter == 2: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,110)
+			print('observacion-----2')
+		elif self.counter == 1: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,150)
+			print('observacion-----1')
+		else:
+			self.tableHorarioObservacion.drawOn(self.pdf,12,150)
+			print('observacion-----0')
+		return self.tableHorarioObservacion
+
+	def obtenerTablaHorarioObservacion(self):
+		self.observacion = [
+            [Paragraph('Labora en otra empresa: ',self.center)],
+			[Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
+        ]
+		
+		self.observacion[0].append(Paragraph('Si',self.center))
+		self.observacion[0].append(Paragraph('Especifique:',self.center))
+		self.setStyles8.append(('SPAN',(3,0),(6,0)))
+
+		return self.observacion

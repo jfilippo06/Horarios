@@ -62,7 +62,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryDEntry.grid(column=1,row=0)
         ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command=self.RegistrarDepartamento,width=26).grid(row=1,column=0)
         ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command=self.editarDepartamento,width=26).grid(row=2,column=0)
-        ttk.Button(self.frameDEntry, text='ELIMINAR DEPARTAMENTO', command='',width=26).grid(row=3,column=0)
+        ttk.Button(self.frameDEntry, text='ELIMINAR DEPARTAMENTO', command=self.eliminarDepartamento,width=26).grid(row=3,column=0)
 
         self.framePEntry = ttk.Labelframe(self.container)
         self.framePEntry.grid(column=4,row=0)
@@ -70,8 +70,8 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryPEntry = ttk.Entry(self.framePEntry,width=15)
         self.entryPEntry.grid(column=1,row=0)
         ttk.Button(self.framePEntry, text='REGISTRAR PT', command=self.RegistrarPt,width=15).grid(row=1,column=0)
-        ttk.Button(self.framePEntry, text='EDITAR PT', command='',width=15).grid(row=2,column=0)
-        ttk.Button(self.framePEntry, text='ELIMINAR PT', command='',width=15).grid(row=3,column=0)
+        ttk.Button(self.framePEntry, text='EDITAR PT', command=self.editarPt,width=15).grid(row=2,column=0)
+        ttk.Button(self.framePEntry, text='ELIMINAR PT', command=self.eliminarPt,width=15).grid(row=3,column=0)
 
         self.frameUnidadesCurriculares = ttk.Labelframe(self)
         self.frameUnidadesCurriculares.grid(column=0,row=1,padx=5)
@@ -93,9 +93,9 @@ class Unidades_curriculares(tk.Toplevel):
 
         self.frameButton = ttk.Labelframe(self)
         self.frameButton.grid(column=0,row=2,padx=5)
-        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - HORA',width=55).grid(row=0,column=0)
-        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - DEPARTAMENTO',width=55).grid(row=0,column=1)
-        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - PT',width=55).grid(row=0,column=2)
+        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - HORA',width=55, command=self.modificarHora).grid(row=0,column=0)
+        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - DEPARTAMENTO',width=55, command=self.modificarDepartamento).grid(row=0,column=1)
+        ttk.Button(self.frameButton, text='AGREGAR/MODIFICAR - PT',width=55, command=self.modificarPt).grid(row=0,column=2)
 
         self.MostrarDatosHora()
         self.MostrarDatosDepartamento()
@@ -258,3 +258,87 @@ class Unidades_curriculares(tk.Toplevel):
                 self.LimpiarCeldaDEntry()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el departamento a editar.')
+
+    def editarPt(self):
+        if self.ValidarCeldaPEntry() and self.treePt.selection():
+            if messagebox.askyesno('Edit','¿Desea editar el PT selecionado?'):
+                self.query = 'UPDATE pt SET Pt = ? WHERE Id = ?'
+                self.parametros = (self.entryPEntry.get())
+                self.id = self.selecionarFilaPt()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosPt()
+                self.LimpiarCeldaPEntry()
+                messagebox.showinfo(title='Info', message='PT Editado Correctamente.')
+            else:
+                self.MostrarDatosPt()
+                self.LimpiarCeldaPEntry()
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione el PT a editar.')
+
+    def eliminarDepartamento(self):
+        if self.treeDepartamento.selection():
+            if messagebox.askyesno('Delete','¿Desea eliminar el departamento selecionado?'):
+                self.query = 'DELETE FROM departamento WHERE Id = ?'
+                self.parametros = self.selecionarFilaDepartamento()
+                self.conexion(self.query, (self.parametros,)) 
+                self.MostrarDatosDepartamento()
+                messagebox.showinfo(title='Info', message='Departamento eliminado correctamente.')
+            else:
+                self.MostrarDatosDepartamento()
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione un deparmento a eliminar.')
+
+    def eliminarPt(self):
+        if self.treePt.selection():
+            if messagebox.askyesno('Delete','¿Desea eliminar el PT selecionado?'):
+                self.query = 'DELETE FROM pt WHERE Id = ?'
+                self.parametros = self.selecionarFilaPt()
+                self.conexion(self.query, (self.parametros,)) 
+                self.MostrarDatosPt()
+                messagebox.showinfo(title='Info', message='PT eliminado correctamente.')
+            else:
+                self.MostrarDatosPt()
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione un PT a eliminar.')
+
+    def modificarHora(self):
+        if self.treeHora.selection() and self.treeUnidadesCurriculares.selection():
+            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
+                self.query = 'UPDATE unidad_curricular SET Hora = ? WHERE Id = ?'
+                self.parametros = (self.hora())
+                self.id = self.selecionarFilaUnidadesCurriculares()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosUnidadesCurriculares()
+                messagebox.showinfo(title='Info', message='Hora Editada Correctamente.')
+            else:
+                self.MostrarDatosUnidadesCurriculares()
+        else:
+            messagebox.showwarning(title='Warning', message='Seleccione una hora y la unidad curricular a editar.')
+
+    def modificarDepartamento(self):
+        if self.treeDepartamento.selection() and self.treeUnidadesCurriculares.selection():
+            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
+                self.query = 'UPDATE unidad_curricular SET Departamento = ? WHERE Id = ?'
+                self.parametros = (self.departamento())
+                self.id = self.selecionarFilaUnidadesCurriculares()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosUnidadesCurriculares()
+                messagebox.showinfo(title='Info', message='Departamento Editada Correctamente.')
+            else:
+                self.MostrarDatosUnidadesCurriculares()
+        else:
+            messagebox.showwarning(title='Warning', message='Seleccione una departamento y la unidad curricular a editar.')
+
+    def modificarPt(self):
+        if self.treePt.selection() and self.treeUnidadesCurriculares.selection():
+            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
+                self.query = 'UPDATE unidad_curricular SET Pt = ? WHERE Id = ?'
+                self.parametros = (self.pt())
+                self.id = self.selecionarFilaUnidadesCurriculares()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosUnidadesCurriculares()
+                messagebox.showinfo(title='Info', message='PT Editada Correctamente.')
+            else:
+                self.MostrarDatosUnidadesCurriculares()
+        else:
+            messagebox.showwarning(title='Warning', message='Seleccione un PT y la unidad curricular a editar.')
