@@ -1283,7 +1283,7 @@ class CargaAcademica(tk.Toplevel):
 		return self.tabla1
 
 	def tablaMaterias(self):
-		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=103, rowHeights=15)
+		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=103, rowHeights=25)
 		self.tableMaterias.setStyle(TableStyle(self.setStyles2))
 		self.tableMaterias.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
