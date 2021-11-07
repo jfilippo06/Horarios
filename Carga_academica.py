@@ -1077,11 +1077,75 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaInicio()
 		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
 		self.tablaMaterias()
-		self.pdf.drawString(375,880,'Horarios de clases')
+		if self.counter == 10: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---10')
+		elif self.counter == 9: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---9')
+		elif self.counter == 8: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---8')
+		elif self.counter == 7: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---7')
+		elif self.counter == 6: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---6')
+		elif self.counter == 5: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---5')
+		elif self.counter == 4: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---4')
+		elif self.counter == 3: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---3')
+		elif self.counter == 2: 
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---2')
+		elif self.counter == 1: 
+			self.pdf.drawString(375,870,'Horarios de clases')
+			print('horario de clases---1')
+		else:
+			self.pdf.drawString(375,880,'Horarios de clases')
+			print('horario de clases---0')
 		self.tablaHorarioMorning()
 		self.tablaHorarioAfternon()
 		self.tablaHorarioNinght()
-		self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+		if self.counter == 10: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---10')
+		elif self.counter == 9: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---9')
+		elif self.counter == 8: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---8')
+		elif self.counter == 7: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---7')
+		elif self.counter == 6: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---6')
+		elif self.counter == 5: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---5')
+		elif self.counter == 4: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---4')
+		elif self.counter == 3: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---3')
+		elif self.counter == 2: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---2')
+		elif self.counter == 1: 
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---1')
+		else:
+			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			print('adscripcion---0')
 		self.tablaHorarioAdcrispcion()
 		self.tablaHorarioObservacion()
 	
@@ -1222,7 +1286,41 @@ class CargaAcademica(tk.Toplevel):
 		self.tableMaterias = Table(self.obtenerTablaMaterias(),colWidths=103, rowHeights=15)
 		self.tableMaterias.setStyle(TableStyle(self.setStyles2))
 		self.tableMaterias.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableMaterias.drawOn(self.pdf,10,910)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia----10')
+		elif self.counter == 9: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----9')
+		elif self.counter == 8: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----8')
+		elif self.counter == 7: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----7')
+		elif self.counter == 6: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----6')
+		elif self.counter == 5: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----5')
+		elif self.counter == 4: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----4')
+		elif self.counter == 3: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----3')
+		elif self.counter == 2: 
+			self.tableMaterias.drawOn(self.pdf,68,125)
+			print('materia-----2')
+		elif self.counter == 1: 
+			self.tableMaterias.drawOn(self.pdf,10,890)
+			print('materia-----1')
+		else:
+			self.tableMaterias.drawOn(self.pdf,10,910)
+			print('materia-----0')
+		
 		return self.tableMaterias
 
 	def obtenerTablaMaterias(self):
@@ -1248,8 +1346,7 @@ class CargaAcademica(tk.Toplevel):
             'SELECT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
             self.parametrosReportes).fetchall()
 		for row in self.obtenermaterias:
-			unidad = row[0]
-			self.tabla2.append(Paragraph(unidad,self.left))
+			self.tabla2.append(row)
 			self.counter = self.counter + 1
 			print(self.counter)
 
@@ -1259,7 +1356,40 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioMorning = Table(self.obtenerTablaHorarioMorning(),colWidths=137, rowHeights=25)
 		self.tableHorarioMorning.setStyle(TableStyle(self.setStyles3))
 		self.tableHorarioMorning.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioMorning.drawOn(self.pdf,11,690)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig----10')
+		elif self.counter == 9: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----9')
+		elif self.counter == 8: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----8')
+		elif self.counter == 7: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----7')
+		elif self.counter == 6: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----6')
+		elif self.counter == 5: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----5')
+		elif self.counter == 4: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----4')
+		elif self.counter == 3: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----3')
+		elif self.counter == 2: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----2')
+		elif self.counter == 1: 
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----1')
+		else:
+			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			print('mornig-----0')
 		return self.tableHorarioMorning
 
 	def obtenerTablaHorarioMorning(self):
@@ -1279,7 +1409,40 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioAfternon = Table(self.obtenerTablaHorarioAfternon(),colWidths=137, rowHeights=25)
 		self.tableHorarioAfternon.setStyle(TableStyle(self.setStyles4))
 		self.tableHorarioAfternon.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon----10')
+		elif self.counter == 9: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----9')
+		elif self.counter == 8: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----8')
+		elif self.counter == 7: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----7')
+		elif self.counter == 6: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----6')
+		elif self.counter == 5: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----5')
+		elif self.counter == 4: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----4')
+		elif self.counter == 3: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----3')
+		elif self.counter == 2: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----2')
+		elif self.counter == 1: 
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----1')
+		else:
+			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			print('afternon-----0')
 		return self.tableHorarioAfternon
 
 	def obtenerTablaHorarioAfternon(self):
@@ -1299,7 +1462,40 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioNinght = Table(self.obtenerTablaHorarioNinght(),colWidths=137, rowHeights=25)
 		self.tableHorarioNinght.setStyle(TableStyle(self.setStyles5))
 		self.tableHorarioNinght.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioNinght.drawOn(self.pdf,11,330)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght----10')
+		elif self.counter == 9: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----9')
+		elif self.counter == 8: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----8')
+		elif self.counter == 7: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----7')
+		elif self.counter == 6: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----6')
+		elif self.counter == 5: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----5')
+		elif self.counter == 4: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----4')
+		elif self.counter == 3: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----3')
+		elif self.counter == 2: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----2')
+		elif self.counter == 1: 
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----1')
+		else:
+			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			print('ninght-----0')
 		return self.tableHorarioNinght
 
 	def obtenerTablaHorarioNinght(self):
@@ -1319,7 +1515,40 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioAdcrispcion = Table(self.obtenerTablaHorarioAdcrispcion(),colWidths=206, rowHeights=17)
 		self.tableHorarioAdcrispcion.setStyle(TableStyle(self.setStyles6))
 		self.tableHorarioAdcrispcion.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe----10')
+		elif self.counter == 9: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----9')
+		elif self.counter == 8: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----8')
+		elif self.counter == 7: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----7')
+		elif self.counter == 6: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----6')
+		elif self.counter == 5: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----5')
+		elif self.counter == 4: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----4')
+		elif self.counter == 3: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----3')
+		elif self.counter == 2: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----2')
+		elif self.counter == 1: 
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----1')
+		else:
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			print('jefe-----0')
 		return self.tableHorarioAdcrispcion
 
 	def obtenerTablaHorarioAdcrispcion(self):
@@ -1343,7 +1572,40 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioObservacion = Table(self.obtenerTablaHorarioObservacion(),colWidths=117, rowHeights=25)
 		self.tableHorarioObservacion.setStyle(TableStyle(self.setStyles7))
 		self.tableHorarioObservacion.wrapOn(self.pdf,self.width,self.heigth)
-		self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+		if self.counter == 10: 
+			# self.pdf.showPage()
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion----10')
+		elif self.counter == 9: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----9')
+		elif self.counter == 8: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----8')
+		elif self.counter == 7: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----7')
+		elif self.counter == 6: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----6')
+		elif self.counter == 5: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----5')
+		elif self.counter == 4: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----4')
+		elif self.counter == 3: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----3')
+		elif self.counter == 2: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----2')
+		elif self.counter == 1: 
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----1')
+		else:
+			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			print('observacion-----0')
 		return self.tableHorarioObservacion
 
 	def obtenerTablaHorarioObservacion(self):
