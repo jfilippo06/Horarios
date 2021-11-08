@@ -1086,10 +1086,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaMaterias()
 		self.listadoMaterias()
 		if self.counter == 10: 
-			self.pdf.drawString(375,880,'Horarios de clases')
+			self.pdf.drawString(375,490,'Horarios de clases')
 			print('horario de clases---10')
 		elif self.counter == 9: 
-			self.pdf.drawString(375,880,'Horarios de clases')
+			self.pdf.drawString(375,530,'Horarios de clases')
 			print('horario de clases---9')
 		elif self.counter == 8: 
 			self.pdf.drawString(375,570,'Horarios de clases')
@@ -1122,10 +1122,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tablaHorarioAfternon()
 		self.tablaHorarioNinght()
 		if self.counter == 10: 
-			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
 			print('adscripcion---10')
 		elif self.counter == 9: 
-			self.pdf.drawString(330,305,'Adscripción Académico-administrativa')
+			self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
 			print('adscripcion---9')
 		elif self.counter == 8: 
 			self.pdf.showPage()
@@ -1334,10 +1334,10 @@ class CargaAcademica(tk.Toplevel):
 		self.listadoMateria.setStyle(TableStyle(self.setStyles3))
 		self.listadoMateria.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
-			self.listadoMateria.drawOn(self.pdf,68,125)
+			self.listadoMateria.drawOn(self.pdf,10,510)
 			print('materia----10')
 		elif self.counter == 9: 
-			self.listadoMateria.drawOn(self.pdf,68,125)
+			self.listadoMateria.drawOn(self.pdf,10,550)
 			print('materia-----9')
 		elif self.counter == 8: 
 			self.listadoMateria.drawOn(self.pdf,10,590)
@@ -1585,10 +1585,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioMorning.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
 			# self.pdf.showPage()
-			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			self.tableHorarioMorning.drawOn(self.pdf,11,300)
 			print('mornig----10')
 		elif self.counter == 9: 
-			self.tableHorarioMorning.drawOn(self.pdf,11,690)
+			self.tableHorarioMorning.drawOn(self.pdf,11,340)
 			print('mornig-----9')
 		elif self.counter == 8: 
 			self.tableHorarioMorning.drawOn(self.pdf,11,380)
@@ -1638,10 +1638,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioAfternon.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
 			# self.pdf.showPage()
-			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			self.tableHorarioAfternon.drawOn(self.pdf,11,120)
 			print('afternon----10')
 		elif self.counter == 9: 
-			self.tableHorarioAfternon.drawOn(self.pdf,11,510)
+			self.tableHorarioAfternon.drawOn(self.pdf,11,160)
 			print('afternon-----9')
 		elif self.counter == 8: 
 			self.tableHorarioAfternon.drawOn(self.pdf,11,195)
@@ -1690,11 +1690,12 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioNinght.setStyle(TableStyle(self.setStyles6))
 		self.tableHorarioNinght.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
-			# self.pdf.showPage()
-			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			self.pdf.showPage()
+			self.tableHorarioNinght.drawOn(self.pdf,11,990)
 			print('ninght----10')
 		elif self.counter == 9: 
-			self.tableHorarioNinght.drawOn(self.pdf,11,330)
+			self.pdf.showPage()
+			self.tableHorarioNinght.drawOn(self.pdf,11,990)
 			print('ninght-----9')
 		elif self.counter == 8: 
 			self.tableHorarioNinght.drawOn(self.pdf,11,10)
@@ -1743,10 +1744,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioAdcrispcion.setStyle(TableStyle(self.setStyles7))
 		self.tableHorarioAdcrispcion.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
-			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,920)
 			print('jefe----10')
 		elif self.counter == 9: 
-			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,255)
+			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,920)
 			print('jefe-----9')
 		elif self.counter == 8: 
 			self.tableHorarioAdcrispcion.drawOn(self.pdf,10,1100)
@@ -1799,10 +1800,10 @@ class CargaAcademica(tk.Toplevel):
 		self.tableHorarioObservacion.setStyle(TableStyle(self.setStyles8))
 		self.tableHorarioObservacion.wrapOn(self.pdf,self.width,self.heigth)
 		if self.counter == 10: 
-			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			self.tableHorarioObservacion.drawOn(self.pdf,12,850)
 			print('observacion----10')
 		elif self.counter == 9: 
-			self.tableHorarioObservacion.drawOn(self.pdf,12,180)
+			self.tableHorarioObservacion.drawOn(self.pdf,12,850)
 			print('observacion-----9')
 		elif self.counter == 8: 
 			self.tableHorarioObservacion.drawOn(self.pdf,12,1030)
