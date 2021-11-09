@@ -24,8 +24,6 @@ class App(tk.Tk):
         self.filemenu1.add_command(label="Salir", command=self.Salir)
         self.menubar.add_cascade(label="Adminitración del Sistema", menu=self.filemenu1)
         self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu2.add_command(label="Manual")
-        self.menubar.add_cascade(label="Ayuda", menu=self.filemenu2)
         self.config(menu=self.menubar)
         # Label:
         tk.Button(self, text="Carga Académica", width=15, height=2,command=self.cargaAcademica).place(x = 60,y = 160)
