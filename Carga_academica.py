@@ -30,8 +30,6 @@ class CargaAcademica(tk.Toplevel):
 		self.filemenu1.add_command(label="Salir", command=self.salir)
 		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
 		self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
-		self.filemenu2.add_command(label="Manual")
-		self.menubar.add_cascade(label="Ayuda", menu=self.filemenu2)
 		self.config(menu=self.menubar)
 		# Frame:
 		self.Frame = ttk.Labelframe(self)
