@@ -11,7 +11,6 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
-from informacion_adicional import informacion_Adicional
 
 class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
@@ -19,7 +18,7 @@ class CargaAcademica(tk.Toplevel):
 		# Config:
 		self.master = master
 		self.title('Carga Académica')
-		self.geometry('940x620')
+		self.geometry('940x670')
 		self.resizable(width=0,height=0)
 		self.iconbitmap(uptpc)
 		# Menu:
@@ -67,8 +66,15 @@ class CargaAcademica(tk.Toplevel):
 		ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
 		self.EntryTelefono = ttk.Entry(self.Frame,width=45)
 		self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
-		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
-		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Labora en otra empresa:',font=('Helvetica',11)).grid(column=0,row=6,padx=5,pady=5)
+		self.labora = tk.StringVar()
+		ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.labora).grid(column=1,row=6,padx=5,pady=5)
+		ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.labora).grid(column=2,row=6,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Especifique:',font=('Helvetica',11)).grid(column=0,row=7,padx=5,pady=5)
+		self.EntryEspecifique = ttk.Entry(self.Frame,width=45)
+		self.EntryEspecifique.grid(column=1,row=7,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
 		# Treeview:
 		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
@@ -84,7 +90,6 @@ class CargaAcademica(tk.Toplevel):
 		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=3,sticky = tk.W + tk.E, padx=5)
 
 		self.MostrarDatos()
-		# self.mostarCohorte()
 
 	def volver(self):
 		self.destroy()
@@ -108,9 +113,11 @@ class CargaAcademica(tk.Toplevel):
 		self.CondicionLaboral.set(0)
 		self.EntryRazon.delete(0, tk.END)
 		self.EntryTelefono.delete(0, tk.END)
+		self.labora.set(0)
+		self.EntryEspecifique.delete(0, tk.END)
 
 	def ValidarCeldas(self):
-		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0       
+		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0 and len(self.labora.get()) != 0 and  len(self.EntryEspecifique.get()) != 0     
 
 	def conexion(self,query,parametros = ()):
 		try:
@@ -141,8 +148,8 @@ class CargaAcademica(tk.Toplevel):
 
 	def RegistrarDocente(self):
 		if self.ValidarCeldas():
-			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?)'
-			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get())
+			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)'
+			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get(),self.labora.get(),self.EntryEspecifique.get())
 			if self.conexion(self.query,self.parametros):
 				self.MostrarDatos()
 				self.LimpiarCeldas()
@@ -183,7 +190,7 @@ class CargaAcademica(tk.Toplevel):
 				self.seleccion = self.selecionarFila()
 				self.new = tk.Toplevel()
 				self.new.title('Editar Docente')
-				self.new.geometry('400x400')
+				self.new.geometry('400x480')
 				self.new.resizable(width=0,height=0)
 				self.new.iconbitmap(uptpc)
 				self.frame = ttk.Labelframe(self.new)
@@ -220,6 +227,13 @@ class CargaAcademica(tk.Toplevel):
 				ttk.Label(self.frame,text='Numero telefónico:').grid(row=11,column=0,padx=5,pady=5)
 				self.entryEditarTelefono = ttk.Entry(self.frame,width=40)
 				self.entryEditarTelefono.grid(row=11,column=1,padx=5,pady=5)
+				self.laboraEditar = tk.StringVar()
+				ttk.Label(self.frame, text='Labora en otra empresa:').grid(row=12,column=0)
+				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.laboraEditar).grid(row=13,column=0)
+				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.laboraEditar).grid(row=13,column=1)
+				ttk.Label(self.frame,text='Especifique:').grid(row=14,column=0,padx=5,pady=5)
+				self.entryEditarEspecifique = ttk.Entry(self.frame,width=40)
+				self.entryEditarEspecifique.grid(row=14,column=1,padx=5,pady=5)
 				ttk.Button(self.new,text='Editar', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)				
 				self.new.mainloop()		
 			else:
