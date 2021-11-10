@@ -243,7 +243,7 @@ class CargaAcademica(tk.Toplevel):
 	
 
 	def validarCeldasEditar(self):
-		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0
+		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0 and len(self.laboraEditar.get())  != 0 and len(self.entryEditarEspecifique.get()) != 0
 	
 	def LimpiarCeldasEditar(self):
 		self.entryEditarNombre.delete(0, tk.END)
@@ -256,6 +256,8 @@ class CargaAcademica(tk.Toplevel):
 		self.CondicionLaboralEditar.set(0)
 		self.entryEditarRazon.delete(0, tk.END)
 		self.entryEditarTelefono.delete(0,tk.END)
+		self.laboraEditar.set(0)
+		self.entryEditarEspecifique.delete(0, tk.END)
 
 	def botonEditar(self):
 		if self.validarCeldasEditar():
@@ -269,6 +271,8 @@ class CargaAcademica(tk.Toplevel):
 			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
 			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
 			self.query10 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
+			self.query11 = 'UPDATE docente SET Labore = ? WHERE id = ?'
+			self.query12 = 'UPDATE docente SET Especifique = ? WHERE id = ?'
 			self.id = self.seleccion
 			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
 			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
@@ -280,6 +284,8 @@ class CargaAcademica(tk.Toplevel):
 			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
 			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
 			self.conexion(self.query10,(self.entryEditarTelefono.get(), self.id))
+			self.conexion(self.query11,(self.laboraEditar.get(), self.id))
+			self.conexion(self.query12,(self.entryEditarEspecifique.get(), self.id))
 			self.LimpiarCeldasEditar()
 			self.LimpiarCeldas()
 			self.new.destroy()
@@ -2917,8 +2923,11 @@ class CargaAcademica(tk.Toplevel):
 			[Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
         ]
 		
-		self.observacion[0].append(Paragraph('Si',self.center))
+		self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.observacion[0].append(Paragraph(self.labore,self.center))
 		self.observacion[0].append(Paragraph('Especifique:',self.center))
+		self.especifique = self.materia('SELECT docente.Especifique from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.observacion[0].append(Paragraph(self.especifique,self.center))
 		self.setStyles8.append(('SPAN',(3,0),(6,0)))
 
 		return self.observacion
