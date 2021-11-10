@@ -959,7 +959,7 @@ class CargaAcademica(tk.Toplevel):
 	def reportes(self):
 		self.newReportes = tk.Toplevel()
 		self.newReportes.title('Reportes')
-		self.newReportes.geometry('350x360')
+		self.newReportes.geometry('350x470')
 		self.newReportes.resizable(width=0,height=0)
 		self.newReportes.iconbitmap(uptpc)
 		ttk.Label(self.newReportes, text='REPORTES DE DOCENTES',font=('Helvetica',14)).place(x=45,y=5)
@@ -991,7 +991,20 @@ class CargaAcademica(tk.Toplevel):
 		self.treeReportesLapso.configure(yscroll=self.scrollbarReportesLapso.set)
 		self.scrollbarReportesLapso.grid(column=1,row=0, sticky='ns')
 
-		ttk.Button(self.framecontainer2, text='GENERAR REPORTE', command=self.generarReporte).grid(row=3,column=0,padx=0,pady=0)
+		self.frameAdscripcion = ttk.Labelframe(self.framecontainer2)
+		self.frameAdscripcion.grid(column=0,row=2,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Departamento de Ascripción:').grid(column=0,row=0)
+		self.entryAdscripcion = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryAdscripcion.grid(column= 1, row=0,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Horario elaborado por:').grid(column=0,row=1)
+		self.entryHorario = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryHorario.grid(column= 1, row=1,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Cargo:').grid(column=0,row=2)
+		self.entryCargo = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryCargo.grid(column= 1, row=2,pady=5,padx=5)
+
+
+		ttk.Button(self.framecontainer2, text='GENERAR REPORTE', command=self.generarReporte).grid(row=3,column=0,padx=0,pady=5)
 
 		self.MostrarReporteDocente()
 		self.MostrarReporteLapso()
@@ -2839,12 +2852,12 @@ class CargaAcademica(tk.Toplevel):
 		
 		self.adcrispcion[0].append('')
 		self.setStyles7.append(('SPAN',(0,0),(1,0)))
-		self.adcrispcion[0].append(Paragraph('Informática',self.center))
+		self.adcrispcion[0].append(Paragraph(self.entryAdscripcion.get(),self.center))
 		self.adcrispcion[0].append('')
 		self.setStyles7.append(('SPAN',(2,0),(3,0)))
-		self.adcrispcion[1].append(Paragraph('jose',self.center))
+		self.adcrispcion[1].append(Paragraph(self.entryHorario.get(),self.center))
 		self.adcrispcion[1].append(Paragraph('Cargo:',self.center))
-		self.adcrispcion[1].append(Paragraph('jefe',self.center))
+		self.adcrispcion[1].append(Paragraph(self.entryCargo.get(),self.center))
 		
 		return self.adcrispcion
 	
