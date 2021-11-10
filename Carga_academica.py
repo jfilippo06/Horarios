@@ -26,7 +26,6 @@ class CargaAcademica(tk.Toplevel):
 		self.menubar = tk.Menu(self)
 		self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
 		self.filemenu1.add_command(label="Reportes", command=self.reportes)
-		self.filemenu1.add_command(label="Información adicional docente", command=self.informacionAdcional)
 		self.filemenu1.add_command(label="Volver", command=self.volver)
 		self.filemenu1.add_command(label="Salir", command=self.salir)
 		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
@@ -1076,9 +1075,6 @@ class CargaAcademica(tk.Toplevel):
 		self.counter = 0
 		
 		self.newReportes.mainloop()
-
-	def informacionAdcional(self):
-		informacion_Adicional(self)
 
 	def generarReporte(self):
 		self.docenteId = self.selecionarFilaReporteDocente()
