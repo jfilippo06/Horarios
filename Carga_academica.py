@@ -11,6 +11,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from informacion_adicional import informacion_Adicional
 
 class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
@@ -1077,7 +1078,7 @@ class CargaAcademica(tk.Toplevel):
 		self.newReportes.mainloop()
 
 	def informacionAdcional(self):
-		pass
+		informacion_Adicional(self)
 
 	def generarReporte(self):
 		self.docenteId = self.selecionarFilaReporteDocente()
