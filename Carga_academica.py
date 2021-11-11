@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import filedialog
 import sqlite3
 from rutas import *
 import traceback
@@ -18,14 +19,13 @@ class CargaAcademica(tk.Toplevel):
 		# Config:
 		self.master = master
 		self.title('Carga Académica')
-		self.geometry('940x620')
+		self.geometry('940x670')
 		self.resizable(width=0,height=0)
 		self.iconbitmap(uptpc)
 		# Menu:
 		self.menubar = tk.Menu(self)
 		self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
 		self.filemenu1.add_command(label="Reportes", command=self.reportes)
-		self.filemenu1.add_command(label="Información adicional docente", command=self.informacionAdcional)
 		self.filemenu1.add_command(label="Volver", command=self.volver)
 		self.filemenu1.add_command(label="Salir", command=self.salir)
 		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
@@ -67,8 +67,15 @@ class CargaAcademica(tk.Toplevel):
 		ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
 		self.EntryTelefono = ttk.Entry(self.Frame,width=45)
 		self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
-		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
-		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=6,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Labora en otra empresa:',font=('Helvetica',11)).grid(column=0,row=6,padx=5,pady=5)
+		self.labora = tk.StringVar()
+		ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.labora).grid(column=1,row=6,padx=5,pady=5)
+		ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.labora).grid(column=2,row=6,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Especifique:',font=('Helvetica',11)).grid(column=0,row=7,padx=5,pady=5)
+		self.EntryEspecifique = ttk.Entry(self.Frame,width=45)
+		self.EntryEspecifique.grid(column=1,row=7,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
 		# Treeview:
 		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
@@ -84,7 +91,6 @@ class CargaAcademica(tk.Toplevel):
 		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=3,sticky = tk.W + tk.E, padx=5)
 
 		self.MostrarDatos()
-		# self.mostarCohorte()
 
 	def volver(self):
 		self.destroy()
@@ -108,9 +114,11 @@ class CargaAcademica(tk.Toplevel):
 		self.CondicionLaboral.set(0)
 		self.EntryRazon.delete(0, tk.END)
 		self.EntryTelefono.delete(0, tk.END)
+		self.labora.set(0)
+		self.EntryEspecifique.delete(0, tk.END)
 
 	def ValidarCeldas(self):
-		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0       
+		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0 and len(self.labora.get()) != 0 and  len(self.EntryEspecifique.get()) != 0     
 
 	def conexion(self,query,parametros = ()):
 		try:
@@ -141,8 +149,8 @@ class CargaAcademica(tk.Toplevel):
 
 	def RegistrarDocente(self):
 		if self.ValidarCeldas():
-			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?)'
-			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get())
+			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)'
+			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get(),self.labora.get(),self.EntryEspecifique.get())
 			if self.conexion(self.query,self.parametros):
 				self.MostrarDatos()
 				self.LimpiarCeldas()
@@ -183,7 +191,7 @@ class CargaAcademica(tk.Toplevel):
 				self.seleccion = self.selecionarFila()
 				self.new = tk.Toplevel()
 				self.new.title('Editar Docente')
-				self.new.geometry('400x400')
+				self.new.geometry('400x480')
 				self.new.resizable(width=0,height=0)
 				self.new.iconbitmap(uptpc)
 				self.frame = ttk.Labelframe(self.new)
@@ -220,6 +228,13 @@ class CargaAcademica(tk.Toplevel):
 				ttk.Label(self.frame,text='Numero telefónico:').grid(row=11,column=0,padx=5,pady=5)
 				self.entryEditarTelefono = ttk.Entry(self.frame,width=40)
 				self.entryEditarTelefono.grid(row=11,column=1,padx=5,pady=5)
+				self.laboraEditar = tk.StringVar()
+				ttk.Label(self.frame, text='Labora en otra empresa:').grid(row=12,column=0)
+				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.laboraEditar).grid(row=13,column=0)
+				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.laboraEditar).grid(row=13,column=1)
+				ttk.Label(self.frame,text='Especifique:').grid(row=14,column=0,padx=5,pady=5)
+				self.entryEditarEspecifique = ttk.Entry(self.frame,width=40)
+				self.entryEditarEspecifique.grid(row=14,column=1,padx=5,pady=5)
 				ttk.Button(self.new,text='Editar', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)				
 				self.new.mainloop()		
 			else:
@@ -229,7 +244,7 @@ class CargaAcademica(tk.Toplevel):
 	
 
 	def validarCeldasEditar(self):
-		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0
+		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0 and len(self.laboraEditar.get())  != 0 and len(self.entryEditarEspecifique.get()) != 0
 	
 	def LimpiarCeldasEditar(self):
 		self.entryEditarNombre.delete(0, tk.END)
@@ -242,6 +257,8 @@ class CargaAcademica(tk.Toplevel):
 		self.CondicionLaboralEditar.set(0)
 		self.entryEditarRazon.delete(0, tk.END)
 		self.entryEditarTelefono.delete(0,tk.END)
+		self.laboraEditar.set(0)
+		self.entryEditarEspecifique.delete(0, tk.END)
 
 	def botonEditar(self):
 		if self.validarCeldasEditar():
@@ -255,6 +272,8 @@ class CargaAcademica(tk.Toplevel):
 			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
 			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
 			self.query10 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
+			self.query11 = 'UPDATE docente SET Labore = ? WHERE id = ?'
+			self.query12 = 'UPDATE docente SET Especifique = ? WHERE id = ?'
 			self.id = self.seleccion
 			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
 			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
@@ -266,6 +285,8 @@ class CargaAcademica(tk.Toplevel):
 			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
 			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
 			self.conexion(self.query10,(self.entryEditarTelefono.get(), self.id))
+			self.conexion(self.query11,(self.laboraEditar.get(), self.id))
+			self.conexion(self.query12,(self.entryEditarEspecifique.get(), self.id))
 			self.LimpiarCeldasEditar()
 			self.LimpiarCeldas()
 			self.new.destroy()
@@ -620,6 +641,12 @@ class CargaAcademica(tk.Toplevel):
 			self.treeLaboratorio.insert('',tk.END,values=row)
 
 	def registrarMateria(self):
+		self.maximo = self.conexion(
+			'SELECT count(lapso_academico.LapsoAcademico) FROM materias_asignadas INNER JOIN lapso_academico ON lapso_academico.Id = materias_asignadas.Id_lapso_academico WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
+			(self.seleccion,self.selecionarFilaLapsoAcademico())
+		).fetchone()
+
+		self.validar = self.maximo[0]
 		if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
 			if messagebox.askyesno('Registrar','¿Añadir selección?'):
 				self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
@@ -637,6 +664,33 @@ class CargaAcademica(tk.Toplevel):
 					else:
 						if self.laboratorio.get() == 'Si':
 							if self.treeLaboratorio.selection():
+								if self.validar == 10:
+									messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+								else:	
+									self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
+									self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
+									self.conexion(self.query,self.parametros)
+					
+									self.data = self.conexion(
+									'SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
+									self.parametros).fetchone()
+									self.id_materias_asignadas = self.data[0]
+									
+									self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+									self.query1 = ("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)")
+									self.conexion(self.query1,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+
+									self.query2 = ('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)')
+									self.conexion(self.query2,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+			
+									self.MostrarDatosGestionar()
+									messagebox.showinfo(title='info', message='Materia registrada  SI')
+							else:
+								messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
+						elif self.laboratorio.get() == 'No':
+							if self.validar == 10:
+								messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+							else:
 								self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
 								self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
 								self.conexion(self.query,self.parametros)
@@ -649,30 +703,9 @@ class CargaAcademica(tk.Toplevel):
 								self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
 								self.query1 = ("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)")
 								self.conexion(self.query1,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-
-								self.query2 = ('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)')
-								self.conexion(self.query2,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-		
+								
 								self.MostrarDatosGestionar()
-								messagebox.showinfo(title='info', message='Materia registrada  SI')
-							else:
-								messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
-						elif self.laboratorio.get() == 'No':
-							self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-							self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
-							self.conexion(self.query,self.parametros)
-			
-							self.data = self.conexion(
-							'SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
-							self.parametros).fetchone()
-							self.id_materias_asignadas = self.data[0]
-							
-							self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-							self.query1 = ("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)")
-							self.conexion(self.query1,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-							
-							self.MostrarDatosGestionar()
-							messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+								messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
 						else:
 							messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"')
 			else:
@@ -959,7 +992,7 @@ class CargaAcademica(tk.Toplevel):
 	def reportes(self):
 		self.newReportes = tk.Toplevel()
 		self.newReportes.title('Reportes')
-		self.newReportes.geometry('350x360')
+		self.newReportes.geometry('350x470')
 		self.newReportes.resizable(width=0,height=0)
 		self.newReportes.iconbitmap(uptpc)
 		ttk.Label(self.newReportes, text='REPORTES DE DOCENTES',font=('Helvetica',14)).place(x=45,y=5)
@@ -991,7 +1024,20 @@ class CargaAcademica(tk.Toplevel):
 		self.treeReportesLapso.configure(yscroll=self.scrollbarReportesLapso.set)
 		self.scrollbarReportesLapso.grid(column=1,row=0, sticky='ns')
 
-		ttk.Button(self.framecontainer2, text='GENERAR REPORTE', command=self.generarReporte).grid(row=3,column=0,padx=0,pady=0)
+		self.frameAdscripcion = ttk.Labelframe(self.framecontainer2)
+		self.frameAdscripcion.grid(column=0,row=2,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Departamento de Ascripción:').grid(column=0,row=0)
+		self.entryAdscripcion = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryAdscripcion.grid(column= 1, row=0,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Horario elaborado por:').grid(column=0,row=1)
+		self.entryHorario = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryHorario.grid(column= 1, row=1,pady=5,padx=5)
+		ttk.Label(self.frameAdscripcion, text='Cargo:').grid(column=0,row=2)
+		self.entryCargo = ttk.Entry(self.frameAdscripcion,width=17)
+		self.entryCargo.grid(column= 1, row=2,pady=5,padx=5)
+
+
+		ttk.Button(self.framecontainer2, text='GENERAR REPORTE', command=self.generarReporte).grid(row=3,column=0,padx=0,pady=5)
 
 		self.MostrarReporteDocente()
 		self.MostrarReporteLapso()
@@ -1063,152 +1109,158 @@ class CargaAcademica(tk.Toplevel):
 		
 		self.newReportes.mainloop()
 
-	def informacionAdcional(self):
-		pass
-
 	def generarReporte(self):
-		self.docenteId = self.selecionarFilaReporteDocente()
-		self.lapsoId = self.selecionarFilaReporteLapso()
-		self.docente = self.ReporteDocente()
-		self.lapso = self.ReporteLapso()
+		if self.treeReportes.selection() and self.treeReportesLapso.selection() and len(self.entryAdscripcion.get()) != 0 and len(self.entryHorario.get()) != 0 and len(self.entryCargo.get()) != 0:
+			
+			self.docenteId = self.selecionarFilaReporteDocente()
+			self.lapsoId = self.selecionarFilaReporteLapso()
+			self.docente = self.ReporteDocente()
+			self.lapso = self.ReporteLapso()
 
-		self.parametrosReportes = (self.docenteId, self.lapsoId)
+			self.parametrosReportes = (self.docenteId, self.lapsoId)
 
-		self.pdf = canvas.Canvas('reporte.pdf', pagesize = A3)
-		self.pdf.setFontSize(size=12)
-		self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
-		self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
-		self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
-		self.tablaInicio()
-		self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
-		self.tablaMaterias()
-		self.listadoMaterias()
-		if self.counter == 10: 
-			self.pdf.drawString(375,490,'Horarios de clases')
-			print('horario de clases---10')
-		elif self.counter == 9: 
-			self.pdf.drawString(375,530,'Horarios de clases')
-			print('horario de clases---9')
-		elif self.counter == 8: 
-			self.pdf.drawString(375,570,'Horarios de clases')
-			print('horario de clases---8')
-		elif self.counter == 7: 
-			self.pdf.drawString(375,600,'Horarios de clases')
-			print('horario de clases---7')
-		elif self.counter == 6: 
-			self.pdf.drawString(375,640,'Horarios de clases')
-			print('horario de clases---6')
-		elif self.counter == 5: 
-			self.pdf.drawString(375,690,'Horarios de clases')
-			print('horario de clases---5')
-		elif self.counter == 4: 
-			self.pdf.drawString(375,730,'Horarios de clases')
-			print('horario de clases---4')
-		elif self.counter == 3: 
-			self.pdf.drawString(375,770,'Horarios de clases')
-			print('horario de clases---3')
-		elif self.counter == 2: 
-			self.pdf.drawString(375,810,'Horarios de clases')
-			print('horario de clases---2')
-		elif self.counter == 1: 
-			self.pdf.drawString(375,850,'Horarios de clases')
-			print('horario de clases---1')
+			self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+			self.archivo = open(self.guardar,'w')
+
+			self.pdf = canvas.Canvas(self.guardar, pagesize = A3)
+			self.pdf.setFontSize(size=12)
+			self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
+			self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
+			self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
+			self.tablaInicio()
+			self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
+			self.tablaMaterias()
+			self.listadoMaterias()
+			if self.counter == 10: 
+				self.pdf.drawString(375,490,'Horarios de clases')
+				print('horario de clases---10')
+			elif self.counter == 9: 
+				self.pdf.drawString(375,530,'Horarios de clases')
+				print('horario de clases---9')
+			elif self.counter == 8: 
+				self.pdf.drawString(375,570,'Horarios de clases')
+				print('horario de clases---8')
+			elif self.counter == 7: 
+				self.pdf.drawString(375,600,'Horarios de clases')
+				print('horario de clases---7')
+			elif self.counter == 6: 
+				self.pdf.drawString(375,640,'Horarios de clases')
+				print('horario de clases---6')
+			elif self.counter == 5: 
+				self.pdf.drawString(375,690,'Horarios de clases')
+				print('horario de clases---5')
+			elif self.counter == 4: 
+				self.pdf.drawString(375,730,'Horarios de clases')
+				print('horario de clases---4')
+			elif self.counter == 3: 
+				self.pdf.drawString(375,770,'Horarios de clases')
+				print('horario de clases---3')
+			elif self.counter == 2: 
+				self.pdf.drawString(375,810,'Horarios de clases')
+				print('horario de clases---2')
+			elif self.counter == 1: 
+				self.pdf.drawString(375,850,'Horarios de clases')
+				print('horario de clases---1')
+			else:
+				self.pdf.drawString(375,850,'Horarios de clases')
+				print('horario de clases---0')
+			self.tablaHorarioMorning()
+			self.tablaHorarioAfternon()
+			self.tablaHorarioNinght()
+			if self.counter == 10: 
+				self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
+				print('adscripcion---10')
+			elif self.counter == 9: 
+				self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
+				print('adscripcion---9')
+			elif self.counter == 8: 
+				self.pdf.showPage()
+				self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+				print('adscripcion---8')
+			elif self.counter == 7:
+				self.pdf.showPage()
+				self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+				print('adscripcion---7')
+			elif self.counter == 6:
+				self.pdf.showPage()
+				self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+				print('adscripcion---6')
+			elif self.counter == 5: 
+				self.pdf.showPage()
+				self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+				print('adscripcion---5')
+			elif self.counter == 4: 
+				self.pdf.drawString(330,150,'Adscripción Académico-administrativa')
+				print('adscripcion---4')
+			elif self.counter == 3: 
+				self.pdf.drawString(330,190,'Adscripción Académico-administrativa')
+				print('adscripcion---3')
+			elif self.counter == 2: 
+				self.pdf.drawString(330,230,'Adscripción Académico-administrativa')
+				print('adscripcion---2')
+			elif self.counter == 1: 
+				self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+				print('adscripcion---1')
+			else:
+				self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+				print('adscripcion---0')
+			self.tablaHorarioAdcrispcion()
+			self.tablaHorarioObservacion()
+		
+			self.pdf.save()
+			self.archivo.close()
+			self.setStyles.clear()
+			self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles2.clear()
+			self.setStyles2.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles3.clear()
+			self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles4.clear()
+			self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles5.clear()
+			self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles6.clear()
+			self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles7.clear()
+			self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.setStyles8.clear()
+			self.setStyles8.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles8.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+			self.setStyles8.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+			self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+			self.counter = 0
+			messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente')
 		else:
-			self.pdf.drawString(375,850,'Horarios de clases')
-			print('horario de clases---0')
-		self.tablaHorarioMorning()
-		self.tablaHorarioAfternon()
-		self.tablaHorarioNinght()
-		if self.counter == 10: 
-			self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
-			print('adscripcion---10')
-		elif self.counter == 9: 
-			self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
-			print('adscripcion---9')
-		elif self.counter == 8: 
-			self.pdf.showPage()
-			self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-			print('adscripcion---8')
-		elif self.counter == 7:
-			self.pdf.showPage()
-			self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-			print('adscripcion---7')
-		elif self.counter == 6:
-			self.pdf.showPage()
-			self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-			print('adscripcion---6')
-		elif self.counter == 5: 
-			self.pdf.showPage()
-			self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-			print('adscripcion---5')
-		elif self.counter == 4: 
-			self.pdf.drawString(330,150,'Adscripción Académico-administrativa')
-			print('adscripcion---4')
-		elif self.counter == 3: 
-			self.pdf.drawString(330,190,'Adscripción Académico-administrativa')
-			print('adscripcion---3')
-		elif self.counter == 2: 
-			self.pdf.drawString(330,230,'Adscripción Académico-administrativa')
-			print('adscripcion---2')
-		elif self.counter == 1: 
-			self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
-			print('adscripcion---1')
-		else:
-			self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
-			print('adscripcion---0')
-		self.tablaHorarioAdcrispcion()
-		self.tablaHorarioObservacion()
-	
-		self.pdf.save()
-		self.setStyles.clear()
-		self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles2.clear()
-		self.setStyles2.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles3.clear()
-		self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles4.clear()
-		self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles5.clear()
-		self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles6.clear()
-		self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles7.clear()
-		self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.setStyles8.clear()
-		self.setStyles8.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles8.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-		self.setStyles8.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-		self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-		self.counter = 0
+			messagebox.showwarning(title='Error', message='Debe seleccionar todas las casillas y rellenar todas las celdas')
 
 	def MostrarReporteDocente(self):
 		self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
@@ -2839,12 +2891,12 @@ class CargaAcademica(tk.Toplevel):
 		
 		self.adcrispcion[0].append('')
 		self.setStyles7.append(('SPAN',(0,0),(1,0)))
-		self.adcrispcion[0].append(Paragraph('Informática',self.center))
+		self.adcrispcion[0].append(Paragraph(self.entryAdscripcion.get(),self.center))
 		self.adcrispcion[0].append('')
 		self.setStyles7.append(('SPAN',(2,0),(3,0)))
-		self.adcrispcion[1].append(Paragraph('jose',self.center))
+		self.adcrispcion[1].append(Paragraph(self.entryHorario.get(),self.center))
 		self.adcrispcion[1].append(Paragraph('Cargo:',self.center))
-		self.adcrispcion[1].append(Paragraph('jefe',self.center))
+		self.adcrispcion[1].append(Paragraph(self.entryCargo.get(),self.center))
 		
 		return self.adcrispcion
 	
@@ -2893,8 +2945,11 @@ class CargaAcademica(tk.Toplevel):
 			[Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
         ]
 		
-		self.observacion[0].append(Paragraph('Si',self.center))
+		self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.observacion[0].append(Paragraph(self.labore,self.center))
 		self.observacion[0].append(Paragraph('Especifique:',self.center))
+		self.especifique = self.materia('SELECT docente.Especifique from docente WHERE docente.Id = ?',(self.docenteId,))
+		self.observacion[0].append(Paragraph(self.especifique,self.center))
 		self.setStyles8.append(('SPAN',(3,0),(6,0)))
 
 		return self.observacion
