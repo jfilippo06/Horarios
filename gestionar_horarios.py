@@ -475,14 +475,6 @@ class Horarios(tk.Toplevel):
             [Paragraph('5',self.center)],
             [Paragraph('6',self.center)]
         ]
-
-    def configuracion(self):
-        self.new = tk.Toplevel()
-        self.new.title('Configuracion Horarios')
-        self.new.resizable(width=0, height=0)
-        self.new.geometry('200x200')
-        self.new.iconbitmap(uptpc) 
-        self.new.mainloop()
     
     def botonActivarInicio(self):
         self.entryInicio.config(state=NORMAL)
@@ -4542,3 +4534,27 @@ class Horarios(tk.Toplevel):
         )
 
         return self.nocturnoLabolatorio
+    
+    def configuracion(self):
+        self.new = tk.Toplevel()
+        self.new.title('Configuracion Horarios')
+        self.new.resizable(width=0, height=0)
+        self.new.geometry('300x220')
+        self.new.iconbitmap(uptpc)
+
+        self.container2 = ttk.Labelframe(self.new)
+        self.container2.grid(column=0,row=0,padx=15,pady=5)
+
+        self.treeTitulo = ttk.Treeview(self.container2, columns=['#1'],show='headings',height=2)
+        self.treeTitulo.grid(row=0,column=0,padx=5,pady=5)
+        self.treeTitulo.heading('#1', text = 'Titulo Horario',)
+        self.treeTitulo.column('#1', width=250)
+
+        ttk.Label(self.container2, text='Titulo de Horario:').grid(row=1,column=0,padx=5,pady=5)
+        self.titulo = ttk.Entry(self.container2,width=40)
+        self.titulo.grid(row=2,column=0,padx=5,pady=5)
+        self.titulo.focus()
+
+        ttk.Button(self.container2,width=40,text='ACTUALIZAR').grid(row=3,column=0,padx=5,pady=5)
+
+        self.new.mainloop()
