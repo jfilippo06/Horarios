@@ -19,9 +19,13 @@ class Horarios(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Horarios')
-        self.geometry('980x440')
+        self.geometry('980x490')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
+
+        self.menubar = tk.Menu(self)
+        self.menubar.add_cascade(label="Configuración", command=self.configuracion)
+        self.config(menu=self.menubar)
 
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(pady=0,padx=0,expand=True)
@@ -470,7 +474,15 @@ class Horarios(tk.Toplevel):
             [Paragraph('4',self.center)],
             [Paragraph('5',self.center)],
             [Paragraph('6',self.center)]
-        ] 
+        ]
+
+    def configuracion(self):
+        self.new = tk.Toplevel()
+        self.new.title('Configuracion Horarios')
+        self.new.resizable(width=0, height=0)
+        self.new.geometry('200x200')
+        self.new.iconbitmap(uptpc) 
+        self.new.mainloop()
     
     def botonActivarInicio(self):
         self.entryInicio.config(state=NORMAL)
