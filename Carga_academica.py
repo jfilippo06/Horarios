@@ -25,7 +25,6 @@ class CargaAcademica(tk.Toplevel):
 		# Menu:
 		self.menubar = tk.Menu(self)
 		self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
-		self.filemenu1.add_command(label="Reportes", command=self.reportes)
 		self.filemenu1.add_command(label="Volver", command=self.volver)
 		self.filemenu1.add_command(label="Salir", command=self.salir)
 		self.menubar.add_cascade(label="Opciones", menu=self.filemenu1)
@@ -76,6 +75,7 @@ class CargaAcademica(tk.Toplevel):
 		self.EntryEspecifique.grid(column=1,row=7,padx=5,pady=5)
 		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
 		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
+		ttk.Button(self.Frame,text = 'GENERAR REPORTES', command = self.reportes).grid(column=2,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
 		# Treeview:
 		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
