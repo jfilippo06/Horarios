@@ -734,6 +734,17 @@ class Horarios(tk.Toplevel):
         self.rows = self.mostrar.fetchall()
         return self.rows
 
+    def limpiarTablaTitulo(self):
+        self.DeleteChildren = self.treeTitulo.get_children()
+        for element in self.DeleteChildren:
+            self.treeTitulo.delete(element)
+
+    def MostrarTitulo(self):
+        self.limpiarTablaTitulo()
+        self.rows = self.TraerDatos("SELECT * FROM titulo")
+        for row in self.rows:
+            self.treeTitulo.insert('',tk.END,values=row)
+
     def MostrarLapsoAcademico(self):
         self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
         for row in self.rows:
@@ -956,10 +967,9 @@ class Horarios(tk.Toplevel):
 
             self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
             self.archivo = open(self.guardar,'w')
-
             self.pdf = canvas.Canvas(self.guardar, pagesize = landscape(A4))
             self.pdf.setFontSize(10)
-            self.pdf.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.lapso + ' (Cohorte' + self.cohorte + ')')
+            self.pdf.drawString(301,550, self.obtenerTitulo() + '  Lapso Académico ' + self.lapso + ' (Cohorte' + self.cohorte + ')')
             self.pdf.line(299,549,605,549)
             self.pdf.drawString(388,529,'TRAYECTO ' + self.trayecto + ' TRIMESTRE ' + self.trimestre)
             self.verificarLinea()
@@ -998,7 +1008,7 @@ class Horarios(tk.Toplevel):
             
             self.pdfDocente = canvas.Canvas(self.guardar, pagesize = landscape(A4))
             self.pdfDocente.setFontSize(10)
-            self.pdfDocente.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLapso)
+            self.pdfDocente.drawString(301,550, self.obtenerTitulo() + '  Lapso Académico ' + self.dataLapso)
             self.pdfDocente.line(299,549,530,549)
             self.pdfDocente.drawString(300,535,'Docente: ' + self.dataDocente)
             self.pdfDocente.drawString(300,525,'Modalidad: ' + self.dataModalidad)
@@ -1034,7 +1044,7 @@ class Horarios(tk.Toplevel):
 
             self.pdfLaboratorio = canvas.Canvas(self.guardar, pagesize = landscape(A4))
             self.pdfLaboratorio.setFontSize(10)
-            self.pdfLaboratorio.drawString(301,550,'PNF EN INFORMÁTICA  Lapso Académico ' + self.dataLaboratorioLapso)
+            self.pdfLaboratorio.drawString(301,550, self.obtenerTitulo() + '  Lapso Académico ' + self.dataLaboratorioLapso)
             self.pdfLaboratorio.line(299,549,530,549)
             self.pdfLaboratorio.drawString(300,535,'Laboratorio: ' + self.dataLaboratorio)
             self.pdfLaboratorio.drawString(300,525,'Modalidad: ' + self.dataLaboratorioModalidad)
@@ -4555,6 +4565,27 @@ class Horarios(tk.Toplevel):
         self.titulo.grid(row=2,column=0,padx=5,pady=5)
         self.titulo.focus()
 
-        ttk.Button(self.container2,width=40,text='ACTUALIZAR').grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self.container2,width=40,text='ACTUALIZAR', command=self.editarTitulo).grid(row=3,column=0,padx=5,pady=5)
+
+        self.MostrarTitulo()
+        print(self.obtenerTitulo())
 
         self.new.mainloop()
+
+    def editarTitulo(self):
+        if len(self.titulo.get()) != 0:
+            if messagebox.askyesno('Edit','¿Realmente desea cambiar el nombre?'):
+                self.query = 'UPDATE titulo SET Titulo = ?'
+                self.parametros = (self.titulo.get())
+                self.conexion(self.query,(self.parametros,))
+                self.MostrarTitulo()
+                self.titulo.delete(0, tk.END)
+                messagebox.showinfo(title='Info', message='Titulo actualizado.')
+            else:
+                self.MostrarTitulo()
+        else:
+            messagebox.showwarning(title='Warning', message='Introdusca un valor.')
+
+    def obtenerTitulo(self):
+        self.obtener = self.conexion('SELECT * FROM titulo').fetchone()
+        return self.obtener[0]
