@@ -656,10 +656,35 @@ class CargaAcademica(tk.Toplevel):
 		data = self.conexion('SELECT count(lapso_academico.LapsoAcademico) FROM materias_asignadas INNER JOIN lapso_academico ON lapso_academico.Id = materias_asignadas.Id_lapso_academico WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',(self.seleccion,self.selecionarFilaLapsoAcademico())).fetchone()
 		return data[0]
 
+	def inscribirNo(self):
+		self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+		self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+		self.id_materias_asignadas = self.data[0]
+		self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+		self.MostrarDatosGestionar()
+		messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+	def inscribirSi(self):
+		pass
+
+	def obtenerHoraBase(self):
+		data = self.conexion('SELECT hora_unidad_curricular.Hora_base FROM hora_unidad_curricular WHERE hora_unidad_curricular.Id = ? AND hora_unidad_curricular.Id_docente = ? AND  hora_unidad_curricular.Id_lapso_academico = ? AND hora_unidad_curricular.Id_cohorte = ? AND hora_unidad_curricular.Id_trayecto = ? AND hora_unidad_curricular.Id_trimestre = ? AND hora_unidad_curricular.Id_seccion = ? AND  hora_unidad_curricular.Id_modalidad = ? AND  hora_unidad_curricular.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaUnidadCurricular())).fetchone()
+		return data[0]
+
+	def obtenerHoraUsada(self):
+		data = self.conexion('SELECT hora_unidad_curricular.Hora_Usada FROM hora_unidad_curricular WHERE hora_unidad_curricular.Id = ? AND hora_unidad_curricular.Id_docente = ? AND  hora_unidad_curricular.Id_lapso_academico = ? AND hora_unidad_curricular.Id_cohorte = ? AND hora_unidad_curricular.Id_trayecto = ? AND hora_unidad_curricular.Id_trimestre = ? AND hora_unidad_curricular.Id_seccion = ? AND  hora_unidad_curricular.Id_modalidad = ? AND  hora_unidad_curricular.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaUnidadCurricular())).fetchone()
+		return data[0]
+
+	def registrarHora(self,hora_base,hora_usada):
+		data = self.conexion("INSERT INTO hora_unidad_curricular VALUES (NULL,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaUnidadCurricular(),hora_base,hora_usada))
+		return data.fetchall()
+
+	def obtenerHora(self):
+		data = self.conexion("SELECT hora_unidad_curricular.Id, hora_unidad_curricular.Id_docente, hora_unidad_curricular.Id_lapso_academico, hora_unidad_curricular.Id_cohorte, hora_unidad_curricular.Id_trayecto, hora_unidad_curricular.Id_trimestre, hora_unidad_curricular.Id_seccion, hora_unidad_curricular.Id_modalidad, hora_unidad_curricular.Id_unidad_curricular FROM hora_unidad_curricular WHERE hora_unidad_curricular.Id = ? AND hora_unidad_curricular.Id_docente = ? AND  hora_unidad_curricular.Id_lapso_academico = ? AND hora_unidad_curricular.Id_cohorte = ? AND hora_unidad_curricular.Id_trayecto = ? AND hora_unidad_curricular.Id_trimestre = ? AND hora_unidad_curricular.Id_seccion = ? AND  hora_unidad_curricular.Id_modalidad = ? AND  hora_unidad_curricular.Id_unidad_curricular = ?",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaUnidadCurricular())).fetchall()
+		return data						
+
 	def registrarMateria(self):
-		print(self.obtenerHoraInicial())
-		print(self.obtenerHoraFinal())
-		print(self.obtenerHoraMateria())
 		if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
 			if messagebox.askyesno('Registrar','¿Añadir selección?'):
 				mostrar =  self.conexion("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
@@ -697,13 +722,66 @@ class CargaAcademica(tk.Toplevel):
 									if self.maximo() == 10:
 										messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
 									else:
-										self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
-										self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
-										self.id_materias_asignadas = self.data[0]
-										self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-										self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-										self.MostrarDatosGestionar()
-										messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+										if self.obtenerHoraMateria() == '6':
+											print('6')
+										elif self.obtenerHoraMateria() == '5':
+											print('5')
+										elif self.obtenerHoraMateria() == '4':
+											print('4')
+										elif self.obtenerHoraMateria() == '3':
+											print('3')
+										elif self.obtenerHoraMateria() == '2':
+											hora = '2'
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+												if self.obtenerHora():
+													if self.obtenerHoraBase == '2' and self.obtenerHoraUsada() == '2':
+														messagebox.showinfo(title='info', message='Hora llena')
+													else:
+														self.inscribirNo()
+												else:
+													self.registrarHora(self.obtenerHoraMateria(),hora)
+													self.inscribirNo()
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												pass
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												pass
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												pass
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												pass
+											elif self.obtenerHoraInicial() == 6 and self.obtenerHoraFinal() == 7:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												pass
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												pass
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												pass
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												pass
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												pass
+											elif self.obtenerHoraInicial() == 12 and self.obtenerHoraFinal() == 13:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												pass
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												pass
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												pass
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												pass
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												pass
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+										elif self.obtenerHoraMateria() == ' ':
+											messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
 								else:
 									messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"')
 			else:
