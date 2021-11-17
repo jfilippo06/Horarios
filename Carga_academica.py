@@ -640,74 +640,2483 @@ class CargaAcademica(tk.Toplevel):
 		for row in self.rows:
 			self.treeLaboratorio.insert('',tk.END,values=row)
 
-	def registrarMateria(self):
-		self.maximo = self.conexion(
-			'SELECT count(lapso_academico.LapsoAcademico) FROM materias_asignadas INNER JOIN lapso_academico ON lapso_academico.Id = materias_asignadas.Id_lapso_academico WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
-			(self.seleccion,self.selecionarFilaLapsoAcademico())
-		).fetchone()
+	def obtenerHoraMateria(self):
+		data = self.conexion('SELECT unidad_curricular.Hora FROM unidad_curricular WHERE unidad_curricular.Id = ?',(self.selecionarFilaUnidadCurricular(),)).fetchone()
+		return data[0]
 
-		self.validar = self.maximo[0]
+	def obtenerHoraInicial(self):
+		data = self.conexion('SELECT hora_inicial.Id FROM hora_inicial WHERE hora_inicial.Id = ?',(self.selecionarFilaHoraInicial(),)).fetchone()
+		return data[0]
+
+	def obtenerHoraFinal(self):
+		data = self.conexion('SELECT hora_final.Id FROM hora_final WHERE hora_final.Id = ?',(self.selecionarFilaHoraFinal(),)).fetchone()
+		return data[0]
+
+	def maximo(self):
+		data = self.conexion('SELECT count(lapso_academico.LapsoAcademico) FROM materias_asignadas INNER JOIN lapso_academico ON lapso_academico.Id = materias_asignadas.Id_lapso_academico WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',(self.seleccion,self.selecionarFilaLapsoAcademico())).fetchone()
+		return data[0]				
+
+	def registrarMateria(self):
 		if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
 			if messagebox.askyesno('Registrar','¿Añadir selección?'):
-				self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-				self.queryValidar = ("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?")
-				self.mostrar =  self.conexion(self.queryValidar,self.parametros)
-				if self.mostrar.fetchall():
+				mostrar =  self.conexion("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
+				if mostrar:
 					messagebox.showwarning(title='warning', message="Registro ya exixte")	
 				else:
-					self.same = self.conexion(
-						'SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
-					(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-					).fetchall()
-					if self.same:
+					same = self.conexion('SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
+					if same:
 						messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")	
 					else:
-						if self.laboratorio.get() == 'Si':
-							if self.treeLaboratorio.selection():
-								if self.validar == 10:
-									messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
-								else:	
-									self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-									self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
-									self.conexion(self.query,self.parametros)
-					
-									self.data = self.conexion(
-									'SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
-									self.parametros).fetchone()
-									self.id_materias_asignadas = self.data[0]
-									
-									self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-									self.query1 = ("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)")
-									self.conexion(self.query1,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-
-									self.query2 = ('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)')
-									self.conexion(self.query2,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-			
-									self.MostrarDatosGestionar()
-									messagebox.showinfo(title='info', message='Materia registrada  SI')
-							else:
-								messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
-						elif self.laboratorio.get() == 'No':
-							if self.validar == 10:
-								messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
-							else:
-								self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-								self.query = ("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)")
-								self.conexion(self.query,self.parametros)
-				
-								self.data = self.conexion(
-								'SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
-								self.parametros).fetchone()
-								self.id_materias_asignadas = self.data[0]
-								
-								self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-								self.query1 = ("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)")
-								self.conexion(self.query1,(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-								
-								self.MostrarDatosGestionar()
-								messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+						validarMateria = self.conexion('SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal())).fetchall()
+						if validarMateria:
+							messagebox.showwarning(title='warning', message="No puede inscribir otra materia en este registro")	
 						else:
-							messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"')
+							validarMateriaOtroDocente = self.conexion('SELECT materias_asignadas.Id ,lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ?',(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal())).fetchall()
+							if validarMateriaOtroDocente:
+								messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")
+							else:	
+								if self.laboratorio.get() == 'Si':
+									if self.treeLaboratorio.selection():
+										if self.maximo() == 10:
+											messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+										else:	
+
+											if self.obtenerHoraMateria() == '6':
+												
+												# BLOQUE 6
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+													#  BLOQUE 4
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+													# BLOQUE 6  
+												
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
+
+											elif self.obtenerHoraMateria() == '5':
+												
+												# BLOQUE 2
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												# BLOQUE 3
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# BLOQUE 5
+
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
+
+											elif self.obtenerHoraMateria() == '4':
+												
+												# BLOQUE 2
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+													# BLOQUE 4
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
+
+											elif self.obtenerHoraMateria() == '3':
+												
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+												
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
+
+											elif self.obtenerHoraMateria() == '2':
+												
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													
+													self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+													self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+													self.id_materias_asignadas = self.data[0]
+													self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+													self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)',(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+													self.MostrarDatosGestionar()
+													messagebox.showinfo(title='info', message='Materia registrada  SI')
+
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
+
+											elif self.obtenerHoraMateria() == ' ':
+												messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+
+									else:
+										messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
+								elif self.laboratorio.get() == 'No':
+									if self.maximo() == 10:
+										messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+									else:
+										if self.obtenerHoraMateria() == '6':
+											# BLOQUE 6
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+												#  BLOQUE 4
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+												# BLOQUE 6  
+											
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '5':
+											# BLOQUE 2
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											# BLOQUE 3
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# BLOQUE 5
+
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '4':
+											# BLOQUE 2
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+												# BLOQUE 4
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '3':
+											
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+											
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '2':
+
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular()))
+												self.data = self.conexion('SELECT Id FROM materias_asignadas WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchone()
+												self.id_materias_asignadas = self.data[0]
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?)",(self.id_materias_asignadas,self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+												self.MostrarDatosGestionar()
+												messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+										elif self.obtenerHoraMateria() == ' ':
+											messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+								else:
+									messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"')
 			else:
 				self.MostrarDatosGestionar()
 		else:
@@ -837,151 +3246,4079 @@ class CargaAcademica(tk.Toplevel):
 		if self.treeGestionar.selection():
 			if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
 				if messagebox.askyesno('Delete','¿Desea editar el registro seleccionado?'):
-					self.parametros = (self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())
-					self.queryValidar = ("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?")
-					self.mostrar =  self.conexion(self.queryValidar,self.parametros)
-					if self.mostrar.fetchall():
+					mostrar =  self.conexion("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?",(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
+					if mostrar:
 						messagebox.showwarning(title='warning', message="Registro ya exixte")	
 					else:
-						self.same = self.conexion(
-						'SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',
-						(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
-						if self.same:
+						same = self.conexion('SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ?',(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal(),self.selecionarFilaUnidadCurricular())).fetchall()
+						if same:
 							messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")	
 						else:
-							if self.laboratorio.get() == 'Si':
-								if self.treeLaboratorio.selection():
-									self.query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
-									self.query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
-									self.query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
-									self.query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
-									self.query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
-									self.query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
-									self.query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
-									self.query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
-									self.query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
-									self.query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
-									self.conexion(self.query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
-									self.conexion(self.query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
-									self.conexion(self.query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
-									self.conexion(self.query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
-									self.conexion(self.query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
-									self.conexion(self.query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
-									self.conexion(self.query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
-									self.conexion(self.query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
-									self.conexion(self.query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
-									self.conexion(self.query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
-					
-									self.query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
-									self.query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
-									self.query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
-									self.query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
-									self.query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
-									self.query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
-									self.conexion(self.query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
-									self.conexion(self.query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
-									self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-									self.conexion(self.query13,(self.materiaDocente,self.selecionarFilaGestionar()))
-									self.conexion(self.query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
-									self.conexion(self.query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
-									self.conexion(self.query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
-
-									self.same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',
-									(self.selecionarFilaGestionar(),)).fetchall()
-
-									if self.same:
-										self.query17 = ('UPDATE materias_laboratorios SET Id_laboratorio = ? WHERE Id_materias_asignadas = ?')
-										self.query18 = ('UPDATE materias_laboratorios SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
-										self.query19 = ('UPDATE materias_laboratorios SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
-										self.query20 = ('UPDATE materias_laboratorios SET materia = ? WHERE Id_materias_asignadas = ?')
-										self.query21 = ('UPDATE materias_laboratorios SET Id_semana = ? WHERE Id_materias_asignadas = ?')
-										self.query22 = ('UPDATE materias_laboratorios SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
-										self.query23 = ('UPDATE materias_laboratorios SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
-										self.conexion(self.query17,(self.selecionarFilaLaboratorio(),self.selecionarFilaGestionar()))
-										self.conexion(self.query18,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
-										self.conexion(self.query19,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
-										self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-										self.conexion(self.query20,(self.materiaDocente,self.selecionarFilaGestionar()))
-										self.conexion(self.query21,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
-										self.conexion(self.query22,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
-										self.conexion(self.query23,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
-									else:
-										self.query2 = ('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)')
-										self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-										self.conexion(self.query2,(self.selecionarFilaGestionar(),self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
-		
-									self.MostrarDatosGestionar()
-									self.MostrarLapsoAcademico()
-									self.MostrarCohorte()
-									self.MostrarTrayecto()
-									self.MostrarTrimestre()
-									self.MostrarSeccion()
-									self.MostrarTurno()
-									self.MostrarDia()
-									self.MostrarHoraInicial()
-									self.MostrarHoraFinal()
-									self.MostrarUnidadCurricular()
-									messagebox.showinfo(title='Info', message='Registro editado correctamente.')
-								else:
-									messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
-							elif self.laboratorio.get() == 'No':
-								self.query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
-								self.query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
-								self.query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
-								self.query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
-								self.query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
-								self.query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
-								self.query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
-								self.query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
-								self.query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
-								self.query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
-								self.conexion(self.query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
-								self.conexion(self.query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
-								self.conexion(self.query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
-								self.conexion(self.query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
-								self.conexion(self.query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
-								self.conexion(self.query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
-								self.conexion(self.query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
-								self.conexion(self.query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
-								self.conexion(self.query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
-								self.conexion(self.query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
-				
-								self.query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
-								self.query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
-								self.query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
-								self.query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
-								self.query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
-								self.query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
-								self.conexion(self.query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
-								self.conexion(self.query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
-								self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-								self.conexion(self.query13,(self.materiaDocente,self.selecionarFilaGestionar()))
-								self.conexion(self.query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
-								self.conexion(self.query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
-								self.conexion(self.query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
-
-								self.same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',
-								(self.selecionarFilaGestionar(),)).fetchall()
-
-								if self.same:
-									self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
-									self.conexion(self.query2, (self.selecionarFilaGestionar(),))
-
-								self.MostrarDatosGestionar()
-								self.MostrarLapsoAcademico()
-								self.MostrarCohorte()
-								self.MostrarTrayecto()
-								self.MostrarTrimestre()
-								self.MostrarSeccion()
-								self.MostrarTurno()
-								self.MostrarDia()
-								self.MostrarHoraInicial()
-								self.MostrarHoraFinal()
-								self.MostrarUnidadCurricular()
-								messagebox.showinfo(title='Info', message='Registro editado correctamente.')
-								
+							validarMateria = self.conexion('SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ?',(self.seleccion,self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal())).fetchall()
+							if validarMateria:
+								messagebox.showwarning(title='warning', message="No puede inscribir otra materia en este registro")	
 							else:
-								messagebox.showwarning(title='Warning', message='Seleccione la casilla')
+								validarMateriaOtroDocente = self.conexion('SELECT materias_asignadas.Id ,lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ?',(self.selecionarFilaLapsoAcademico(),self.selecionarFilaCohorte(),self.selecionarFilaTrayecto(),self.selecionarFilaTrimestre(),self.selecionarFilaSeccion(),self.selecionarFilaTurno(),self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal())).fetchall()
+								if validarMateriaOtroDocente:
+									messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente2")
+								else:
+									if self.laboratorio.get() == 'Si':
+										if self.treeLaboratorio.selection():
+											self.query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+											self.query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+											self.query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+											self.query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+											self.query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+											self.query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+											self.query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+											self.query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+											self.query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+											self.query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+											self.conexion(self.query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+											self.conexion(self.query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+											self.conexion(self.query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+											self.conexion(self.query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+											self.conexion(self.query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+											self.conexion(self.query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+											self.conexion(self.query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+											self.conexion(self.query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+											self.conexion(self.query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+											self.conexion(self.query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+							
+											self.query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+											self.query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+											self.query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+											self.query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+											self.query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+											self.query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+											self.conexion(self.query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+											self.conexion(self.query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+											self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+											self.conexion(self.query13,(self.materiaDocente,self.selecionarFilaGestionar()))
+											self.conexion(self.query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+											self.conexion(self.query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+											self.conexion(self.query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+											self.same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',
+											(self.selecionarFilaGestionar(),)).fetchall()
+
+											if self.same:
+												self.query17 = ('UPDATE materias_laboratorios SET Id_laboratorio = ? WHERE Id_materias_asignadas = ?')
+												self.query18 = ('UPDATE materias_laboratorios SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												self.query19 = ('UPDATE materias_laboratorios SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												self.query20 = ('UPDATE materias_laboratorios SET materia = ? WHERE Id_materias_asignadas = ?')
+												self.query21 = ('UPDATE materias_laboratorios SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												self.query22 = ('UPDATE materias_laboratorios SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												self.query23 = ('UPDATE materias_laboratorios SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(self.query17,(self.selecionarFilaLaboratorio(),self.selecionarFilaGestionar()))
+												self.conexion(self.query18,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(self.query19,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(self.query20,(self.materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(self.query21,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(self.query22,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(self.query23,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+											else:
+												self.query2 = ('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?)')
+												self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(self.query2,(self.selecionarFilaGestionar(),self.seleccion,self.selecionarFilaLaboratorio(),self.selecionarFilaLapsoAcademico(),self.selecionarFilaTurno(),self.materiaDocente,self.selecionarFilaDia(),self.selecionarFilaHoraInicial(),self.selecionarFilaHoraFinal()))
+				
+											messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+											if self.obtenerHoraMateria() == '6':
+												pass
+											elif self.obtenerHoraMateria() == '5':
+												pass
+											elif self.obtenerHoraMateria() == '4':
+												pass
+											elif self.obtenerHoraMateria() == '3':
+												pass
+											elif self.obtenerHoraMateria() == '2':
+												pass
+											elif self.obtenerHoraMateria() == ' ':
+												messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+
+										else:
+											messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
+									elif self.laboratorio.get() == 'No':
+
+										if self.obtenerHoraMateria() == '6':
+											pass
+										elif self.obtenerHoraMateria() == '5':
+											
+											# BLOQUE 2
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+											# BLOQUE 3
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+											
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											# BLOQUE 5
+
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '4':
+											
+											# BLOQUE 2
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+											
+												# BLOQUE 4
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+											
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '3':
+											
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+											
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == '2':
+											
+											# Horario Mañana
+											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											# Horario Tarde
+											elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											# Horario Noche
+											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+												
+												query1 = ('UPDATE materias_asignadas SET Id_lapso_academico = ? WHERE Id = ?')
+												query2 = ('UPDATE materias_asignadas SET Id_cohorte = ? WHERE Id = ?')
+												query3 = ('UPDATE materias_asignadas SET Id_trayecto = ? WHERE Id = ?')
+												query4 = ('UPDATE materias_asignadas SET Id_trimestre = ? WHERE Id = ?')
+												query5 = ('UPDATE materias_asignadas SET Id_seccion = ? WHERE Id = ?')
+												query6 = ('UPDATE materias_asignadas SET Id_modalidad = ? WHERE Id = ?')
+												query7 = ('UPDATE materias_asignadas SET Id_semana = ? WHERE Id = ?')
+												query8 = ('UPDATE materias_asignadas SET Id_hora_inicial = ? WHERE Id = ?')
+												query9 = ('UPDATE materias_asignadas SET Id_hora_final = ? WHERE Id = ?')
+												query10 = ('UPDATE materias_asignadas SET Id_unidad_curricular = ? WHERE Id = ?')
+												self.conexion(query1,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query2,(self.selecionarFilaCohorte(),self.selecionarFilaGestionar()))
+												self.conexion(query3,(self.selecionarFilaTrayecto(),self.selecionarFilaGestionar()))
+												self.conexion(query4,(self.selecionarFilaTrimestre(),self.selecionarFilaGestionar()))
+												self.conexion(query5,(self.selecionarFilaSeccion(),self.selecionarFilaGestionar()))
+												self.conexion(query6,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												self.conexion(query7,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query8,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query9,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+												self.conexion(query10,(self.selecionarFilaUnidadCurricular(),self.selecionarFilaGestionar()))
+								
+												query11 = ('UPDATE materias_docentes SET Id_lapso_academico = ? WHERE Id_materias_asignadas = ?')
+												query12 = ('UPDATE materias_docentes SET Id_modalidad = ? WHERE Id_materias_asignadas = ?')
+												query13 = ('UPDATE materias_docentes SET materia = ? WHERE Id_materias_asignadas = ?')
+												query14 = ('UPDATE materias_docentes SET Id_semana = ? WHERE Id_materias_asignadas = ?')
+												query15 = ('UPDATE materias_docentes SET Id_hora_inicial = ? WHERE Id_materias_asignadas = ?')
+												query16 = ('UPDATE materias_docentes SET Id_hora_final = ? WHERE Id_materias_asignadas = ?')
+												self.conexion(query11,(self.selecionarFilaLapsoAcademico(),self.selecionarFilaGestionar()))
+												self.conexion(query12,(self.selecionarFilaTurno(),self.selecionarFilaGestionar()))
+												materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
+												self.conexion(query13,(materiaDocente,self.selecionarFilaGestionar()))
+												self.conexion(query14,(self.selecionarFilaDia(),self.selecionarFilaGestionar()))
+												self.conexion(query15,(self.selecionarFilaHoraInicial(),self.selecionarFilaGestionar()))
+												self.conexion(query16,(self.selecionarFilaHoraFinal(),self.selecionarFilaGestionar()))
+
+												same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?',(self.selecionarFilaGestionar(),)).fetchall()
+
+												if same:
+													self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
+													self.conexion(self.query2, (self.selecionarFilaGestionar(),))
+
+												messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+												self.MostrarDatosGestionar()
+
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
+
+										elif self.obtenerHoraMateria() == ' ':
+											messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+						
+									else:
+										messagebox.showwarning(title='Warning', message='Seleccione la casilla')
 				else:
 					self.MostrarDatosGestionar()
 			else:
