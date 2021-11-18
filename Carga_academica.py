@@ -805,7 +805,7 @@ class CargaAcademica(tk.Toplevel):
 													self.registrarSi()
 												# BLOQUE 3
 												# Horario Mañana
-												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
 													self.registrarSi()
 												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
 													self.registrarSi()
@@ -1097,7 +1097,7 @@ class CargaAcademica(tk.Toplevel):
 												self.registrarNo()
 											# BLOQUE 3
 											# Horario Mañana
-											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
 												self.registrarNo()
 											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
 												self.registrarNo()
@@ -1427,15 +1427,288 @@ class CargaAcademica(tk.Toplevel):
 									if self.laboratorio.get() == 'Si':
 										if self.treeLaboratorio.selection():
 											if self.obtenerHoraMateria() == '6':
-												pass
+												# BLOQUE 2
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+													# BLOQUE 3
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+													self.editarSi()												
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+													self.editarSi()											
+													#  BLOQUE 4
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+													self.editarSi()												
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+													# BLOQUE 6  
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
 											elif self.obtenerHoraMateria() == '5':
-												pass
+												# BLOQUE 2
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												# BLOQUE 3
+												# Horario Mañana
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+													self.editarSi()											
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												# BLOQUE 5
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
 											elif self.obtenerHoraMateria() == '4':
-												pass
+												# BLOQUE 2
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													self.editarSi()											
+												# BLOQUE 4
+												elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 4:
+													self.editarSi()											
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
 											elif self.obtenerHoraMateria() == '3':
-												pass
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 12:
+													self.editarSi()											
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
 											elif self.obtenerHoraMateria() == '2':
-												pass
+												# Horario Mañana
+												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 3:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 3 and self.obtenerHoraFinal() == 4:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 4 and self.obtenerHoraFinal() == 5:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 5 and self.obtenerHoraFinal() == 6:
+													self.editarSi()
+												# Horario Tarde
+												elif self.obtenerHoraInicial() == 7 and self.obtenerHoraFinal() == 8:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 8 and self.obtenerHoraFinal() == 9:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 9 and self.obtenerHoraFinal() == 10:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 10 and self.obtenerHoraFinal() == 11:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 11 and self.obtenerHoraFinal() == 12:
+													self.editarSi()
+												# Horario Noche
+												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 14:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 15:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 16:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 17:
+													self.editarSi()
+												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
+													self.editarSi()
+												else:
+													messagebox.showinfo(title='info', message='Hora no permitida')
 											elif self.obtenerHoraMateria() == ' ':
 												messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
 										else:
@@ -1566,7 +1839,7 @@ class CargaAcademica(tk.Toplevel):
 												self.editarNo()
 											# BLOQUE 3
 											# Horario Mañana
-											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
+											elif self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
 												self.editarNo()
 											elif self.obtenerHoraInicial() == 2 and self.obtenerHoraFinal() == 4:
 												self.editarNo()
@@ -1659,6 +1932,8 @@ class CargaAcademica(tk.Toplevel):
 												self.editarNo()
 											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
 										elif self.obtenerHoraMateria() == '3':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
@@ -1685,6 +1960,8 @@ class CargaAcademica(tk.Toplevel):
 												self.editarNo()
 											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
+											else:
+												messagebox.showinfo(title='info', message='Hora no permitida')
 										elif self.obtenerHoraMateria() == '2':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
