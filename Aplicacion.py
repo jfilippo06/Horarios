@@ -3,6 +3,7 @@ from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
 from unidades_curriculares import Unidades_curriculares
+from reporte_carga_academica import ReporteCargaAcademica
 from rutas import *
 
 class App(tk.Tk):
@@ -18,19 +19,28 @@ class App(tk.Tk):
         
         # Menu:
         self.menubar = tk.Menu(self)
+
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu1.add_command(label="Base de datos", command=self.gestor)
+        self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)
         self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
-        self.filemenu1.add_command(label="Salir", command=self.Salir)
         self.menubar.add_cascade(label="Adminitración del Sistema", menu=self.filemenu1)
-        self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
-        self.config(menu=self.menubar)
-        # Label:
-        tk.Button(self, text="Carga Académica", width=15, height=2,command=self.cargaAcademica).place(x = 60,y = 160)
-        tk.Button(self, text="Gestionar Horarios",width=15, height=2, command=self.horarios).place(x = 60,y = 220)
+
+        self.menubar.add_cascade(label="Datos basicos", command=self.gestor)
+
+        self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
+
+        self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu4.add_command(label='Horarios', command=self.horarios)
+        self.filemenu4.add_command(label='Reporte Carga Acardemica', command=self.reporteCargaAcademica)
+        self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
+
         
+        self.menubar.add_cascade(label="Salir", command=self.salir)
+        self.config(menu=self.menubar)
+    
     def cargaAcademica(self):
-        self.lower()
+        # self.lower()
         CargaAcademica(self)
 
     def gestor(self):
@@ -41,7 +51,10 @@ class App(tk.Tk):
 
     def unidades_curriculares(self):
         Unidades_curriculares(self)
+
+    def reporteCargaAcademica(self):
+        ReporteCargaAcademica(self)
                 
-    def Salir(self):
+    def salir(self):
         self.destroy()
         
