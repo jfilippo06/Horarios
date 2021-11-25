@@ -19,14 +19,18 @@ class ReporteCargaAcademica(tk.Toplevel):
 		# Config:
         self.master = master
         self.title('Reportes')
-        self.geometry('350x470')
+        self.geometry('350x480')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
+
+        self.menubar = tk.Menu(self)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
+        self.config(menu=self.menubar)
         
         ttk.Label(self, text='REPORTES DE DOCENTES',font=('Helvetica',14)).place(x=45,y=5)
         
         self.framecontainer2 = ttk.Labelframe(self)
-        self.framecontainer2.grid(column=0, row=0,ipadx=5,ipady=5,pady=35,padx=35)
+        self.framecontainer2.grid(column=0, row=0,ipadx=5,ipady=5,pady=35,padx=30)
         
         self.frameReportes = ttk.Labelframe(self.framecontainer2)
         self.frameReportes.grid(column=0,row=0,pady=5,padx=5)
@@ -133,6 +137,9 @@ class ReporteCargaAcademica(tk.Toplevel):
         self.left = self.styles2["BodyText"]
         self.left.alignment = TA_LEFT
         self.counter = 0
+
+    def volver(self):
+        self.destroy()
         
     def conexion(self,query,parametros = ()):
         try:

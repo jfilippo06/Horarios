@@ -28,11 +28,15 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Datos basicos", command=self.gestor)
 
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu3.add_command(label='Compartar BD')
+        self.filemenu3.add_command(label='Indexar BD')
+        self.filemenu3.add_command(label='Respaldar BD')
+        self.filemenu3.add_command(label='Restaurar BD')
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
 
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu4.add_command(label='Horarios', command=self.horarios)
-        self.filemenu4.add_command(label='Reporte Carga Acardemica', command=self.reporteCargaAcademica)
+        self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
+        self.filemenu4.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
         self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
 
         
@@ -40,19 +44,22 @@ class App(tk.Tk):
         self.config(menu=self.menubar)
     
     def cargaAcademica(self):
-        # self.lower()
+        self.lower()
         CargaAcademica(self)
 
     def gestor(self):
         Gestor(self)
 
     def horarios(self):
+        self.lower()
         Horarios(self)
 
     def unidades_curriculares(self):
+        self.lower()
         Unidades_curriculares(self)
 
     def reporteCargaAcademica(self):
+        self.lower()
         ReporteCargaAcademica(self)
                 
     def salir(self):

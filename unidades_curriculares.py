@@ -15,6 +15,10 @@ class Unidades_curriculares(tk.Toplevel):
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
+        self.menubar = tk.Menu(self)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
+        self.config(menu=self.menubar)
+        
         self.container = ttk.Labelframe(self)
         self.container.grid(column=0,row=0)
 
@@ -101,6 +105,9 @@ class Unidades_curriculares(tk.Toplevel):
         self.MostrarDatosDepartamento()
         self.MostrarDatosPt()
         self.MostrarDatosUnidadesCurriculares()
+
+    def volver(self):
+        self.destroy()
 
     def conexion(self,query,parametros = ()):
         try:

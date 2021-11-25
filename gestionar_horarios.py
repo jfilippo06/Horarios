@@ -25,6 +25,7 @@ class Horarios(tk.Toplevel):
 
         self.menubar = tk.Menu(self)
         self.menubar.add_cascade(label="Configuración", command=self.configuracion)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
         self.config(menu=self.menubar)
 
         self.notebook = ttk.Notebook(self)
@@ -476,6 +477,9 @@ class Horarios(tk.Toplevel):
             [Paragraph('6',self.center)]
         ]
     
+    def volver(self):
+        self.destroy()
+
     def botonActivarInicio(self):
         self.entryInicio.config(state=NORMAL)
         self.entryInicio.focus()
