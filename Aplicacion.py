@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
@@ -27,17 +28,34 @@ class App(tk.Tk):
         self.tittlePassword = ttk.Label(text='Contraseña')
         self.tittlePassword.place(x=120,y=160)
         self.userPassword = ttk.Entry(self,width=40)
+        self.userPassword.config(show='*')
         self.userPassword.place(x=25,y=180)
         self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
         self.button.place(x=110,y=210)
+
+    def validarCeldas(self):
+        return len(self.userName.get()) != 0 and len(self.userPassword.get()) != 0
    
     def change(self):
-        self.tittleUser.place_forget()
-        self.userName.place_forget()
-        self.userPassword.place_forget()
-        self.tittlePassword.place_forget()
-        self.button.place_forget()
-        self.pantallaPrincipal()
+        if self.validarCeldas():
+            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
+            if validar:
+                self.tittleUser.place_forget()
+                self.userName.place_forget()
+                self.userPassword.place_forget()
+                self.tittlePassword.place_forget()
+                self.button.place_forget()
+                self.pantallaPrincipal()
+            else:
+                messagebox.showwarning(title='Warnig', message='Usuario no existe')
+                self.userName.delete(0, tk.END)
+                self.userPassword.delete(0, tk.END)
+                self.userName.focus()
+        else:
+            messagebox.showwarning(title='Warnig', message='Introdusca un valor en las casillas')
+            self.userName.delete(0, tk.END)
+            self.userPassword.delete(0, tk.END)
+            self.userName.focus()
 
     def conexion(self,query,parametros = ()):
             try:
