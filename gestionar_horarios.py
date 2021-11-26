@@ -25,6 +25,7 @@ class Horarios(tk.Toplevel):
 
         self.menubar = tk.Menu(self)
         self.menubar.add_cascade(label="Configuración", command=self.configuracion)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
         self.config(menu=self.menubar)
 
         self.notebook = ttk.Notebook(self)
@@ -476,6 +477,9 @@ class Horarios(tk.Toplevel):
             [Paragraph('6',self.center)]
         ]
     
+    def volver(self):
+        self.destroy()
+
     def botonActivarInicio(self):
         self.entryInicio.config(state=NORMAL)
         self.entryInicio.focus()
@@ -2493,7 +2497,7 @@ class Horarios(tk.Toplevel):
             [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
         ]
         self.tabla = self.conexion(
-            'SELECT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
+            'SELECT DISTINCT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
             self.parametros).fetchall()
         for row in self.tabla:
             self.tablaInformacion.append(row)
