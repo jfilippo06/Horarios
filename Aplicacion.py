@@ -1,22 +1,65 @@
 import tkinter as tk
+from tkinter import ttk
 from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
 from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
 from rutas import *
+import sqlite3
+import traceback
+import sys
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
         # Config: 
+        self.title('Login')
+        self.geometry('300x270')
+        self.resizable(width=0, height=0)
+        self.iconbitmap(uptpc)
+
+        self.tittleUser = ttk.Label(text='Usuario')
+        self.tittleUser.place(x=130,y=110)
+        self.userName = ttk.Entry(self,width=40)
+        self.userName.place(x=25,y=130)
+        self.userName.focus()
+        self.tittlePassword = ttk.Label(text='Contraseña')
+        self.tittlePassword.place(x=120,y=160)
+        self.userPassword = ttk.Entry(self,width=40)
+        self.userPassword.place(x=25,y=180)
+        self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
+        self.button.place(x=110,y=210)
+   
+    def change(self):
+        self.tittleUser.place_forget()
+        self.userName.place_forget()
+        self.userPassword.place_forget()
+        self.tittlePassword.place_forget()
+        self.button.place_forget()
+        self.pantallaPrincipal()
+
+    def conexion(self,query,parametros = ()):
+            try:
+                self.con = sqlite3.connect(baseDeDatos)
+                self.cursor = self.con.cursor()
+                self.cursor.execute(query,parametros)
+                self.con.commit()
+                return self.cursor
+            except sqlite3.Error as er:
+                print('SQLite error: %s' % (' '.join(er.args)))
+                print("Exception class is: ", er.__class__)
+                print('SQLite traceback: ')
+                exc_type, exc_value, exc_tb = sys.exc_info()
+                print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
+    def pantallaPrincipal(self):
         self.title('UPTPC')
         self.geometry('800x450')
         self.resizable(width=0, height=0)
         self.imagen = tk.PhotoImage(file = fondo)
         tk.Label(self, image = self.imagen,bd=0).place(x=0, y=0)
         self.iconbitmap(uptpc)
-        # Menu:
         self.menubar = tk.Menu(self)
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)
@@ -35,7 +78,7 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
         self.menubar.add_cascade(label="Salir", command=self.salir)
         self.config(menu=self.menubar)
-    
+
     def cargaAcademica(self):
         self.lower()
         CargaAcademica(self)
