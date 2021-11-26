@@ -10,7 +10,6 @@ class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
 		super().__init__(master)
 		# Config:
-		self.master = master
 		self.title('Carga Académica')
 		self.geometry('940x670')
 		self.resizable(width=0,height=0)
@@ -82,9 +81,6 @@ class CargaAcademica(tk.Toplevel):
 
 	def volver(self):
 		self.destroy()
-
-	def salir(self):
-		self.master.destroy()
 
 	def limpiarTabla(self):
 		self.DeleteChildren = self.tree.get_children()
