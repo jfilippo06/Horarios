@@ -20,6 +20,10 @@ class App(tk.Tk):
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
+        self.tittle1 = ttk.Label(text='SISTEMA DE GESTIÓN ', font=('Helvetica',18))
+        self.tittle1.place(x=20,y=20)
+        self.tittle2 = ttk.Label(text='LOGIN ', font=('Helvetica',12))
+        self.tittle2.place(x=125,y=60)
         self.tittleUser = ttk.Label(text='Usuario')
         self.tittleUser.place(x=130,y=110)
         self.userName = ttk.Entry(self,width=40)
@@ -33,6 +37,20 @@ class App(tk.Tk):
         self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
         self.button.place(x=110,y=210)
 
+    def conexion(self,query,parametros = ()):
+            try:
+                self.con = sqlite3.connect(baseDeDatos)
+                self.cursor = self.con.cursor()
+                self.cursor.execute(query,parametros)
+                self.con.commit()
+                return self.cursor
+            except sqlite3.Error as er:
+                print('SQLite error: %s' % (' '.join(er.args)))
+                print("Exception class is: ", er.__class__)
+                print('SQLite traceback: ')
+                exc_type, exc_value, exc_tb = sys.exc_info()
+                print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
     def validarCeldas(self):
         return len(self.userName.get()) != 0 and len(self.userPassword.get()) != 0
    
@@ -40,6 +58,8 @@ class App(tk.Tk):
         if self.validarCeldas():
             validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
             if validar:
+                self.tittle1.place_forget()
+                self.tittle1.place_forget()
                 self.tittleUser.place_forget()
                 self.userName.place_forget()
                 self.userPassword.place_forget()
@@ -57,27 +77,11 @@ class App(tk.Tk):
             self.userPassword.delete(0, tk.END)
             self.userName.focus()
 
-    def conexion(self,query,parametros = ()):
-            try:
-                self.con = sqlite3.connect(baseDeDatos)
-                self.cursor = self.con.cursor()
-                self.cursor.execute(query,parametros)
-                self.con.commit()
-                return self.cursor
-            except sqlite3.Error as er:
-                print('SQLite error: %s' % (' '.join(er.args)))
-                print("Exception class is: ", er.__class__)
-                print('SQLite traceback: ')
-                exc_type, exc_value, exc_tb = sys.exc_info()
-                print(traceback.format_exception(exc_type, exc_value, exc_tb))
-
     def pantallaPrincipal(self):
         self.title('UPTPC')
         self.geometry('800x450')
-        self.resizable(width=0, height=0)
         self.imagen = tk.PhotoImage(file = fondo)
         tk.Label(self, image = self.imagen,bd=0).place(x=0, y=0)
-        self.iconbitmap(uptpc)
         self.menubar = tk.Menu(self)
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)

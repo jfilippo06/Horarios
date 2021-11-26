@@ -14,6 +14,11 @@ class Gestor(tk.Toplevel):
         self.geometry('470x425')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
+
+        # Menu:
+        self.menubar = tk.Menu(self)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
+        self.config(menu=self.menubar)
         
         # create a notebook
         self.notebook = ttk.Notebook(self)
@@ -224,6 +229,9 @@ class Gestor(tk.Toplevel):
         self.MostrarDatosSeccion()
         self.MostrarDatosUnidadCurricular()
         self.MostrarDatosLaboratorio()
+
+    def volver(self):
+        self.destroy()
 
     def conexion(self,query,parametros = ()):
         try:
