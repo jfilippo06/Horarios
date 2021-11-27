@@ -27,6 +27,7 @@ class CargaAcademica(tk.Toplevel):
 		self.cedula = ttk.Entry(self.Frame, width=45)
 		self.cedula.grid(column=1,row=0,padx=5,pady=5)
 		self.cedula.focus()		
+		self.cedula.bind('<KeyRelease>',lambda e: self.verificar())
 		ttk.Button(self.Frame, text='CONSULTAR', command =self.consultar).grid(column=2,row=0,padx=5,pady=5)
 
 		# ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
@@ -129,6 +130,12 @@ class CargaAcademica(tk.Toplevel):
 		self.rows = self.TraerDatos("SELECT Id,NombreApellido,Cedula FROM docente")
 		for row in self.rows:
 			self.tree.insert('',tk.END,values=row)
+
+	def verificar(self):
+		codigo = self.cedula.get()
+		for i in codigo:
+			if i not in '0123456789':
+				self.cedula.delete(codigo.index(i), codigo.index(i)+1)
 
 	def consultar(self):
 		if self.validarCelda():
