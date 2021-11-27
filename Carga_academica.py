@@ -11,7 +11,7 @@ class CargaAcademica(tk.Toplevel):
 		super().__init__(master)
 		# Config:
 		self.title('Carga Académica')
-		self.geometry('940x670')
+		self.geometry('485x400')
 		self.resizable(width=0,height=0)
 		self.iconbitmap(uptpc)
 		# Menu:
@@ -20,62 +20,72 @@ class CargaAcademica(tk.Toplevel):
 		self.config(menu=self.menubar)
 		# Frame:
 		self.Frame = ttk.Labelframe(self)
-		self.Frame.grid(column=0,row=0,pady=30,padx=10)
-		ttk.Label(self, text='CARGA ACADÉMICA',font=('Helvetica',14)).place(x=370,y=5)
-		ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
-		self.EntryNombreApellido = ttk.Entry(self.Frame,width=45)
-		self.EntryNombreApellido.grid(column=1,row=0,padx=5,pady=5)
-		ttk.Label(self.Frame,text='Cédula de Identidad N°:',font=('Helvetica',11)).grid(column=2,row=0,padx=5)
-		self.EntryCedula = ttk.Entry(self.Frame,width=45)
-		self.EntryCedula.grid(column=3,row=0,padx=5,pady=5)
-		ttk.Label(self.Frame,text='Categoría:',font=('Helvetica',11)).grid(column=0,row=1,padx=5,pady=5)
-		self.EntryCategoria = ttk.Entry(self.Frame,width=45)
-		self.EntryCategoria.grid(column=1,row=1,padx=5,pady=5)
-		ttk.Label(self.Frame, text='Dedicación:',font=('Helvetica',11)).grid(column=2,row=1,padx=5,pady=5)
-		self.EntryDedicacion = ttk.Entry(self.Frame,width=45)
-		self.EntryDedicacion.grid(column=3,row=1,padx=5,pady=5)
-		ttk.Label(self.Frame,text='Título de Pre-Grado:',font=('Helvetica',11)).grid(column=0,row=2,padx=5,pady=5)
-		self.EntryTPregado = ttk.Entry(self.Frame,width=45)
-		self.EntryTPregado.grid(column=1,row=2,padx=5,pady=5)
-		ttk.Label(self.Frame, text='Título de Post-Grado:',font=('Helvetica',11)).grid(column=2,row=2,padx=5,pady=5)
-		self.EntryTPosgrado = ttk.Entry(self.Frame,width=45)
-		self.EntryTPosgrado.grid(column=3,row=2,padx=5,pady=5)
-		ttk.Label(self.Frame, text='Descarga Académica:',font=('Helvetica',11)).grid(column=0,row=3,padx=5,pady=5)
-		self.DescargaAcademica = tk.StringVar()
-		ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.DescargaAcademica).grid(column=1,row=3,padx=5,pady=5)
-		ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.DescargaAcademica).grid(column=2,row=3,padx=5,pady=5)
-		ttk.Label(self.Frame, text='Condición Laboral:',font=('Helvetica',11)).grid(column=0,row=4,padx=5,pady=5)
-		self.CondicionLaboral = tk.StringVar()
-		ttk.Radiobutton(self.Frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboral).grid(column=1,row=4,padx=5,pady=5)
-		ttk.Radiobutton(self.Frame, text='Contratado', value='Contratado',variable=self.CondicionLaboral).grid(column=2,row=4,padx=5,pady=5)
-		ttk.Label(self.Frame,text='Razón de la descarga:',font=('Helvetica',11)).grid(column=0,row=5,padx=5,pady=5)
-		self.EntryRazon = ttk.Entry(self.Frame,width=45)
-		self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)
-		ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
-		self.EntryTelefono = ttk.Entry(self.Frame,width=45)
-		self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
-		ttk.Label(self.Frame, text='Labora en otra empresa:',font=('Helvetica',11)).grid(column=0,row=6,padx=5,pady=5)
-		self.labora = tk.StringVar()
-		ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.labora).grid(column=1,row=6,padx=5,pady=5)
-		ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.labora).grid(column=2,row=6,padx=5,pady=5)
-		ttk.Label(self.Frame, text='Especifique:',font=('Helvetica',11)).grid(column=0,row=7,padx=5,pady=5)
-		self.EntryEspecifique = ttk.Entry(self.Frame,width=45)
-		self.EntryEspecifique.grid(column=1,row=7,padx=5,pady=5)
-		ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
-		ttk.Button(self.Frame,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=1,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
+		self.Frame.grid(column=0,row=0,pady=25,padx=11)
+		ttk.Label(self, text='CONSULTAR CEDULA',font=('Helvetica',14)).place(x=150,y=5)
+
+		ttk.Label(self.Frame, text='Cedula:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
+		self.cedula = ttk.Entry(self.Frame, width=45)
+		self.cedula.grid(column=1,row=0,padx=5,pady=5)
+		self.cedula.focus()		
+		ttk.Button(self.Frame, text='CONSULTAR', command =self.consultar).grid(column=2,row=0,padx=5,pady=5)
+
+		# ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
+		# self.EntryNombreApellido = ttk.Entry(self.Frame,width=45)
+		# self.EntryNombreApellido.grid(column=1,row=0,padx=5,pady=5)
+		# ttk.Label(self.Frame,text='Cédula de Identidad N°:',font=('Helvetica',11)).grid(column=2,row=0,padx=5)
+		# self.EntryCedula = ttk.Entry(self.Frame,width=45)
+		# self.EntryCedula.grid(column=3,row=0,padx=5,pady=5)
+		# ttk.Label(self.Frame,text='Categoría:',font=('Helvetica',11)).grid(column=0,row=1,padx=5,pady=5)
+		# self.EntryCategoria = ttk.Entry(self.Frame,width=45)
+		# self.EntryCategoria.grid(column=1,row=1,padx=5,pady=5)
+		# ttk.Label(self.Frame, text='Dedicación:',font=('Helvetica',11)).grid(column=2,row=1,padx=5,pady=5)
+		# self.EntryDedicacion = ttk.Entry(self.Frame,width=45)
+		# self.EntryDedicacion.grid(column=3,row=1,padx=5,pady=5)
+		# ttk.Label(self.Frame,text='Título de Pre-Grado:',font=('Helvetica',11)).grid(column=0,row=2,padx=5,pady=5)
+		# self.EntryTPregado = ttk.Entry(self.Frame,width=45)
+		# self.EntryTPregado.grid(column=1,row=2,padx=5,pady=5)
+		# ttk.Label(self.Frame, text='Título de Post-Grado:',font=('Helvetica',11)).grid(column=2,row=2,padx=5,pady=5)
+		# self.EntryTPosgrado = ttk.Entry(self.Frame,width=45)
+		# self.EntryTPosgrado.grid(column=3,row=2,padx=5,pady=5)
+		# ttk.Label(self.Frame, text='Descarga Académica:',font=('Helvetica',11)).grid(column=0,row=3,padx=5,pady=5)
+		# self.DescargaAcademica = tk.StringVar()
+		# ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.DescargaAcademica).grid(column=1,row=3,padx=5,pady=5)
+		# ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.DescargaAcademica).grid(column=2,row=3,padx=5,pady=5)
+		# ttk.Label(self.Frame, text='Condición Laboral:',font=('Helvetica',11)).grid(column=0,row=4,padx=5,pady=5)
+		# self.CondicionLaboral = tk.StringVar()
+		# ttk.Radiobutton(self.Frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboral).grid(column=1,row=4,padx=5,pady=5)
+		# ttk.Radiobutton(self.Frame, text='Contratado', value='Contratado',variable=self.CondicionLaboral).grid(column=2,row=4,padx=5,pady=5)
+		# ttk.Label(self.Frame,text='Razón de la descarga:',font=('Helvetica',11)).grid(column=0,row=5,padx=5,pady=5)
+		# self.EntryRazon = ttk.Entry(self.Frame,width=45)
+		# self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)
+		# ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
+		# self.EntryTelefono = ttk.Entry(self.Frame,width=45)
+		# self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
+		# ttk.Label(self.Frame, text='Labora en otra empresa:',font=('Helvetica',11)).grid(column=0,row=6,padx=5,pady=5)
+		# self.labora = tk.StringVar()
+		# ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.labora).grid(column=1,row=6,padx=5,pady=5)
+		# ttk.Radiobutton(self.Frame, text='No', value='No',variable=self.labora).grid(column=2,row=6,padx=5,pady=5)
+		# ttk.Label(self.Frame, text='Especifique:',font=('Helvetica',11)).grid(column=0,row=7,padx=5,pady=5)
+		# self.EntryEspecifique = ttk.Entry(self.Frame,width=45)
+		# self.EntryEspecifique.grid(column=1,row=7,padx=5,pady=5)
+		# ttk.Button(self.Frame,text = 'REGISTRAR DOCENTE', command = self.RegistrarDocente).grid(column=0,row=8,sticky = tk.W + tk.E ,padx=5,pady=5)
 		# Treeview:
-		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings')
+		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings', height=8)
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
 		self.tree.heading('#1', text = 'Id')
 		self.tree.heading('#2', text = 'Nombre y Apellido')
 		self.tree.heading('#3', text = 'Cedula')
+		self.tree.column('#1', width=40)
+		self.tree.column('#2', width=150)
+		self.tree.column('#3', width=50)
 		
 		self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.tree.yview)
 		self.tree.configure(yscroll=self.scrollbar.set)
 		self.scrollbar.grid(column=1,row=1, sticky='ns')
 		# # Button:
-		ttk.Button(self,text = 'EDITAR DOCENTE', command = self.editar).grid(column=0,row=2, sticky = tk.W + tk.E, padx=5)
-		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=3,sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=0,row=2, sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'CARGA ACADÉMICA DOCENTE', command = self.editar).grid(column=0,row=3, sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=4,sticky = tk.W + tk.E, padx=5)
 
 		self.MostrarDatos()
 
@@ -87,22 +97,11 @@ class CargaAcademica(tk.Toplevel):
 		for element in self.DeleteChildren:
 			self.tree.delete(element)
 
-	def LimpiarCeldas(self):
-		self.EntryNombreApellido.delete(0, tk.END)
-		self.EntryCedula.delete(0, tk.END)
-		self.EntryCategoria.delete(0, tk.END)
-		self.EntryDedicacion.delete(0, tk.END)
-		self.EntryTPregado.delete(0, tk.END)
-		self.EntryTPosgrado.delete(0, tk.END)
-		self.DescargaAcademica.set(0)
-		self.CondicionLaboral.set(0)
-		self.EntryRazon.delete(0, tk.END)
-		self.EntryTelefono.delete(0, tk.END)
-		self.labora.set(0)
-		self.EntryEspecifique.delete(0, tk.END)
+	def limpiarCelda(self):
+		self.cedula.delete(0, tk.END)
 
-	def ValidarCeldas(self):
-		return len(self.EntryNombreApellido.get()) != 0 and len(self.EntryCedula.get()) != 0 and len(self.EntryCategoria.get()) != 0 and len(self.EntryDedicacion.get()) != 0 and len(self.EntryTPregado.get()) != 0 and len(self.EntryTPosgrado.get()) != 0 and len(self.DescargaAcademica.get()) != 0 and len(self.CondicionLaboral.get()) != 0 and len(self.EntryRazon.get())  != 0 and len(self.EntryTelefono.get())  != 0 and len(self.labora.get()) != 0 and  len(self.EntryEspecifique.get()) != 0     
+	def validarCelda(self):
+		return len(self.cedula.get()) != 0 
 
 	def conexion(self,query,parametros = ()):
 		try:
@@ -131,18 +130,41 @@ class CargaAcademica(tk.Toplevel):
 		for row in self.rows:
 			self.tree.insert('',tk.END,values=row)
 
-	def RegistrarDocente(self):
-		if self.ValidarCeldas():
-			self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)'
-			self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get(),self.labora.get(),self.EntryEspecifique.get())
-			if self.conexion(self.query,self.parametros):
-				self.MostrarDatos()
-				self.LimpiarCeldas()
-				messagebox.showinfo(title='Info', message='Docente Registrado.')
+	def consultar(self):
+		if self.validarCelda():
+			cedula = self.conexion('SELECT * FROM docente WHERE Cedula = ?',(self.cedula.get(),)).fetchall()
+			if cedula:
+				messagebox.showwarning(title='Warning', message='Cedula ya esta registrada')
+				self.limpiarCelda()
+				self.cedula.focus()
 			else:
-				messagebox.showinfo(title='Info', message='Esta cedula ya esta registrada')
+				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrala?'):
+					self.registrarDocente()
+				else:
+					self.limpiarCelda()
+					self.cedula.focus()
 		else:
-			messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+			messagebox.showwarning(title='Warning', message='Introduzca una cedula')
+			self.limpiarCelda()
+			self.cedula.focus()
+
+	def registrarDocente(self):
+		new = tk.Toplevel()
+
+		
+
+		new.mainloop()
+		# if self.ValidarCeldas():
+		# 	self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)'
+		# 	self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get(),self.labora.get(),self.EntryEspecifique.get())
+		# 	if self.conexion(self.query,self.parametros):
+		# 		self.MostrarDatos()
+		# 		self.LimpiarCeldas()
+		# 		messagebox.showinfo(title='Info', message='Docente Registrado.')
+		# 	else:
+		# 		messagebox.showinfo(title='Info', message='Esta cedula ya esta registrada')
+		# else:
+		# 	messagebox.showwarning(title='Warning', message='Introduzca un valor.')
 	
 	def selecionarFila(self):
 		self.item = self.tree.focus()
@@ -278,7 +300,7 @@ class CargaAcademica(tk.Toplevel):
 			messagebox.showinfo(title='Info', message='Docente Editado Correctamente.')
 		else:
 			messagebox.showinfo(title='info', message='Introduzca un valor en las celdas')
-
+# ----------------------------------------------------------------------------------------------------------
 	def gestionarMaterias(self):
 		if self.tree.selection():
 			self.lower()
