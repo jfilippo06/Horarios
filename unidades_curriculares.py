@@ -28,7 +28,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryUnidadCurricular = ttk.Entry(self.frameUnidadCurricular,width=20)
         self.entryUnidadCurricular.grid(column=1,row=0)
         ttk.Button(self.frameUnidadCurricular, text='REGISTRAR UNIDAD CURRICILAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
-        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICILAR', command='self.editarUnidadCurricular',width=33).grid(row=2,column=0)
+        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICILAR', command=self.modificarUnidadCurricular,width=33).grid(row=2,column=0)
         ttk.Button(self.frameUnidadCurricular, text='ELIMINAR UNIDAD CURRICILAR', command=self.eliminarUnidadCurricular,width=33).grid(row=3,column=0)
         
         self.frameDEntry = ttk.Labelframe(self.container)
@@ -350,6 +350,21 @@ class Unidades_curriculares(tk.Toplevel):
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione un PT a eliminar.')
 
+    def modificarUnidadCurricular(self):
+        if self.treeUnidadesCurriculares.selection():
+            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
+                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE id = ?'
+                self.parametros = (self.entryUnidadCurricular.get())
+                self.id = self.selecionarFilaUnidadesCurriculares()
+                self.conexion(self.query,(self.parametros, self.id))
+                self.MostrarDatosUnidadesCurriculares()
+                self.LimpiarCeldaUnidadCurricular()
+                messagebox.showinfo(title='Info', message='Unidad curricular Editada Correctamente.')
+            else:
+                self.MostrarDatosUnidadesCurriculares()
+        else:
+            messagebox.showwarning(title='Warning', message='Seleccione una la unidad curricular a editar.')
+    
     def modificarHora(self):
         if self.treeHora.selection() and self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
@@ -357,7 +372,7 @@ class Unidades_curriculares(tk.Toplevel):
                 self.parametros = (self.hora())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
-                self.MostrarDatosUnidadesCurriculares()
+                self.MostrarDatosHora()
                 messagebox.showinfo(title='Info', message='Hora Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
@@ -371,7 +386,7 @@ class Unidades_curriculares(tk.Toplevel):
                 self.parametros = (self.departamento())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
-                self.MostrarDatosUnidadesCurriculares()
+                self.MostrarDatosDepartamento()
                 messagebox.showinfo(title='Info', message='Departamento Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
@@ -385,7 +400,7 @@ class Unidades_curriculares(tk.Toplevel):
                 self.parametros = (self.pt())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
-                self.MostrarDatosUnidadesCurriculares()
+                self.MostrarDatosPt()
                 messagebox.showinfo(title='Info', message='PT Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
