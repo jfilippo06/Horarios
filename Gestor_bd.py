@@ -30,7 +30,6 @@ class Gestor(tk.Toplevel):
         self.noteTrayecto = ttk.Frame(self.notebook, width=470, height=425)
         self.noteTrimestre = ttk.Frame(self.notebook, width=470, height=425)
         self.noteSeccion = ttk.Frame(self.notebook, width=470, height=425)
-        self.noteUnidadCurricular = ttk.Frame(self.notebook, width=470, height=425)
         self.noteLaboratorio = ttk.Frame(self.notebook, width=470, height=425)
 
         # create frames
@@ -39,7 +38,6 @@ class Gestor(tk.Toplevel):
         self.noteTrayecto.pack(fill='both', expand=True)
         self.noteTrimestre.pack(fill='both', expand=True)
         self.noteSeccion.pack(fill='both', expand=True)
-        self.noteUnidadCurricular.pack(fill='both', expand=True)
         self.noteLaboratorio.pack(fill='both', expand=True)
 
         # add frames to notebook
@@ -48,7 +46,6 @@ class Gestor(tk.Toplevel):
         self.notebook.add(self.noteTrayecto, text='Trayecto')
         self.notebook.add(self.noteTrimestre, text='Trimestre')
         self.notebook.add(self.noteSeccion, text='sección')
-        self.notebook.add(self.noteUnidadCurricular, text='Unidad Curricular')
         self.notebook.add(self.noteLaboratorio, text='Laboratorio')
             
         # Pantalla Cohorte 0/3
@@ -171,31 +168,6 @@ class Gestor(tk.Toplevel):
         ttk.Button(self.noteSeccion,text = 'EDITAR SECCIÓN', command =self.editarSeccion).grid(column=0,row=2, sticky = tk.W + tk.E)
         ttk.Button(self.noteSeccion,text = 'ELIMINAR SECCIÓN', command = self.eliminarSeccion).grid(column=0,row=3,sticky = tk.W + tk.E)
 
-        # Pantalla Unidad Curricular 0/3
-        self.frameUnidadCurricular = ttk.LabelFrame(self.noteUnidadCurricular)
-        self.frameUnidadCurricular.grid(column=0,row=0,pady=10,padx=5)
-
-        # Unidad Curricular frame 1/3
-        ttk.Label(self.frameUnidadCurricular,text='Unidad Curricular').grid(column=0,row=0)
-        self.entryUnidadCurricular = ttk.Entry(self.frameUnidadCurricular,width=38)
-        self.entryUnidadCurricular.grid(column=1,row=0,padx=0,pady=5)
-        ttk.Button(self.frameUnidadCurricular, text='REGISTRAR UNIDAD CURRICULAR', command= self.RegistrarUnidadCurricular).grid(row=1,column=0, sticky = tk.W + tk.E)
-        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICULAR', command= self.editarUnidadCurricular2).grid(row=1,column=1, sticky = tk.W + tk.E)
-
-        # Unidad Curricular Tabla 2/3
-        self.treeUnidadCurricular = ttk.Treeview(self.noteUnidadCurricular,columns =['#1','#2'], show='headings')
-        self.treeUnidadCurricular.grid(column=0,row=1, sticky='nsew')
-        self.treeUnidadCurricular.heading('#1', text = 'Id')
-        self.treeUnidadCurricular.heading('#2', text = 'Unidad Curricular')
-        self.treeUnidadCurricular.column('#1',width=60)
-        self.scrollbarUnidadCurricular = ttk.Scrollbar(self.noteUnidadCurricular, orient=tk.VERTICAL, command=self.treeUnidadCurricular.yview)
-        self.treeUnidadCurricular.configure(yscroll=self.scrollbarUnidadCurricular.set)
-        self.scrollbarUnidadCurricular.grid(column=1,row=1, sticky='ns')
-
-        # Unidad Curricular Botones 3/3
-        ttk.Button(self.noteUnidadCurricular,text = 'EDITAR UNIDAD CURRICULAR', command =self.editarUnidadCurricular).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteUnidadCurricular,text = 'ELIMINAR UNIDAD CURRICULAR', command = self.eliminarUnidadCurricular).grid(column=0,row=3,sticky = tk.W + tk.E)
-
         # Pantalla Laboratorio 0/3
         self.frameLaboratorio = ttk.LabelFrame(self.noteLaboratorio)
         self.frameLaboratorio.grid(column=0,row=0,pady=10,padx=23)
@@ -227,7 +199,6 @@ class Gestor(tk.Toplevel):
         self.MostrarDatosTrayecto()
         self.MostrarDatosTrimestre()
         self.MostrarDatosSeccion()
-        self.MostrarDatosUnidadCurricular()
         self.MostrarDatosLaboratorio()
 
     def volver(self):
@@ -282,11 +253,6 @@ class Gestor(tk.Toplevel):
         for element in self.DeleteChildren:
             self.treeSeccion.delete(element)
 
-    def limpiarTablaUnidadCurricular(self):
-        self.DeleteChildren = self.treeUnidadCurricular.get_children()
-        for element in self.DeleteChildren:
-            self.treeUnidadCurricular.delete(element)
-
     def limpiarTablaLaboratorio(self):
         self.DeleteChildren = self.treeLaboratorio.get_children()
         for element in self.DeleteChildren:
@@ -322,12 +288,6 @@ class Gestor(tk.Toplevel):
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
 
-    def MostrarDatosUnidadCurricular(self):
-        self.limpiarTablaUnidadCurricular()
-        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular COLLATE utf8_spanish2_ci FROM unidad_curricular ORDER BY UnidadCurricular")
-        for row in self.rows:
-            self.treeUnidadCurricular.insert('',tk.END,values=row)
-
     def MostrarDatosLaboratorio(self):
         self.limpiarTablaLaboratorio()
         self.rows = self.TraerDatos("SELECT * FROM laboratorio")
@@ -361,12 +321,6 @@ class Gestor(tk.Toplevel):
     def selecionarFilaSeccion(self):
         self.item = self.treeSeccion.focus()
         self.data = self.treeSeccion.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
-
-    def selecionarFilaUnidadCurricular(self):
-        self.item = self.treeUnidadCurricular.focus()
-        self.data = self.treeUnidadCurricular.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -441,19 +395,6 @@ class Gestor(tk.Toplevel):
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione un sección a eliminar.')
 
-    def eliminarUnidadCurricular(self):
-        if self.treeUnidadCurricular.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar la unidad curricular selecionado?'):
-                self.query = 'DELETE FROM unidad_curricular WHERE Id = ?'
-                self.parametros = self.selecionarFilaUnidadCurricular()
-                self.conexion(self.query, (self.parametros,)) 
-                self.MostrarDatosUnidadCurricular()
-                messagebox.showinfo(title='Info', message='Unidad Curricular eliminado correctamente.')
-            else:
-                self.MostrarDatosUnidadCurricular()
-        else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a eliminar.')
-
     def eliminarLaboratorio(self):
         if self.treeLaboratorio.selection():
             if messagebox.askyesno('Delete','¿Desea eliminar el laboratoiro selecionado?'):
@@ -482,9 +423,6 @@ class Gestor(tk.Toplevel):
     def ValidarCeldaSeccion(self):
         return len(self.entrySeccion.get())
 
-    def ValidarCeldaUnidadCirricular(self):
-        return len(self.entryUnidadCurricular.get())
-
     def ValidarCeldaLaboratorio(self):
         return len(self.entryLaboratorio.get())
 
@@ -502,9 +440,6 @@ class Gestor(tk.Toplevel):
 
     def LimpiarCeldaSeccion(self):
         self.entrySeccion.delete(0, tk.END)
-
-    def LimpiarCeldaUnidadCurricular(self):
-        self.entryUnidadCurricular.delete(0, tk.END)
 
     def LimpiarCeldaLaboratorio(self):
         self.entryLaboratorio.delete(0, tk.END)
@@ -571,19 +506,6 @@ class Gestor(tk.Toplevel):
                 messagebox.showinfo(title='Info', message='Sección Registrado.')
             else:
                 messagebox.showwarning(title='Warning', message='Sección ya esta registrada.')
-        else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor.')
-
-    def RegistrarUnidadCurricular(self):
-        if self.ValidarCeldaUnidadCirricular():
-            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"","","")'
-            self.parametros = (self.entryUnidadCurricular.get())
-            if self.conexion(self.query,(self.parametros,)):
-                self.MostrarDatosUnidadCurricular()
-                self.LimpiarCeldaUnidadCurricular()
-                messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
-            else:
-                messagebox.showwarning(title='Warning', message='Unidad curricular ya esta registrada.')
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor.')
 
@@ -774,41 +696,6 @@ class Gestor(tk.Toplevel):
                 self.LimpiarCeldaSeccion()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione la sección a editar.')
-
-    def editarUnidadCurricular(self):
-        if self.treeUnidadCurricular.selection():
-            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionado?'):
-                if self.ValidarCeldaUnidadCirricular():
-                    self.LimpiarCeldaUnidadCurricular()
-                    self.item = self.treeUnidadCurricular.focus()
-                    self.data = self.treeUnidadCurricular.item(self.item)
-                    self.id = self.data['values'][1]
-                    self.entryUnidadCurricular.insert(0,self.id)
-                else:
-                    self.item = self.treeUnidadCurricular.focus()
-                    self.data = self.treeUnidadCurricular.item(self.item)
-                    self.id = self.data['values'][1]
-                    self.entryUnidadCurricular.insert(0,self.id)
-            else:
-                self.MostrarDatosUnidadCurricular()
-        else: 
-            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular editar.')
-
-    def editarUnidadCurricular2(self):
-        if self.ValidarCeldaUnidadCirricular() and self.treeUnidadCurricular.selection():
-            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE id = ?'
-                self.parametros = (self.entryUnidadCurricular.get())
-                self.id = self.selecionarFilaUnidadCurricular()
-                self.conexion(self.query,(self.parametros, self.id))
-                self.MostrarDatosUnidadCurricular()
-                self.LimpiarCeldaUnidadCurricular()
-                messagebox.showinfo(title='Info', message='Unidad curricular Editada Correctamente.')
-            else:
-                self.MostrarDatosUnidadCurricular()
-                self.LimpiarCeldaUnidadCurricular()
-        else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor y seleccione la unidad curricular a editar.')
 
     def editarLaboratorio(self):
         if self.treeLaboratorio.selection():
