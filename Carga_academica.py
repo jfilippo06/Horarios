@@ -30,12 +30,6 @@ class CargaAcademica(tk.Toplevel):
 		self.cedula.bind('<KeyRelease>',lambda e: self.verificar())
 		ttk.Button(self.Frame, text='CONSULTAR', command =self.consultar).grid(column=2,row=0,padx=5,pady=5)
 
-		# ttk.Label(self.Frame, text='Nombre y Apellido:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
-		# self.EntryNombreApellido = ttk.Entry(self.Frame,width=45)
-		# self.EntryNombreApellido.grid(column=1,row=0,padx=5,pady=5)
-		# ttk.Label(self.Frame,text='Cédula de Identidad N°:',font=('Helvetica',11)).grid(column=2,row=0,padx=5)
-		# self.EntryCedula = ttk.Entry(self.Frame,width=45)
-		# self.EntryCedula.grid(column=3,row=0,padx=5,pady=5)
 		# ttk.Label(self.Frame,text='Categoría:',font=('Helvetica',11)).grid(column=0,row=1,padx=5,pady=5)
 		# self.EntryCategoria = ttk.Entry(self.Frame,width=45)
 		# self.EntryCategoria.grid(column=1,row=1,padx=5,pady=5)
@@ -59,9 +53,6 @@ class CargaAcademica(tk.Toplevel):
 		# ttk.Label(self.Frame,text='Razón de la descarga:',font=('Helvetica',11)).grid(column=0,row=5,padx=5,pady=5)
 		# self.EntryRazon = ttk.Entry(self.Frame,width=45)
 		# self.EntryRazon.grid(column=1,row=5,padx=5,pady=5)
-		# ttk.Label(self.Frame,text='Numero telefónico:',font=('Helvetica',11)).grid(column=2,row=5,padx=5,pady=5)
-		# self.EntryTelefono = ttk.Entry(self.Frame,width=45)
-		# self.EntryTelefono.grid(column=3,row=5,padx=5,pady=5) 
 		# ttk.Label(self.Frame, text='Labora en otra empresa:',font=('Helvetica',11)).grid(column=0,row=6,padx=5,pady=5)
 		# self.labora = tk.StringVar()
 		# ttk.Radiobutton(self.Frame, text='Si', value='Si',variable=self.labora).grid(column=1,row=6,padx=5,pady=5)
@@ -134,7 +125,7 @@ class CargaAcademica(tk.Toplevel):
 	def verificar(self):
 		codigo = self.cedula.get()
 		for i in codigo:
-			if i not in '0123456789':
+			if i not in '0123456789.':
 				self.cedula.delete(codigo.index(i), codigo.index(i)+1)
 
 	def consultar(self):
@@ -146,7 +137,9 @@ class CargaAcademica(tk.Toplevel):
 				self.cedula.focus()
 			else:
 				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrala?'):
-					self.registrarDocente()
+					valor = self.cedula.get()
+					self.limpiarCelda()
+					self.docente(valor)
 				else:
 					self.limpiarCelda()
 					self.cedula.focus()
@@ -155,23 +148,40 @@ class CargaAcademica(tk.Toplevel):
 			self.limpiarCelda()
 			self.cedula.focus()
 
+	def docente(self,valor):
+		self.new = tk.Toplevel()
+		self.new.title('Registrar docente')
+		self.new.resizable(width=0,height=0)
+		self.new.iconbitmap(uptpc)
+
+		ttk.Label(self.new,text='Cédula de Identidad N°:').grid(column=0,row=0,padx=5)
+		self.entryCedula = ttk.Entry(self.new,width=45)
+		self.entryCedula.grid(column=1,row=0,padx=5,pady=5)
+		self.entryCedula.insert(0,valor)
+		self.entryCedula.config(state=tk.DISABLED)
+		ttk.Label(self.new, text='Nombre y Apellido:').grid(column=0,row=1 ,padx=5,pady=5)
+		self.entryNombreApellido = ttk.Entry(self.new,width=45)
+		self.entryNombreApellido.grid(column=1,row=1,padx=5,pady=5)
+		self.entryNombreApellido.focus()
+		# ttk.Label(new,text='Numero telefónico:').grid(column=0,row=2,padx=5,pady=5)
+		# self.entryTelefono = ttk.Entry(new,width=45)
+		# self.entryTelefono.grid(column=1,row=2,padx=5,pady=5)
+		ttk.Button(self.new, text='REGISTRAR DOCENTE', command=self.registrarDocente).grid(column=0,row=3,padx=5,pady=5)		
+		ttk.Button(self.new, text='CANCELAR', command=self.docenteCancelar).grid(column=1,row=3,padx=5,pady=5)	
+
+		self.new.mainloop()
+
+	def docenteCancelar(self):
+		self.new.destroy()
+
 	def registrarDocente(self):
-		new = tk.Toplevel()
-
-		
-
-		new.mainloop()
-		# if self.ValidarCeldas():
-		# 	self.query = 'INSERT INTO docente VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)'
-		# 	self.parametros = (self.EntryNombreApellido.get(),self.EntryCedula.get(),self.EntryCategoria.get(),self.EntryDedicacion.get(),self.EntryTPregado.get(),self.EntryTPosgrado.get(),self.DescargaAcademica.get(), self.CondicionLaboral.get(), self.EntryRazon.get(), self.EntryTelefono.get(),self.labora.get(),self.EntryEspecifique.get())
-		# 	if self.conexion(self.query,self.parametros):
-		# 		self.MostrarDatos()
-		# 		self.LimpiarCeldas()
-		# 		messagebox.showinfo(title='Info', message='Docente Registrado.')
-		# 	else:
-		# 		messagebox.showinfo(title='Info', message='Esta cedula ya esta registrada')
-		# else:
-		# 	messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+		if len(self.entryNombreApellido.get()) != 0:
+			self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","")',(self.entryNombreApellido.get(),self.entryCedula.get()))
+			self.MostrarDatos()
+			messagebox.showinfo(title='Info', message='Docente Registrado.')
+			self.docenteCancelar()
+		else:
+			messagebox.showwarning(title='Warning', message='Introduzca un valor.')
 	
 	def selecionarFila(self):
 		self.item = self.tree.focus()
