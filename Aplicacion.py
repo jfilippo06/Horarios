@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter.constants import TRUE
 from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
@@ -16,9 +17,11 @@ class App(tk.Tk):
         super().__init__()
         # Config: 
         self.title('Login')
-        self.geometry('300x270')
+        self.geometry('600x450')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
+        self.imagen = tk.PhotoImage(file = login_fondo)
+        tk.Label(self, image = self.imagen,bd=0).place(x=0, y=0)
 
         self.tittle1 = ttk.Label(text='SISTEMA DE GESTIÓN ', font=('Helvetica',18))
         self.tittle1.place(x=20,y=20)
