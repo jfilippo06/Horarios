@@ -15,7 +15,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         # Config: 
-        self.title('Login')
+        self.title('LOGIN')
         self.geometry('600x450')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
