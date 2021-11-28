@@ -1998,7 +1998,7 @@ class ReporteCargaAcademica(tk.Toplevel):
     def obtenerTablaHorarioObservacion(self):
             self.observacion = [
                 [Paragraph('Labora en otra empresa: ',self.center)],
-                [Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
+                [Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Tradicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
             ]
             
             self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ?',(self.docenteId,))

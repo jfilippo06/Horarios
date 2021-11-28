@@ -137,10 +137,14 @@ class CargaAcademica(tk.Toplevel):
 
 	def registrarDocente(self):
 		if len(self.entryNombreApellido.get()) != 0:
-			self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","")',(self.entryNombreApellido.get(),self.entryCedula.get()))
-			self.MostrarDatos()
-			messagebox.showinfo(title='Info', message='Docente Registrado.')
-			self.docenteCancelar()
+			if messagebox.askyesno('Registrar','Registrar docente'):
+				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","")',(self.entryNombreApellido.get(),self.entryCedula.get()))
+				self.MostrarDatos()
+				messagebox.showinfo(title='Info', message='Docente Registrado.')
+				self.docenteCancelar()
+			else:
+				self.entryNombreApellido.delete(0, tk.END)
+				self.entryNombreApellido.focus()
 		else:
 			messagebox.showwarning(title='Warning', message='Introduzca un valor.')
 	
