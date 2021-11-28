@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from tkinter.constants import TRUE
 from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
@@ -23,22 +22,14 @@ class App(tk.Tk):
         self.imagen = tk.PhotoImage(file = login_fondo)
         tk.Label(self, image = self.imagen,bd=0).place(x=0, y=0)
 
-        self.tittle1 = ttk.Label(text='SISTEMA DE GESTIÓN ', font=('Helvetica',18))
-        self.tittle1.place(x=20,y=20)
-        self.tittle2 = ttk.Label(text='LOGIN ', font=('Helvetica',12))
-        self.tittle2.place(x=125,y=60)
-        self.tittleUser = ttk.Label(text='Usuario')
-        self.tittleUser.place(x=130,y=110)
         self.userName = ttk.Entry(self,width=40)
-        self.userName.place(x=25,y=130)
+        self.userName.place(x=165,y=200)
         self.userName.focus()
-        self.tittlePassword = ttk.Label(text='Contraseña')
-        self.tittlePassword.place(x=120,y=160)
         self.userPassword = ttk.Entry(self,width=40)
         self.userPassword.config(show='*')
-        self.userPassword.place(x=25,y=180)
+        self.userPassword.place(x=165,y=250)
         self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
-        self.button.place(x=110,y=210)
+        self.button.place(x=250,y=285)
 
     def conexion(self,query,parametros = ()):
             try:
@@ -61,12 +52,8 @@ class App(tk.Tk):
         if self.validarCeldas():
             validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
             if validar:
-                self.tittle1.place_forget()
-                self.tittle1.place_forget()
-                self.tittleUser.place_forget()
                 self.userName.place_forget()
                 self.userPassword.place_forget()
-                self.tittlePassword.place_forget()
                 self.button.place_forget()
                 self.pantallaPrincipal()
             else:
