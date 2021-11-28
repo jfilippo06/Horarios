@@ -22,3 +22,8 @@ baseDeDatos = os.path.abspath(baseDeDatos)
 logo = 'IMG/uptpc.jpg'
 logoPDF = os.path.join(rutaPrincipal,logo)
 logoPDF = os.path.abspath(logoPDF)
+
+# Fondo Login
+logo = 'IMG/azul.png'
+login = os.path.join(rutaPrincipal,logo)
+login_fondo = os.path.abspath(login)

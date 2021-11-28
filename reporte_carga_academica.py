@@ -19,7 +19,7 @@ class ReporteCargaAcademica(tk.Toplevel):
 		# Config:
         self.master = master
         self.title('Reportes')
-        self.geometry('350x480')
+        self.geometry('350x540')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
 
@@ -56,8 +56,9 @@ class ReporteCargaAcademica(tk.Toplevel):
         self.treeReportesLapso.configure(yscroll=self.scrollbarReportesLapso.set)
         self.scrollbarReportesLapso.grid(column=1,row=0, sticky='ns')
         
+        ttk.Label(self, text='ASCRIPCIÓN', font=('Helvetica',14)).place(x=120,y=305)
         self.frameAdscripcion = ttk.Labelframe(self.framecontainer2)
-        self.frameAdscripcion.grid(column=0,row=2,pady=5,padx=5)
+        self.frameAdscripcion.grid(column=0,row=2,pady=22,padx=5)
         ttk.Label(self.frameAdscripcion, text='Departamento de Ascripción:').grid(column=0,row=0)
         self.entryAdscripcion = ttk.Entry(self.frameAdscripcion,width=17)
         self.entryAdscripcion.grid(column= 1, row=0,pady=5,padx=5)
@@ -1997,7 +1998,7 @@ class ReporteCargaAcademica(tk.Toplevel):
     def obtenerTablaHorarioObservacion(self):
             self.observacion = [
                 [Paragraph('Labora en otra empresa: ',self.center)],
-                [Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Traicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
+                [Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Tradicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
             ]
             
             self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ?',(self.docenteId,))

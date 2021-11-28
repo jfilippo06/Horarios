@@ -1,22 +1,41 @@
 import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
 from carga_academica import CargaAcademica
 from gestor_bd import Gestor
 from gestionar_horarios import Horarios
 from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
 from rutas import *
+import sqlite3
+import traceback
+import sys
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
         # Config: 
-        self.title('UPTPC')
-        self.geometry('800x450')
+        self.title('LOGIN')
+        self.geometry('600x450')
         self.resizable(width=0, height=0)
-        self.imagen = tk.PhotoImage(file = fondo)
-        tk.Label(self, image = self.imagen,bd=0).place(x=0, y=0)
         self.iconbitmap(uptpc)
-        # Menu:
+
+        self.imagen = tk.PhotoImage(file = login_fondo)
+        self.fondo = tk.Label(self, image = self.imagen,bd=0)
+        self.fondo.place(x=0, y=0)
+
+        self.imagenPrincipal = tk.PhotoImage(file = fondo)
+        self.fondoPrincipal = tk.Label(self, image = self.imagenPrincipal,bd=0)
+    
+        self.userName = ttk.Entry(self,width=40)
+        self.userName.place(x=165,y=200)
+        self.userName.focus()
+        self.userPassword = ttk.Entry(self,width=40)
+        self.userPassword.config(show='*')
+        self.userPassword.place(x=165,y=250)
+        self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
+        self.button.place(x=250,y=285)
+        
         self.menubar = tk.Menu(self)
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)
@@ -34,8 +53,70 @@ class App(tk.Tk):
         self.filemenu4.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
         self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
         self.menubar.add_cascade(label="Salir", command=self.salir)
+        self.config(menu='')
+
+    def conexion(self,query,parametros = ()):
+            try:
+                self.con = sqlite3.connect(baseDeDatos)
+                self.cursor = self.con.cursor()
+                self.cursor.execute(query,parametros)
+                self.con.commit()
+                return self.cursor
+            except sqlite3.Error as er:
+                print('SQLite error: %s' % (' '.join(er.args)))
+                print("Exception class is: ", er.__class__)
+                print('SQLite traceback: ')
+                exc_type, exc_value, exc_tb = sys.exc_info()
+                print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
+    def validarCeldas(self):
+        return len(self.userName.get()) != 0 and len(self.userPassword.get()) != 0
+   
+    def change(self):
+        if self.validarCeldas():
+            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
+            if validar:
+                self.userName.delete(0, tk.END)
+                self.userPassword.delete(0, tk.END)
+                self.pantallaPrincipal()
+            else:
+                messagebox.showwarning(title='Warnig', message='Usuario no existe')
+                self.userName.delete(0, tk.END)
+                self.userPassword.delete(0, tk.END)
+                self.userName.focus()
+        else:
+            messagebox.showwarning(title='Warnig', message='Introdusca un valor en las casillas')
+            self.userName.delete(0, tk.END)
+            self.userPassword.delete(0, tk.END)
+            self.userName.focus()
+
+    def pantallaPrincipal(self):
+        self.title('UPTPC')
+        self.geometry('800x450') 
+
+        self.userName.place_forget()
+        self.userPassword.place_forget()
+        self.button.place_forget()
+        self.fondo.place_forget()
+
         self.config(menu=self.menubar)
-    
+        self.fondoPrincipal.place(x=0, y=0)
+
+    def salir(self):
+        if messagebox.askyesno('Salir','¿Desea salir de la sesión?'):
+            self.title('LOGIN')
+            self.geometry('600x450')
+
+            self.config(menu='')
+            self.fondoPrincipal.place_forget()
+
+            self.fondo.place(x=0, y=0)
+            self.userName.place(x=165,y=200)
+            self.userName.focus()
+            self.userPassword.config(show='*')
+            self.userPassword.place(x=165,y=250)
+            self.button.place(x=250,y=285)
+
     def cargaAcademica(self):
         self.lower()
         CargaAcademica(self)
@@ -56,6 +137,4 @@ class App(tk.Tk):
         self.lower()
         ReporteCargaAcademica(self)
                 
-    def salir(self):
-        self.destroy()
         
