@@ -609,7 +609,7 @@ class CargaAcademica(tk.Toplevel):
 			self.frameLaboratorio.grid(column=0,row=3,pady=0,padx=5)
 			self.treeLaboratorio = ttk.Treeview(self.frameLaboratorio, columns=['#1',"#2"],show='headings',height=3)
 			self.treeLaboratorio.grid(row=0,column=0)
-			# self.treeLaboratorio.state(tk.DISABLED)
+			self.treeLaboratorio.state(('disabled',))
 			self.treeLaboratorio.heading('#1', text = 'Id',)
 			self.treeLaboratorio.heading('#2', text = 'Laboratorio')
 			self.treeLaboratorio.column('#1', width=50)
@@ -623,8 +623,8 @@ class CargaAcademica(tk.Toplevel):
 			ttk.Label(self.frameCheckButton,text='LABORATORIO').grid(column=0,row=0)
 			self.laboratorio = tk.StringVar()
 			self.laboratorio.set(value='No')
-			ttk.Radiobutton(self.frameCheckButton, text='Si', value='Si',variable=self.laboratorio, command= '').grid(column=0,row=1)
-			ttk.Radiobutton(self.frameCheckButton, text='No', value='No',variable=self.laboratorio, command= '').grid(column=1,row=1)
+			ttk.Radiobutton(self.frameCheckButton, text='Si', value='Si',variable=self.laboratorio, command=self.laboratorioSi).grid(column=0,row=1)
+			ttk.Radiobutton(self.frameCheckButton, text='No', value='No',variable=self.laboratorio, command=self.laboratorioNo).grid(column=1,row=1)
    
 
 			ttk.Button(self.new, text='REGISTRAR MATERIA', command=self.registrarMateria).grid(row=1,column=0)
@@ -681,6 +681,12 @@ class CargaAcademica(tk.Toplevel):
 		else:
 			messagebox.showinfo(title='Info', message='Selecione un docente')
 
+	def laboratorioSi(self):
+		self.treeLaboratorio.state(('!disabled',))
+
+	def laboratorioNo(self):
+		self.treeLaboratorio.state(('disabled',))
+	
 	def limpiarTablaGestionar(self):
 		self.DeleteChildren = self.treeGestionar.get_children()
 		for element in self.DeleteChildren:
