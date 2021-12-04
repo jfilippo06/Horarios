@@ -284,7 +284,7 @@ class Gestor(tk.Toplevel):
 
     def MostrarDatosSeccion(self):
         self.limpiarTablaSeccion()
-        self.rows = self.TraerDatos("SELECT * FROM seccion")
+        self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Activo'")
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
 
@@ -385,7 +385,7 @@ class Gestor(tk.Toplevel):
     def eliminarSeccion(self):
         if self.treeSeccion.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitarla sección selecionado?'):
-                self.query = 'DELETE FROM seccion WHERE Id = ?'
+                self.query = 'UPDATE seccion SET Estado = "Inactivo" WHERE seccion.id = ? and seccion.Estado = "Activo"'
                 self.parametros = self.selecionarFilaSeccion()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosSeccion()
@@ -684,7 +684,7 @@ class Gestor(tk.Toplevel):
     def editarSeccion2(self):
         if self.ValidarCeldaSeccion() and self.treeSeccion.selection():
             if messagebox.askyesno('Edit','¿Desea editar la sección selecionada?'):
-                self.query = 'UPDATE seccion SET Seccion = ? WHERE id = ?'
+                self.query = 'UPDATE seccion SET Seccion = ? WHERE seccion.id = ? and seccion.Estado = "Activo"'
                 self.parametros = (self.entrySeccion.get())
                 self.id = self.selecionarFilaSeccion()
                 self.conexion(self.query,(self.parametros, self.id))
