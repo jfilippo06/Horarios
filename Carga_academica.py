@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
+from tkinter.constants import DISABLED
 from rutas import *
 import traceback
 import sys
@@ -26,7 +27,7 @@ class CargaAcademica(tk.Toplevel):
 		self.cedula = ttk.Entry(self.Frame, width=45)
 		self.cedula.grid(column=1,row=0,padx=5,pady=5)
 		self.cedula.focus()		
-		self.cedula.bind('<KeyRelease>',lambda e: self.verificar())
+		self.cedula.bind('<KeyRelease>',lambda e: self.verificar(self.cedula))
 		ttk.Button(self.Frame, text='CONSULTAR', command =self.consultar).grid(column=2,row=0,padx=5,pady=5)
 		# Treeview:
 		self.tree = ttk.Treeview(self, columns = ['#1','#2','#3'], show='headings', height=8)
@@ -43,7 +44,7 @@ class CargaAcademica(tk.Toplevel):
 		# # Button:
 		ttk.Button(self,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=0,row=2, sticky = tk.W + tk.E, padx=5)
 		ttk.Button(self,text = 'CARGA ACADÉMICA DOCENTE', command = self.editar).grid(column=0,row=3, sticky = tk.W + tk.E, padx=5)
-		ttk.Button(self,text = 'ELIMINAR CODENTE', command =self.eliminar).grid(column=0,row=4,sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'ELIMINAR DODENTE', command =self.eliminar).grid(column=0,row=4,sticky = tk.W + tk.E, padx=5)
 
 		self.MostrarDatos()
 
@@ -88,11 +89,11 @@ class CargaAcademica(tk.Toplevel):
 		for row in self.rows:
 			self.tree.insert('',tk.END,values=row)
 
-	def verificar(self):
-		codigo = self.cedula.get()
+	def verificar(self,entry):
+		codigo = entry.get()
 		for i in codigo:
 			if i not in '0123456789.':
-				self.cedula.delete(codigo.index(i), codigo.index(i)+1)
+				entry.delete(codigo.index(i), codigo.index(i)+1)
 
 	def consultar(self):
 		if self.validarCelda():
@@ -187,61 +188,77 @@ class CargaAcademica(tk.Toplevel):
 				ttk.Label(self.frame,text='Cedula:').grid(row=0,column=0,padx=5,pady=5)
 				self.entryEditarCedula = ttk.Entry(self.frame, width=40)
 				self.entryEditarCedula.grid(row=0,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='EDITAR CEDULA', command='').grid(row=0,column=2,pady=5,padx=5)
+				self.entryEditarCedula.bind('<KeyRelease>',lambda e: self.verificar(self.entryEditarCedula))
+				ttk.Button(self.frame,text='EDITAR CEDULA', command=self.editarCedula).grid(row=0,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Nombre y Apellido:').grid(row=1,column=0,padx=5,pady=5)
 				self.entryEditarNombre = ttk.Entry(self.frame,width=40)
 				self.entryEditarNombre.grid(row=1,column=1,pady=5,padx=5)
-				ttk.Button(self.frame,text='EDITAR NOMBRE', command='').grid(row=1,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='EDITAR NOMBRE', command=self.editarNombre).grid(row=1,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Categoria:').grid(row=2,column=0,padx=5,pady=5)
 				self.entryEditarCategoria = ttk.Entry(self.frame, width=40)
 				self.entryEditarCategoria.grid(row=2,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR CATEGORIA', command='').grid(row=2,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR CATEGORIA', command=self.editarCategoria).grid(row=2,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Dedicación:').grid(row=3,column=0,padx=5,pady=5)
 				self.entryEditarDedicación = ttk.Entry(self.frame, width=40)
 				self.entryEditarDedicación.grid(row=3,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR DEDICACIÓN', command='').grid(row=3,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR DEDICACIÓN', command=self.editarDedicacion).grid(row=3,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Titulo de Pre-grado:').grid(row=4,column=0,padx=5,pady=5)
 				self.entryEditarTpregado = ttk.Entry(self.frame, width=40)
 				self.entryEditarTpregado.grid(row=4,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR PRE-GRADO', command='').grid(row=4,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR PRE-GRADO', command=self.editarPreGrado).grid(row=4,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Titulo de Post-grado:').grid(row=5,column=0,padx=5,pady=5)
 				self.entryEditarTposgrado = ttk.Entry(self.frame, width=40)
 				self.entryEditarTposgrado.grid(row=5,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR POST-GRADO', command='').grid(row=5,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR POST-GRADO', command=self.editarPostGrado).grid(row=5,column=2,pady=5,padx=5)
 				self.DescargaAcademicaEditar = tk.StringVar()
+				self.DescargaAcademicaEditar.set(value='No')
 				ttk.Label(self.frame,text='Descarga Académica').grid(row=6,column=0)
-				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.DescargaAcademicaEditar).grid(row=7,column=0)
-				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.DescargaAcademicaEditar).grid(row=7,column=1)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR DESCARGA ACADÉMICA', command='').grid(row=7,column=2,pady=5,padx=5)
-				self.CondicionLaboralEditar = tk.StringVar()
-				ttk.Label(self.frame, text='Condición Laboral:').grid(row=8,column=0)
-				ttk.Radiobutton(self.frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboralEditar).grid(row=9,column=0)
-				ttk.Radiobutton(self.frame, text='Contratado', value='Contratado',variable=self.CondicionLaboralEditar).grid(row=9,column=1)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR CONDICIÓN LABORAL', command='').grid(row=9,column=2,pady=5,padx=5)
-				ttk.Label(self.frame,text='Razon de la descarga:').grid(row=10,column=0,padx=5,pady=5)
+				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.DescargaAcademicaEditar, command= self.descargaAcademicaSi).grid(row=7,column=0)
+				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.DescargaAcademicaEditar, command= self.descargaAcademicaNo).grid(row=7,column=1)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR DESCARGA ACADÉMICA', command=self.editarDescargaAcademica).grid(row=7,column=2,pady=5,padx=5)
+				ttk.Label(self.frame,text='Razon de la descarga:').grid(row=8,column=0,padx=5,pady=5)
 				self.entryEditarRazon = ttk.Entry(self.frame,width=40)
-				self.entryEditarRazon.grid(row=10,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR RAZON DE LA DESCARGA', command='').grid(row=10,column=2,pady=5,padx=5)
-				ttk.Label(self.frame,text='Numero telefónico:').grid(row=11,column=0,padx=5,pady=5)
+				self.entryEditarRazon.grid(row=8,column=1,padx=5,pady=5)
+				self.entryEditarRazon.config(state=tk.DISABLED)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR RAZON DE LA DESCARGA', command=self.editarRazon).grid(row=8,column=2,pady=5,padx=5)
+				self.CondicionLaboralEditar = tk.StringVar()
+				ttk.Label(self.frame, text='Condición Laboral').grid(row=9,column=0)
+				ttk.Radiobutton(self.frame, text='Ordinario', value='Ordinario',variable=self.CondicionLaboralEditar).grid(row=10,column=0)
+				ttk.Radiobutton(self.frame, text='Contratado', value='Contratado',variable=self.CondicionLaboralEditar).grid(row=10,column=1)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR CONDICIÓN LABORAL', command=self.editarCondicionLaboral).grid(row=10,column=2,pady=5,padx=5)
+				ttk.Label(self.frame,text='Telefono/Correo:').grid(row=11,column=0,padx=5,pady=5)
 				self.entryEditarTelefono = ttk.Entry(self.frame,width=40)
 				self.entryEditarTelefono.grid(row=11,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR NUMERO DE TELEFONO', command='').grid(row=11,column=2,pady=5,padx=5)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR NUMERO DE TELEFONO', command=self.editarTelefono).grid(row=11,column=2,pady=5,padx=5)
 				self.laboraEditar = tk.StringVar()
+				self.laboraEditar.set(value='No')
 				ttk.Label(self.frame, text='Labora en otra empresa:').grid(row=12,column=0)
-				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.laboraEditar).grid(row=13,column=0)
-				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.laboraEditar).grid(row=13,column=1)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR LABORA EN OTRA EMPRESA', command='').grid(row=13,column=2,pady=5,padx=5)
+				ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.laboraEditar, command=self.especifiqueSi).grid(row=13,column=0)
+				ttk.Radiobutton(self.frame, text='No', value='No',variable=self.laboraEditar, command=self.especifiqueNo).grid(row=13,column=1)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR LABORA EN OTRA EMPRESA', command=self.editarLabora).grid(row=13,column=2,pady=5,padx=5)
 				ttk.Label(self.frame,text='Especifique:').grid(row=14,column=0,padx=5,pady=5)
 				self.entryEditarEspecifique = ttk.Entry(self.frame,width=40)
 				self.entryEditarEspecifique.grid(row=14,column=1,padx=5,pady=5)
-				ttk.Button(self.frame,text='AÑADIR/EDITAR ESPECIFIQUE', command='').grid(row=14,column=2,pady=5,padx=5)
-				ttk.Button(self.new,text='EDITAR TODO', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)				
+				self.entryEditarEspecifique.config(state=tk.DISABLED)
+				ttk.Button(self.frame,text='AÑADIR/EDITAR ESPECIFIQUE', command=self.editarEspecifique).grid(row=14,column=2,pady=5,padx=5)
+				ttk.Button(self.new,text='EDITAR TODO', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)
 				self.new.mainloop()		
 			else:
 				self.MostrarDatos()		
 		else: 
 			messagebox.showwarning(title='Wanning', message='Seleccione un docente a editar.')
 	
+	def especifiqueSi(self):
+		self.entryEditarEspecifique.config(state=tk.NORMAL)
+
+	def especifiqueNo(self):
+		self.entryEditarEspecifique.config(state=tk.DISABLED)
+
+	def descargaAcademicaSi(self):
+		self.entryEditarRazon.config(state=tk.NORMAL)
+
+	def descargaAcademicaNo(self):
+		self.entryEditarRazon.config(state=tk.DISABLED)
 
 	def validarCeldasEditar(self):
 		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0 and len(self.laboraEditar.get())  != 0 and len(self.entryEditarEspecifique.get()) != 0
@@ -260,41 +277,198 @@ class CargaAcademica(tk.Toplevel):
 		self.laboraEditar.set(0)
 		self.entryEditarEspecifique.delete(0, tk.END)
 
+	def editarCedula(self):
+		if len(self.entryEditarCedula.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar la cedula?'):
+				self.conexion('UPDATE docente SET Cedula = ? WHERE id = ?',(self.entryEditarCedula.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Cedula actualizada')
+				self.entryEditarCedula.delete(0, tk.END)
+				self.entryEditarCedula.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarCedula.delete(0, tk.END)
+				self.entryEditarCedula.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarCedula.focus()
+
+	def editarNombre(self):
+		if len(self.entryEditarNombre.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar el nombre y apellido?'):
+				self.conexion('UPDATE docente SET NombreApellido = ? WHERE id = ?',(self.entryEditarNombre.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Nombre y apellido actualizados')
+				self.entryEditarNombre.delete(0, tk.END)
+				self.entryEditarNombre.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarNombre.delete(0, tk.END)
+				self.entryEditarNombre.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarNombre.focus()
+
+	def editarCategoria(self):
+		if len(self.entryEditarCategoria.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar categoria?'):
+				self.conexion('UPDATE docente SET Categoria = ? WHERE id = ?',(self.entryEditarCategoria.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Categoria actualizada')
+				self.entryEditarCategoria.delete(0, tk.END)
+				self.entryEditarCategoria.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarCategoria.delete(0, tk.END)
+				self.entryEditarCategoria.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarCategoria.focus()
+
+	def editarDedicacion(self):
+		if len(self.entryEditarDedicación.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar categoria?'):
+				self.conexion('UPDATE docente SET Dedicacion = ? WHERE id = ?',(self.entryEditarDedicación.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Categoria actualizada')
+				self.entryEditarDedicación.delete(0, tk.END)
+				self.entryEditarDedicación.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarDedicación.delete(0, tk.END)
+				self.entryEditarDedicación.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarDedicación.focus()
+
+	def editarPreGrado(self):
+		if len(self.entryEditarTpregado.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar PreGrado?'):
+				self.conexion('UPDATE docente SET Pregrado = ? WHERE id = ?',(self.entryEditarTpregado.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='PreGrado actualizado')
+				self.entryEditarTpregado.delete(0, tk.END)
+				self.entryEditarTpregado.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarTpregado.delete(0, tk.END)
+				self.entryEditarTpregado.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarTpregado.focus()
+
+	def editarPostGrado(self):
+		if len(self.entryEditarTposgrado.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar PostGrado?'):
+				self.conexion('UPDATE docente SET Postgrado = ? WHERE id = ?',(self.entryEditarTposgrado.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='PostGrado actualizado')
+				self.entryEditarTposgrado.delete(0, tk.END)
+				self.entryEditarTposgrado.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarTposgrado.delete(0, tk.END)
+				self.entryEditarTposgrado.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarTposgrado.focus()
+
+	def editarDescargaAcademica(self):
+		if len(self.DescargaAcademicaEditar.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar la descarga académica?'):
+				self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE id = ?',(self.DescargaAcademicaEditar.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Descarga académica actualizada')
+				self.DescargaAcademicaEditar.set(0)
+				self.MostrarDatos()
+			else:
+				self.DescargaAcademicaEditar.set(0)
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+
+	def editarCondicionLaboral(self):
+		if len(self.CondicionLaboralEditar.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar la condicion laboral?'):
+				self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE id = ?',(self.CondicionLaboralEditar.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Condicion laboral actualizada')
+				self.CondicionLaboralEditar.set(0)
+				self.MostrarDatos()
+			else:
+				self.CondicionLaboralEditar.set(0)
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+
+	def editarRazon(self):
+		if len(self.entryEditarRazon.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar la Razon de la descarga?'):
+				self.conexion('UPDATE docente SET RazonDescarga = ? WHERE id = ?',(self.entryEditarRazon.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Razon de la descarga actualizada')
+				self.entryEditarRazon.delete(0, tk.END)
+				self.entryEditarRazon.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarRazon.delete(0, tk.END)
+				self.entryEditarRazon.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarRazon.focus()
+
+	def editarTelefono(self):
+		if len(self.entryEditarTelefono.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar el telefono/correo?'):
+				self.conexion('UPDATE docente SET Telefono = ? WHERE id = ?',(self.entryEditarTelefono.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Telefono/correo actualizado')
+				self.entryEditarTelefono.delete(0, tk.END)
+				self.entryEditarTelefono.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarTelefono.delete(0, tk.END)
+				self.entryEditarTelefono.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarTelefono.focus()
+
+	def editarLabora(self):
+		if len(self.laboraEditar.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar laborar?'):
+				self.conexion('UPDATE docente SET Labore = ? WHERE id = ?',(self.laboraEditar.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Laborar actualizado')
+				self.laboraEditar.set(0)
+				self.MostrarDatos()
+			else:
+				self.laboraEditar.set(0)
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+
+	def editarEspecifique(self):
+		if len(self.entryEditarEspecifique.get()) != 0 :
+			if messagebox.askyesno('Edit','¿Desea actualizar especifique?'):
+				self.conexion('UPDATE docente SET Especifique = ? WHERE id = ?',(self.entryEditarEspecifique.get(), self.seleccion))
+				messagebox.showinfo(title='Info', message='Especifique actualizado')
+				self.entryEditarEspecifique.delete(0, tk.END)
+				self.entryEditarEspecifique.focus()
+				self.MostrarDatos()
+			else:
+				self.entryEditarEspecifique.delete(0, tk.END)
+				self.entryEditarEspecifique.focus()
+		else:
+			messagebox.showinfo(title='info', message='Introduzca un valor')
+			self.entryEditarEspecifique.focus()
+
 	def botonEditar(self):
 		if self.validarCeldasEditar():
-			self.query1 = 'UPDATE docente SET NombreApellido = ? WHERE id = ?'
-			self.query2 = 'UPDATE docente SET Cedula = ? WHERE id = ?'
-			self.query3 = 'UPDATE docente SET Categoria = ? WHERE id = ?'
-			self.query4 = 'UPDATE docente SET Dedicacion = ? WHERE id = ?'
-			self.query5 = 'UPDATE docente SET Pregrado = ? WHERE id = ?'
-			self.query6 = 'UPDATE docente SET Postgrado = ? WHERE id = ?'
-			self.query7 = 'UPDATE docente SET DescargaAcademica = ? WHERE id = ?'
-			self.query8 = 'UPDATE docente SET CondicionLaboral = ? WHERE id = ?'
-			self.query9 = 'UPDATE docente SET RazonDescarga = ? WHERE id = ?'
-			self.query10 = 'UPDATE docente SET Telefono = ? WHERE id = ?'
-			self.query11 = 'UPDATE docente SET Labore = ? WHERE id = ?'
-			self.query12 = 'UPDATE docente SET Especifique = ? WHERE id = ?'
-			self.id = self.seleccion
-			self.conexion(self.query1,(self.entryEditarNombre.get(), self.id))
-			self.conexion(self.query2,(self.entryEditarCedula.get(), self.id))
-			self.conexion(self.query3,(self.entryEditarCategoria.get(), self.id))
-			self.conexion(self.query4,(self.entryEditarDedicación.get(), self.id))
-			self.conexion(self.query5,(self.entryEditarTpregado.get(), self.id))
-			self.conexion(self.query6,(self.entryEditarTposgrado.get(), self.id))
-			self.conexion(self.query7,(self.DescargaAcademicaEditar.get(), self.id))
-			self.conexion(self.query8,(self.CondicionLaboralEditar.get(), self.id))
-			self.conexion(self.query9,(self.entryEditarRazon.get(), self.id))
-			self.conexion(self.query10,(self.entryEditarTelefono.get(), self.id))
-			self.conexion(self.query11,(self.laboraEditar.get(), self.id))
-			self.conexion(self.query12,(self.entryEditarEspecifique.get(), self.id))
+			self.conexion('UPDATE docente SET NombreApellido = ? WHERE id = ?',(self.entryEditarNombre.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Cedula = ? WHERE id = ?',(self.entryEditarCedula.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Categoria = ? WHERE id = ?',(self.entryEditarCategoria.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Dedicacion = ? WHERE id = ?',(self.entryEditarDedicación.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Pregrado = ? WHERE id = ?',(self.entryEditarTpregado.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Postgrado = ? WHERE id = ?',(self.entryEditarTposgrado.get(), self.seleccion))
+			self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE id = ?',(self.DescargaAcademicaEditar.get(), self.seleccion))
+			self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE id = ?',(self.CondicionLaboralEditar.get(), self.seleccion))
+			self.conexion('UPDATE docente SET RazonDescarga = ? WHERE id = ?',(self.entryEditarRazon.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Telefono = ? WHERE id = ?',(self.entryEditarTelefono.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Labore = ? WHERE id = ?',(self.laboraEditar.get(), self.seleccion))
+			self.conexion('UPDATE docente SET Especifique = ? WHERE id = ?',(self.entryEditarEspecifique.get(), self.seleccion))
 			self.LimpiarCeldasEditar()
-			self.LimpiarCeldas()
 			self.new.destroy()
 			self.MostrarDatos()
 			messagebox.showinfo(title='Info', message='Docente Editado Correctamente.')
 		else:
 			messagebox.showinfo(title='info', message='Introduzca un valor en las celdas')
-# ----------------------------------------------------------------------------------------------------------
+
 	def gestionarMaterias(self):
 		if self.tree.selection():
 			self.lower()
@@ -435,6 +609,7 @@ class CargaAcademica(tk.Toplevel):
 			self.frameLaboratorio.grid(column=0,row=3,pady=0,padx=5)
 			self.treeLaboratorio = ttk.Treeview(self.frameLaboratorio, columns=['#1',"#2"],show='headings',height=3)
 			self.treeLaboratorio.grid(row=0,column=0)
+			self.treeLaboratorio.state(('disabled',))
 			self.treeLaboratorio.heading('#1', text = 'Id',)
 			self.treeLaboratorio.heading('#2', text = 'Laboratorio')
 			self.treeLaboratorio.column('#1', width=50)
@@ -447,8 +622,9 @@ class CargaAcademica(tk.Toplevel):
 			self.frameCheckButton.grid(column=1,row=3,ipadx=5,ipady=5)
 			ttk.Label(self.frameCheckButton,text='LABORATORIO').grid(column=0,row=0)
 			self.laboratorio = tk.StringVar()
-			ttk.Radiobutton(self.frameCheckButton, text='Si', value='Si',variable=self.laboratorio).grid(column=0,row=1)
-			ttk.Radiobutton(self.frameCheckButton, text='No', value='No',variable=self.laboratorio).grid(column=1,row=1)
+			self.laboratorio.set(value='No')
+			ttk.Radiobutton(self.frameCheckButton, text='Si', value='Si',variable=self.laboratorio, command=self.laboratorioSi).grid(column=0,row=1)
+			ttk.Radiobutton(self.frameCheckButton, text='No', value='No',variable=self.laboratorio, command=self.laboratorioNo).grid(column=1,row=1)
    
 
 			ttk.Button(self.new, text='REGISTRAR MATERIA', command=self.registrarMateria).grid(row=1,column=0)
@@ -505,6 +681,12 @@ class CargaAcademica(tk.Toplevel):
 		else:
 			messagebox.showinfo(title='Info', message='Selecione un docente')
 
+	def laboratorioSi(self):
+		self.treeLaboratorio.state(('!disabled',))
+
+	def laboratorioNo(self):
+		self.treeLaboratorio.state(('disabled',))
+	
 	def limpiarTablaGestionar(self):
 		self.DeleteChildren = self.treeGestionar.get_children()
 		for element in self.DeleteChildren:

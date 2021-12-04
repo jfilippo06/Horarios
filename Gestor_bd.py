@@ -70,7 +70,7 @@ class Gestor(tk.Toplevel):
 
         # Cohorte Botones 3/3
         ttk.Button(self.noteCohorte,text = 'EDITAR COHORTE', command = self.editarCohorte).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteCohorte,text = 'ELIMINAR COHORTE', command = self.eliminarCohorte).grid(column=0,row=3,sticky = tk.W + tk.E)
+        ttk.Button(self.noteCohorte,text = 'DESHABILITAR COHORTE', command = self.eliminarCohorte).grid(column=0,row=3,sticky = tk.W + tk.E)
 
         # Pantalla LapsoAcademico 0/3
         self.frameLapsoAcademico = ttk.LabelFrame(self.noteLapsoAcademico)
@@ -94,7 +94,7 @@ class Gestor(tk.Toplevel):
 
         # Cohorte Botones 3/3
         ttk.Button(self.noteLapsoAcademico,text = 'EDITAR LAPSO ACADÉMICO', command = self.editarLapsoAcademico).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteLapsoAcademico,text = 'ELIMINAR LAPSO ACADÉMICO', command = self.eliminarLapsoAcademico).grid(column=0,row=3,sticky = tk.W + tk.E)
+        ttk.Button(self.noteLapsoAcademico,text = 'DESHABILITAR LAPSO ACADÉMICO', command = self.eliminarLapsoAcademico).grid(column=0,row=3,sticky = tk.W + tk.E)
 
         # Pantalla Trayecto 0/3
         self.frameTrayecto = ttk.LabelFrame(self.noteTrayecto)
@@ -118,7 +118,7 @@ class Gestor(tk.Toplevel):
 
         # Trayecto Botones 3/3
         ttk.Button(self.noteTrayecto,text = 'EDITAR TRAYECTO', command =self.editarTrayecto).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteTrayecto,text = 'ELIMINAR TRAYECTO', command = self.eliminarTrayecto).grid(column=0,row=3,sticky = tk.W + tk.E)
+        ttk.Button(self.noteTrayecto,text = 'DESHABILITAR TRAYECTO', command = self.eliminarTrayecto).grid(column=0,row=3,sticky = tk.W + tk.E)
 
         # Pantalla trimestre 0/3
         self.frameTrimestre = ttk.LabelFrame(self.noteTrimestre)
@@ -142,7 +142,7 @@ class Gestor(tk.Toplevel):
 
         # Trimestre Botones 3/3
         ttk.Button(self.noteTrimestre,text = 'EDITAR TRIMESTRE', command =self.editarTrimestre).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteTrimestre,text = 'ELIMINAR TRIMESTRE', command = self.eliminarTrimestre).grid(column=0,row=3,sticky = tk.W + tk.E)      
+        ttk.Button(self.noteTrimestre,text = 'DESHABILITAR TRIMESTRE', command = self.eliminarTrimestre).grid(column=0,row=3,sticky = tk.W + tk.E)      
         
         # Pantalla Seccion 0/3
         self.frameSeccion = ttk.LabelFrame(self.noteSeccion)
@@ -166,7 +166,7 @@ class Gestor(tk.Toplevel):
 
         # Seccion Botones 3/3
         ttk.Button(self.noteSeccion,text = 'EDITAR SECCIÓN', command =self.editarSeccion).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteSeccion,text = 'ELIMINAR SECCIÓN', command = self.eliminarSeccion).grid(column=0,row=3,sticky = tk.W + tk.E)
+        ttk.Button(self.noteSeccion,text = 'DESHABILITAR SECCIÓN', command = self.eliminarSeccion).grid(column=0,row=3,sticky = tk.W + tk.E)
 
         # Pantalla Laboratorio 0/3
         self.frameLaboratorio = ttk.LabelFrame(self.noteLaboratorio)
@@ -191,7 +191,7 @@ class Gestor(tk.Toplevel):
 
         # Unidad CLaboratorio 3/3
         ttk.Button(self.noteLaboratorio,text = 'EDITAR LABORATORIO', command =self.editarLaboratorio).grid(column=0,row=2, sticky = tk.W + tk.E)
-        ttk.Button(self.noteLaboratorio,text = 'ELIMINAR LABORATORIO', command = self.eliminarLaboratorio).grid(column=0,row=3,sticky = tk.W + tk.E)
+        ttk.Button(self.noteLaboratorio,text = 'DESHABILITAR LABORATORIO', command = self.eliminarLaboratorio).grid(column=0,row=3,sticky = tk.W + tk.E)
 
 
         self.MostrarDatosCohorte()
@@ -260,25 +260,25 @@ class Gestor(tk.Toplevel):
         
     def MostrarDatosCohorte(self):
         self.limpiarTablaCohorte()
-        self.rows = self.TraerDatos("SELECT * FROM cohorte")
+        self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Activo'")
         for row in self.rows:
             self.treeCohorte.insert('',tk.END,values=row)
     
     def MostrarDatosLapsoAcademico(self):
         self.limpiarTablaLapsoAcademico()
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeLapsoAcademico.insert('',tk.END,values=row)
 
     def MostrarDatosTrayecto(self):
         self.limpiarTablaTrayecto()
-        self.rows = self.TraerDatos("SELECT * FROM trayecto")
+        self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrayecto.insert('',tk.END,values=row)
 
     def MostrarDatosTrimestre(self):
         self.limpiarTablaTrimestre()
-        self.rows = self.TraerDatos("SELECT * FROM trimestre")
+        self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrimestre.insert('',tk.END,values=row)
 
@@ -332,81 +332,81 @@ class Gestor(tk.Toplevel):
 
     def eliminarCohorte(self):
         if self.treeCohorte.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el cohorte selecionado?'):
-                self.query = 'DELETE FROM cohorte WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el cohorte selecionado?'):
+                self.query = 'UPDATE cohorte SET Estado = "Inactivo" WHERE cohorte.id = ? and cohorte.Estado = "Activo" '
                 self.parametros = self.selecionarFilaCohorte()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosCohorte()
-                messagebox.showinfo(title='Info', message='Cohorte eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Cohorte deshabilitado correctamente.')
             else:
                 self.MostrarDatosCohorte()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un cohorte a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un cohorte a deshabilitar.')
 
     def eliminarLapsoAcademico(self):
         if self.treeLapsoAcademico.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el lapso académico selecionado?'):
-                self.query = 'DELETE FROM lapso_academico WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el lapso académico selecionado?'):
+                self.query = 'UPDATE lapso_academico SET Estado = "Inactivo" WHERE lapso_academico.id = ? and lapso_academico.Estado = "Activo" '
                 self.parametros = self.selecionarFilaLapsoAcademico()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosLapsoAcademico()
-                messagebox.showinfo(title='Info', message='Lapso académico eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Lapso académico deshabilitado correctamente.')
             else:
                 self.MostrarDatosLapsoAcademico()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un Lapso académico a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un Lapso académico a deshabilitar.')
 
     def eliminarTrayecto(self):
         if self.treeTrayecto.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el trayecto selecionado?'):
-                self.query = 'DELETE FROM trayecto WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el trayecto selecionado?'):
+                self.query = 'UPDATE trayecto SET Estado = "Inactivo" WHERE trayecto.id = ? and trayecto.Estado = "Activo" '
                 self.parametros = self.selecionarFilaTrayecto()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosTrayecto()
-                messagebox.showinfo(title='Info', message='Trayecto eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Trayecto deshabilitado correctamente.')
             else:
                 self.MostrarDatosTrayecto()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un tracyecto a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un tracyecto a deshabilitar.')
 
     def eliminarTrimestre(self):
         if self.treeTrimestre.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el trimestre selecionado?'):
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el trimestre selecionado?'):
                 self.query = 'DELETE FROM trimestre WHERE Id = ?'
                 self.parametros = self.selecionarFilaTrimestre()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosTrimestre()
-                messagebox.showinfo(title='Info', message='Trimestre eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Trimestre deshabilitado correctamente.')
             else:
                 self.MostrarDatosTrimestre()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un trimestre a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un trimestre a deshabilitar.')
 
     def eliminarSeccion(self):
         if self.treeSeccion.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar la sección selecionado?'):
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitarla sección selecionado?'):
                 self.query = 'DELETE FROM seccion WHERE Id = ?'
                 self.parametros = self.selecionarFilaSeccion()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosSeccion()
-                messagebox.showinfo(title='Info', message='Sección eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Sección deshabilitado correctamente.')
             else:
                 self.MostrarDatosSeccion()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un sección a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un sección a deshabilitar.')
 
     def eliminarLaboratorio(self):
         if self.treeLaboratorio.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el laboratoiro selecionado?'):
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el laboratoiro selecionado?'):
                 self.query = 'DELETE FROM laboratorio WHERE Id = ?'
                 self.parametros = self.selecionarFilaLaboratorio()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosLaboratorio()
-                messagebox.showinfo(title='Info', message='Laboratorio eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Laboratorio deshabilitado correctamente.')
             else:
                 self.MostrarDatosLaboratorio()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un laboratorio a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un laboratorio a deshabilitar.')
  
     def ValidarCeldaCohorte(self):
         return len(self.entryCohorte.get())
@@ -446,7 +446,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarCohorte(self):
         if self.ValidarCeldaCohorte():
-            self.query = 'INSERT INTO cohorte VALUES (NUll,?)'
+            self.query = 'INSERT INTO cohorte VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryCohorte.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosCohorte()
@@ -459,7 +459,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarLapsoAcademico(self):
         if self.ValidarCeldaLapsoAcademico():
-            self.query = 'INSERT INTO lapso_academico VALUES (NUll,?)'
+            self.query = 'INSERT INTO lapso_academico VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryLapsoAcademico.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosLapsoAcademico()
@@ -472,7 +472,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarTrayecto(self):
         if self.ValidarCeldaTrayecto():
-            self.query = 'INSERT INTO trayecto VALUES (NUll,?)'
+            self.query = 'INSERT INTO trayecto VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryTrayecto.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosTrayecto()
@@ -485,7 +485,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarTrimestre(self):
         if self.ValidarCeldaTrimestre():
-            self.query = 'INSERT INTO trimestre VALUES (NUll,?)'
+            self.query = 'INSERT INTO trimestre VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryTrimestre.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosTrimestre()   
@@ -498,7 +498,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarSeccion(self):
         if self.ValidarCeldaSeccion():
-            self.query = 'INSERT INTO seccion VALUES (NUll,?)'
+            self.query = 'INSERT INTO seccion VALUES (NUll,?,"Activo")'
             self.parametros = (self.entrySeccion.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosSeccion()
@@ -511,7 +511,7 @@ class Gestor(tk.Toplevel):
 
     def RegistrarLaboratorio(self):
         if self.ValidarCeldaLaboratorio():
-            self.query = 'INSERT INTO laboratorio VALUES (NUll,?)'
+            self.query = 'INSERT INTO laboratorio VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryLaboratorio.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosLaboratorio()
@@ -544,7 +544,7 @@ class Gestor(tk.Toplevel):
     def editarCohorte2(self):
         if self.ValidarCeldaCohorte() and self.treeCohorte.selection():
             if messagebox.askyesno('Edit','¿Desea editar el Cohorte selecionado?'):
-                self.query = 'UPDATE cohorte SET Cohorte = ? WHERE id = ?'
+                self.query = 'UPDATE cohorte SET Cohorte = ? WHERE cohorte.id = ? and cohorte.Estado = "Activo"'
                 self.parametros = (self.entryCohorte.get())
                 self.id = self.selecionarFilaCohorte()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -579,7 +579,7 @@ class Gestor(tk.Toplevel):
     def editarLapsoAcademico2(self):
         if self.ValidarCeldaLapsoAcademico() and self.treeLapsoAcademico.selection():
             if messagebox.askyesno('Edit','¿Desea editar el lapso académico selecionado?'):
-                self.query = 'UPDATE lapso_academico SET LapsoAcademico = ? WHERE id = ?'
+                self.query = 'UPDATE lapso_academico SET LapsoAcademico = ? WHERE lapso_academico.id = ? and lapso_academico.Estado = "Activo"'
                 self.parametros = (self.entryLapsoAcademico.get())
                 self.id = self.selecionarFilaLapsoAcademico()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -614,7 +614,7 @@ class Gestor(tk.Toplevel):
     def editarTrayecto2(self):
         if self.ValidarCeldaTrayecto() and self.treeTrayecto.selection():
             if messagebox.askyesno('Edit','¿Desea editar el trayecto selecionado?'):
-                self.query = 'UPDATE trayecto SET Trayecto = ? WHERE id = ?'
+                self.query = 'UPDATE trayecto SET Trayecto = ? WHERE trayecto.id = ? and trayecto.Estado = "Activo"'
                 self.parametros = (self.entryTrayecto.get())
                 self.id = self.selecionarFilaTrayecto()
                 self.conexion(self.query,(self.parametros, self.id))
