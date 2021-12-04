@@ -372,7 +372,7 @@ class Gestor(tk.Toplevel):
     def eliminarTrimestre(self):
         if self.treeTrimestre.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el trimestre selecionado?'):
-                self.query = 'DELETE FROM trimestre WHERE Id = ?'
+                self.query = 'UPDATE trimestre SET Estado = "Inactivo" WHERE trimestre.id = ? and trimestre.Estado = "Activo"'
                 self.parametros = self.selecionarFilaTrimestre()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosTrimestre()
@@ -649,7 +649,7 @@ class Gestor(tk.Toplevel):
     def editarTrimestre2(self):
         if self.ValidarCeldaTrimestre() and self.treeTrimestre.selection():
             if messagebox.askyesno('Edit','¿Desea editar el trimestre selecionado?'):
-                self.query = 'UPDATE trimestre SET Trimestre = ? WHERE id = ?'
+                self.query = 'UPDATE trimestre SET Trimestre = ? WHERE trimestre.id = ? and trimestre.Estado = "Activo"'
                 self.parametros = (self.entryTrimestre.get())
                 self.id = self.selecionarFilaTrimestre()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -660,7 +660,7 @@ class Gestor(tk.Toplevel):
                 self.MostrarDatosTrimestre()
                 self.LimpiarCeldaTrimestre()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor y trimestre el trayecto a editar.')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y el trimestre a editar.')
 
     def editarSeccion(self):
         if self.treeSeccion.selection():
