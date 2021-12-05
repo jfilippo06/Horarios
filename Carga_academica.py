@@ -44,7 +44,7 @@ class CargaAcademica(tk.Toplevel):
 		# # Button:
 		ttk.Button(self,text = 'GESTIONAR MATERIAS', command = self.gestionarMaterias).grid(column=0,row=2, sticky = tk.W + tk.E, padx=5)
 		ttk.Button(self,text = 'CARGA ACADÉMICA DOCENTE', command = self.editar).grid(column=0,row=3, sticky = tk.W + tk.E, padx=5)
-		ttk.Button(self,text = 'ELIMINAR DODENTE', command =self.eliminar).grid(column=0,row=4,sticky = tk.W + tk.E, padx=5)
+		ttk.Button(self,text = 'DESHABILITAR DODENTE', command =self.eliminar).grid(column=0,row=4,sticky = tk.W + tk.E, padx=5)
 
 		self.MostrarDatos()
 
@@ -157,22 +157,22 @@ class CargaAcademica(tk.Toplevel):
 
 	def eliminar(self):
 		if self.tree.selection():
-			if messagebox.askyesno('Delete','¿Desea eliminar al docente selecionado?'):
+			if messagebox.askyesno('Deshabilitado','¿Desea deshabilitar al docente selecionado?'):
 				self.parametros = self.selecionarFila()
-				self.query1 = 'DELETE FROM docente WHERE Id = ?'
-				self.query2 = 'DELETE FROM materias_asignadas WHERE materias_asignadas.Id_docente = ?'
-				self.query3 = 'DELETE FROM materias_docentes WHERE materias_docentes.Id_docente = ?'
-				self.query4 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_docente = ?'
+				self.query1 = 'UPDATE docente SET Estado = "Inactivo" WHERE docente.Id = ? AND docente.Estado = "Activo"'
+				self.query2 = 'UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Activo"'
+				self.query3 = 'UPDATE materias_docentes SET Estado = "Inactivo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Activo"'
+				self.query4 = 'UPDATE materias_laboratorios SET Estado = "Inactivo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Activo"'
 				self.conexion(self.query1, (self.parametros,))
 				self.conexion(self.query2, (self.parametros,))
 				self.conexion(self.query3, (self.parametros,))
 				self.conexion(self.query4, (self.parametros,))
 				self.MostrarDatos()
-				messagebox.showinfo(title='Info', message='Docente eliminado correctamente.')
+				messagebox.showinfo(title='Info', message='Docente y todos sus registros deshabilitados correctamente.')
 			else:
 				self.MostrarDatos()
 		else:
-			messagebox.showwarning(title='Wanning', message='Seleccione un docente a eliminar.')
+			messagebox.showwarning(title='Wanning', message='Seleccione un docente a deshabilitar.')
 
 	def editar(self):
 		if self.tree.selection():
@@ -623,7 +623,7 @@ class CargaAcademica(tk.Toplevel):
 			self.scrollbarGestionar.grid(column=1,row=0, sticky='ns')
 
 			ttk.Button(self.frameGestionar, text='EDITAR MATERIA', command=self.editarMateria).grid(row=1,column=0,sticky = tk.W + tk.E)
-			ttk.Button(self.frameGestionar, text='ELIMINAR MATERIA', command=self.eliminarMateria).grid(row=2,column=0,sticky = tk.W + tk.E)
+			ttk.Button(self.frameGestionar, text='DESHAILITAR MATERIA', command=self.eliminarMateria).grid(row=2,column=0,sticky = tk.W + tk.E)
 			
 			self.MostrarDatosGestionar()
 			self.MostrarLapsoAcademico()
@@ -1525,8 +1525,8 @@ class CargaAcademica(tk.Toplevel):
 	
 	def eliminarMateria(self):
 		if self.treeGestionar.selection():
-			if messagebox.askyesno('Delete','¿Desea eliminar la materia selecionada?'):
-				self.query = 'DELETE FROM materias_asignadas WHERE Id = ?'
+			if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la materia selecionada?'):
+				self.query = 'UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Activo"'
 				self.parametros = self.selecionarFilaGestionar()
 				self.conexion(self.query, (self.parametros,))
 				self.query1 = 'DELETE FROM materias_docentes WHERE materias_docentes.Id_materias_asignadas = ?'
@@ -1534,11 +1534,11 @@ class CargaAcademica(tk.Toplevel):
 				self.query2 = 'DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?'
 				self.conexion(self.query2, (self.parametros,))
 				self.MostrarDatosGestionar()
-				messagebox.showinfo(title='Info', message='Materia eliminada correctamente.')
+				messagebox.showinfo(title='Info', message='Materia deshabilitada correctamente.')
 			else:
 				self.MostrarDatosGestionar()
 		else:
-			messagebox.showwarning(title='Wanning', message='Seleccione una materia a eliminar.')
+			messagebox.showwarning(title='Wanning', message='Seleccione una materia a deshabilitar.')
 		pass
 
 	def selecionarFilaGestionar(self):
