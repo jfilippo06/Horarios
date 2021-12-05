@@ -290,7 +290,7 @@ class Gestor(tk.Toplevel):
 
     def MostrarDatosLaboratorio(self):
         self.limpiarTablaLaboratorio()
-        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorio.insert('',tk.END,values=row)
 
@@ -398,7 +398,7 @@ class Gestor(tk.Toplevel):
     def eliminarLaboratorio(self):
         if self.treeLaboratorio.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el laboratoiro selecionado?'):
-                self.query = 'DELETE FROM laboratorio WHERE Id = ?'
+                self.query = 'UPDATE laboratorio SET Estado = "Inactivo" WHERE laboratorio.id = ? and laboratorio.Estado = "Activo"'
                 self.parametros = self.selecionarFilaLaboratorio()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosLaboratorio()
@@ -719,7 +719,7 @@ class Gestor(tk.Toplevel):
     def editarLaboratorio2(self):
         if self.ValidarCeldaLaboratorio() and self.treeLaboratorio.selection():
             if messagebox.askyesno('Edit','¿Desea editar el laboratorio selecionado?'):
-                self.query = 'UPDATE laboratorio SET Laboratorio = ? WHERE id = ?'
+                self.query = 'UPDATE laboratorio SET Laboratorio = ? WHERE laboratorio.id = ? and laboratorio.Estado = "Activo"'
                 self.parametros = (self.entryLaboratorio.get())
                 self.id = self.selecionarFilaLaboratorio()
                 self.conexion(self.query,(self.parametros, self.id))
