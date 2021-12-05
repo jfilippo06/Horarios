@@ -85,7 +85,7 @@ class CargaAcademica(tk.Toplevel):
 
 	def MostrarDatos(self):
 		self.limpiarTabla()
-		self.rows = self.TraerDatos("SELECT Id,NombreApellido,Cedula FROM docente")
+		self.rows = self.TraerDatos("SELECT Id,NombreApellido,Cedula FROM docente WHERE docente.Estado = 'Activo'")
 		for row in self.rows:
 			self.tree.insert('',tk.END,values=row)
 
@@ -97,7 +97,7 @@ class CargaAcademica(tk.Toplevel):
 
 	def consultar(self):
 		if self.validarCelda():
-			cedula = self.conexion('SELECT * FROM docente WHERE Cedula = ?',(self.cedula.get(),)).fetchall()
+			cedula = self.conexion('SELECT * FROM docente WHERE docente.Cedula = ? and docente.Estado = "Activo"',(self.cedula.get(),)).fetchall()
 			if cedula:
 				messagebox.showwarning(title='Warning', message='Cedula ya esta registrada')
 				self.limpiarCelda()
@@ -139,7 +139,7 @@ class CargaAcademica(tk.Toplevel):
 	def registrarDocente(self):
 		if len(self.entryNombreApellido.get()) != 0:
 			if messagebox.askyesno('Registrar','Registrar docente'):
-				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","")',(self.entryNombreApellido.get(),self.entryCedula.get()))
+				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente Registrado.')
 				self.docenteCancelar()
