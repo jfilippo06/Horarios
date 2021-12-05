@@ -719,67 +719,67 @@ class CargaAcademica(tk.Toplevel):
 
 	def MostrarLapsoAcademico(self):
 		self.limpiarTablaLapsoAcademico()
-		self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+		self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeLapsoAcademico.insert('',tk.END,values=row)
 	
 	def MostrarCohorte(self):
 		self.limpiarTablaCohorte()
-		self.rows = self.TraerDatos("SELECT * FROM cohorte")
+		self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeCohorte.insert('',tk.END,values=row)
 
 	def MostrarTrayecto(self):
 		self.limpiarTablaTrayecto()
-		self.rows = self.TraerDatos("SELECT * FROM trayecto")
+		self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeTrayecto.insert('',tk.END,values=row)
 
 	def MostrarTrimestre(self):
 		self.limpiarTablaTrimestre()
-		self.rows = self.TraerDatos("SELECT * FROM trimestre")
+		self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeTrimestre.insert('',tk.END,values=row)
 
 	def MostrarSeccion(self):
 		self.limpiarTablaSeccion()
-		self.rows = self.TraerDatos("SELECT * FROM seccion")
+		self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeSeccion.insert('',tk.END,values=row)
 
 	def MostrarTurno(self):
 		self.limpiarTablaTurno()
-		self.rows = self.TraerDatos("SELECT * FROM modalidad")
+		self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeTurno.insert('',tk.END,values=row)
 
 	def MostrarDia(self):
 		self.limpiarTablaDia()
-		self.rows = self.TraerDatos("SELECT * FROM semana")
+		self.rows = self.TraerDatos("SELECT * FROM semana WHERE semana.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeDia.insert('',tk.END,values=row)
 
 	def MostrarHoraInicial(self):
 		self.limpiarTablaHoraInicial()
-		self.rows = self.TraerDatos("SELECT * FROM hora_inicial")
+		self.rows = self.TraerDatos("SELECT * FROM hora_inicial WHERE hora_inicial.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeHoraInicial.insert('',tk.END,values=row)
 
 	def MostrarHoraFinal(self):
 		self.limpiarTablaHoraFinal()
-		self.rows = self.TraerDatos("SELECT * FROM hora_final")
+		self.rows = self.TraerDatos("SELECT * FROM hora_final WHERE hora_final.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeHoraFinal.insert('',tk.END,values=row)
 
 	def MostrarUnidadCurricular(self):
 		self.limpiarTablaUnidadCurricular()
-		self.rows = self.TraerDatos("SELECT Id,UnidadCurricular COLLATE utf8_spanish2_ci FROM unidad_curricular ORDER BY UnidadCurricular")
+		self.rows = self.TraerDatos("SELECT Id,UnidadCurricular,Hora,Departamento,Pt FROM unidad_curricular WHERE unidad_curricular.Estado = 'Activo' ORDER BY UnidadCurricular")
 		for row in self.rows:
 			self.treeUnidadCurricular.insert('',tk.END,values=row)
 
 	def MostrarLaboratorio(self):
 		self.limpiarTablaLaboratorio()
-		self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+		self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Activo'")
 		for row in self.rows:
 			self.treeLaboratorio.insert('',tk.END,values=row)
 
