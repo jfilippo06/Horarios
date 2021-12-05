@@ -170,13 +170,13 @@ class Unidades_curriculares(tk.Toplevel):
     
     def MostrarDatosDepartamento(self):
         self.limpiarTablaDepartamento()
-        self.rows = self.TraerDatos("SELECT * FROM departamento")
+        self.rows = self.TraerDatos("SELECT * FROM departamento WHERE departamento.Estado = 'Activo'")
         for row in self.rows:
             self.treeDepartamento.insert('',tk.END,values=row)
 
     def MostrarDatosPt(self):
         self.limpiarTablaPt()
-        self.rows = self.TraerDatos("SELECT * FROM pt")
+        self.rows = self.TraerDatos("SELECT * FROM pt WHERE pt.Estado = 'Activo'")
         for row in self.rows:
             self.treePt.insert('',tk.END,values=row)
 
@@ -255,7 +255,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarDepartamento(self):
         if self.ValidarCeldaDEntry():
-            self.query = 'INSERT INTO departamento VALUES (NUll,?)'
+            self.query = 'INSERT INTO departamento VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryDEntry.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosDepartamento()
@@ -268,7 +268,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarPt(self):
         if self.ValidarCeldaPEntry():
-            self.query = 'INSERT INTO pt VALUES (NUll,?)'
+            self.query = 'INSERT INTO pt VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryPEntry.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosPt()
@@ -282,7 +282,7 @@ class Unidades_curriculares(tk.Toplevel):
     def editarDepartamento(self):
         if self.ValidarCeldaDEntry() and self.treeDepartamento.selection():
             if messagebox.askyesno('Edit','¿Desea editar el departamento selecionado?'):
-                self.query = 'UPDATE departamento SET Departamento = ? WHERE Id = ?'
+                self.query = 'UPDATE departamento SET Departamento = ? WHERE departamento.Id = ? and departamento.Estado = "Activo"'
                 self.parametros = (self.entryDEntry.get())
                 self.id = self.selecionarFilaDepartamento()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -298,7 +298,7 @@ class Unidades_curriculares(tk.Toplevel):
     def editarPt(self):
         if self.ValidarCeldaPEntry() and self.treePt.selection():
             if messagebox.askyesno('Edit','¿Desea editar el PT selecionado?'):
-                self.query = 'UPDATE pt SET Pt = ? WHERE Id = ?'
+                self.query = 'UPDATE pt SET Pt = ? WHERE pt.Id = ? and pt.Estado = "Activo"'
                 self.parametros = (self.entryPEntry.get())
                 self.id = self.selecionarFilaPt()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -327,7 +327,7 @@ class Unidades_curriculares(tk.Toplevel):
     def eliminarDepartamento(self):
         if self.treeDepartamento.selection():
             if messagebox.askyesno('Delete','¿Desea eliminar el departamento selecionado?'):
-                self.query = 'DELETE FROM departamento WHERE Id = ?'
+                self.query = 'UPDATE departamento SET Estado = "Inactivo" WHERE departamento.Id = ? and departamento.Estado = "Activo"'
                 self.parametros = self.selecionarFilaDepartamento()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosDepartamento()
@@ -340,7 +340,7 @@ class Unidades_curriculares(tk.Toplevel):
     def eliminarPt(self):
         if self.treePt.selection():
             if messagebox.askyesno('Delete','¿Desea eliminar el PT selecionado?'):
-                self.query = 'DELETE FROM pt WHERE Id = ?'
+                self.query = 'UPDATE pt SET Estado = "Inactivo" WHERE pt.Id = ? and pt.Estado = "Activo"'
                 self.parametros = self.selecionarFilaPt()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosPt()
