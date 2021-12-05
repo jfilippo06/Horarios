@@ -180,7 +180,7 @@ class CargaAcademica(tk.Toplevel):
 				self.seleccion = self.selecionarFila()
 				self.new = tk.Toplevel()
 				self.new.title('Carga Académica Docente')
-				self.new.geometry('660x560')
+				self.new.geometry('660x520')
 				self.new.resizable(width=0,height=0)
 				self.new.iconbitmap(uptpc)
 				self.frame = ttk.Labelframe(self.new)
@@ -241,7 +241,6 @@ class CargaAcademica(tk.Toplevel):
 				self.entryEditarEspecifique.grid(row=14,column=1,padx=5,pady=5)
 				self.entryEditarEspecifique.config(state=tk.DISABLED)
 				ttk.Button(self.frame,text='AÑADIR/EDITAR ESPECIFIQUE', command=self.editarEspecifique).grid(row=14,column=2,pady=5,padx=5)
-				ttk.Button(self.new,text='EDITAR TODO', command=self.botonEditar).grid(row=1,column=0,pady=5,padx=5)
 				self.new.mainloop()		
 			else:
 				self.MostrarDatos()		
@@ -260,27 +259,10 @@ class CargaAcademica(tk.Toplevel):
 	def descargaAcademicaNo(self):
 		self.entryEditarRazon.config(state=tk.DISABLED)
 
-	def validarCeldasEditar(self):
-		return len(self.entryEditarNombre.get()) != 0 and len(self.entryEditarCedula.get()) != 0 and len(self.entryEditarCategoria.get()) != 0 and len(self.entryEditarDedicación.get()) != 0 and len(self.entryEditarTpregado.get()) != 0 and  len(self.entryEditarTposgrado.get()) != 0 and len(self.DescargaAcademicaEditar.get()) != 0 and  len(self.CondicionLaboralEditar.get()) != 0 and  len(self.entryEditarRazon.get()) != 0 and len(self.entryEditarTelefono.get()) != 0 and len(self.laboraEditar.get())  != 0 and len(self.entryEditarEspecifique.get()) != 0
-	
-	def LimpiarCeldasEditar(self):
-		self.entryEditarNombre.delete(0, tk.END)
-		self.entryEditarCedula.delete(0, tk.END)
-		self.entryEditarCategoria.delete(0, tk.END)
-		self.entryEditarDedicación.delete(0, tk.END)
-		self.entryEditarTpregado.delete(0, tk.END)
-		self.entryEditarTposgrado.delete(0, tk.END)
-		self.DescargaAcademicaEditar.set(0)
-		self.CondicionLaboralEditar.set(0)
-		self.entryEditarRazon.delete(0, tk.END)
-		self.entryEditarTelefono.delete(0,tk.END)
-		self.laboraEditar.set(0)
-		self.entryEditarEspecifique.delete(0, tk.END)
-
 	def editarCedula(self):
 		if len(self.entryEditarCedula.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar la cedula?'):
-				self.conexion('UPDATE docente SET Cedula = ? WHERE id = ?',(self.entryEditarCedula.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Cedula = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarCedula.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Cedula actualizada')
 				self.entryEditarCedula.delete(0, tk.END)
 				self.entryEditarCedula.focus()
@@ -295,7 +277,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarNombre(self):
 		if len(self.entryEditarNombre.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar el nombre y apellido?'):
-				self.conexion('UPDATE docente SET NombreApellido = ? WHERE id = ?',(self.entryEditarNombre.get(), self.seleccion))
+				self.conexion('UPDATE docente SET NombreApellido = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Nombre y apellido actualizados')
 				self.entryEditarNombre.delete(0, tk.END)
 				self.entryEditarNombre.focus()
@@ -310,7 +292,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarCategoria(self):
 		if len(self.entryEditarCategoria.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar categoria?'):
-				self.conexion('UPDATE docente SET Categoria = ? WHERE id = ?',(self.entryEditarCategoria.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Categoria = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarCategoria.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Categoria actualizada')
 				self.entryEditarCategoria.delete(0, tk.END)
 				self.entryEditarCategoria.focus()
@@ -325,7 +307,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarDedicacion(self):
 		if len(self.entryEditarDedicación.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar categoria?'):
-				self.conexion('UPDATE docente SET Dedicacion = ? WHERE id = ?',(self.entryEditarDedicación.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Dedicacion = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarDedicación.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Categoria actualizada')
 				self.entryEditarDedicación.delete(0, tk.END)
 				self.entryEditarDedicación.focus()
@@ -340,7 +322,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarPreGrado(self):
 		if len(self.entryEditarTpregado.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar PreGrado?'):
-				self.conexion('UPDATE docente SET Pregrado = ? WHERE id = ?',(self.entryEditarTpregado.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Pregrado = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTpregado.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='PreGrado actualizado')
 				self.entryEditarTpregado.delete(0, tk.END)
 				self.entryEditarTpregado.focus()
@@ -355,7 +337,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarPostGrado(self):
 		if len(self.entryEditarTposgrado.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar PostGrado?'):
-				self.conexion('UPDATE docente SET Postgrado = ? WHERE id = ?',(self.entryEditarTposgrado.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Postgrado = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTposgrado.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='PostGrado actualizado')
 				self.entryEditarTposgrado.delete(0, tk.END)
 				self.entryEditarTposgrado.focus()
@@ -370,7 +352,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarDescargaAcademica(self):
 		if len(self.DescargaAcademicaEditar.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar la descarga académica?'):
-				self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE id = ?',(self.DescargaAcademicaEditar.get(), self.seleccion))
+				self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.DescargaAcademicaEditar.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Descarga académica actualizada')
 				self.DescargaAcademicaEditar.set(0)
 				self.MostrarDatos()
@@ -382,7 +364,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarCondicionLaboral(self):
 		if len(self.CondicionLaboralEditar.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar la condicion laboral?'):
-				self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE id = ?',(self.CondicionLaboralEditar.get(), self.seleccion))
+				self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.CondicionLaboralEditar.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Condicion laboral actualizada')
 				self.CondicionLaboralEditar.set(0)
 				self.MostrarDatos()
@@ -394,7 +376,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarRazon(self):
 		if len(self.entryEditarRazon.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar la Razon de la descarga?'):
-				self.conexion('UPDATE docente SET RazonDescarga = ? WHERE id = ?',(self.entryEditarRazon.get(), self.seleccion))
+				self.conexion('UPDATE docente SET RazonDescarga = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarRazon.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Razon de la descarga actualizada')
 				self.entryEditarRazon.delete(0, tk.END)
 				self.entryEditarRazon.focus()
@@ -409,7 +391,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarTelefono(self):
 		if len(self.entryEditarTelefono.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar el telefono/correo?'):
-				self.conexion('UPDATE docente SET Telefono = ? WHERE id = ?',(self.entryEditarTelefono.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Telefono = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTelefono.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Telefono/correo actualizado')
 				self.entryEditarTelefono.delete(0, tk.END)
 				self.entryEditarTelefono.focus()
@@ -424,7 +406,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarLabora(self):
 		if len(self.laboraEditar.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar laborar?'):
-				self.conexion('UPDATE docente SET Labore = ? WHERE id = ?',(self.laboraEditar.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Labore = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.laboraEditar.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Laborar actualizado')
 				self.laboraEditar.set(0)
 				self.MostrarDatos()
@@ -436,7 +418,7 @@ class CargaAcademica(tk.Toplevel):
 	def editarEspecifique(self):
 		if len(self.entryEditarEspecifique.get()) != 0 :
 			if messagebox.askyesno('Edit','¿Desea actualizar especifique?'):
-				self.conexion('UPDATE docente SET Especifique = ? WHERE id = ?',(self.entryEditarEspecifique.get(), self.seleccion))
+				self.conexion('UPDATE docente SET Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarEspecifique.get(), self.seleccion))
 				messagebox.showinfo(title='Info', message='Especifique actualizado')
 				self.entryEditarEspecifique.delete(0, tk.END)
 				self.entryEditarEspecifique.focus()
@@ -447,27 +429,6 @@ class CargaAcademica(tk.Toplevel):
 		else:
 			messagebox.showinfo(title='info', message='Introduzca un valor')
 			self.entryEditarEspecifique.focus()
-
-	def botonEditar(self):
-		if self.validarCeldasEditar():
-			self.conexion('UPDATE docente SET NombreApellido = ? WHERE id = ?',(self.entryEditarNombre.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Cedula = ? WHERE id = ?',(self.entryEditarCedula.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Categoria = ? WHERE id = ?',(self.entryEditarCategoria.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Dedicacion = ? WHERE id = ?',(self.entryEditarDedicación.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Pregrado = ? WHERE id = ?',(self.entryEditarTpregado.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Postgrado = ? WHERE id = ?',(self.entryEditarTposgrado.get(), self.seleccion))
-			self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE id = ?',(self.DescargaAcademicaEditar.get(), self.seleccion))
-			self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE id = ?',(self.CondicionLaboralEditar.get(), self.seleccion))
-			self.conexion('UPDATE docente SET RazonDescarga = ? WHERE id = ?',(self.entryEditarRazon.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Telefono = ? WHERE id = ?',(self.entryEditarTelefono.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Labore = ? WHERE id = ?',(self.laboraEditar.get(), self.seleccion))
-			self.conexion('UPDATE docente SET Especifique = ? WHERE id = ?',(self.entryEditarEspecifique.get(), self.seleccion))
-			self.LimpiarCeldasEditar()
-			self.new.destroy()
-			self.MostrarDatos()
-			messagebox.showinfo(title='Info', message='Docente Editado Correctamente.')
-		else:
-			messagebox.showinfo(title='info', message='Introduzca un valor en las celdas')
 
 	def gestionarMaterias(self):
 		if self.tree.selection():
