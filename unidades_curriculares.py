@@ -164,7 +164,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def MostrarDatosHora(self):
         self.limpiarTablaHora()
-        self.rows = self.TraerDatos("SELECT * FROM hora")
+        self.rows = self.TraerDatos("SELECT * FROM hora WHERE hora.Estado = 'Activo'")
         for row in self.rows:
             self.treeHora.insert('',tk.END,values=row)
     
