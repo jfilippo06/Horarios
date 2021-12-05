@@ -284,13 +284,13 @@ class Gestor(tk.Toplevel):
 
     def MostrarDatosSeccion(self):
         self.limpiarTablaSeccion()
-        self.rows = self.TraerDatos("SELECT * FROM seccion")
+        self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Activo'")
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
 
     def MostrarDatosLaboratorio(self):
         self.limpiarTablaLaboratorio()
-        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorio.insert('',tk.END,values=row)
 
@@ -372,7 +372,7 @@ class Gestor(tk.Toplevel):
     def eliminarTrimestre(self):
         if self.treeTrimestre.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el trimestre selecionado?'):
-                self.query = 'DELETE FROM trimestre WHERE Id = ?'
+                self.query = 'UPDATE trimestre SET Estado = "Inactivo" WHERE trimestre.id = ? and trimestre.Estado = "Activo"'
                 self.parametros = self.selecionarFilaTrimestre()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosTrimestre()
@@ -385,7 +385,7 @@ class Gestor(tk.Toplevel):
     def eliminarSeccion(self):
         if self.treeSeccion.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitarla sección selecionado?'):
-                self.query = 'DELETE FROM seccion WHERE Id = ?'
+                self.query = 'UPDATE seccion SET Estado = "Inactivo" WHERE seccion.id = ? and seccion.Estado = "Activo"'
                 self.parametros = self.selecionarFilaSeccion()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosSeccion()
@@ -398,7 +398,7 @@ class Gestor(tk.Toplevel):
     def eliminarLaboratorio(self):
         if self.treeLaboratorio.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el laboratoiro selecionado?'):
-                self.query = 'DELETE FROM laboratorio WHERE Id = ?'
+                self.query = 'UPDATE laboratorio SET Estado = "Inactivo" WHERE laboratorio.id = ? and laboratorio.Estado = "Activo"'
                 self.parametros = self.selecionarFilaLaboratorio()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosLaboratorio()
@@ -649,7 +649,7 @@ class Gestor(tk.Toplevel):
     def editarTrimestre2(self):
         if self.ValidarCeldaTrimestre() and self.treeTrimestre.selection():
             if messagebox.askyesno('Edit','¿Desea editar el trimestre selecionado?'):
-                self.query = 'UPDATE trimestre SET Trimestre = ? WHERE id = ?'
+                self.query = 'UPDATE trimestre SET Trimestre = ? WHERE trimestre.id = ? and trimestre.Estado = "Activo"'
                 self.parametros = (self.entryTrimestre.get())
                 self.id = self.selecionarFilaTrimestre()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -660,7 +660,7 @@ class Gestor(tk.Toplevel):
                 self.MostrarDatosTrimestre()
                 self.LimpiarCeldaTrimestre()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor y trimestre el trayecto a editar.')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor y el trimestre a editar.')
 
     def editarSeccion(self):
         if self.treeSeccion.selection():
@@ -684,7 +684,7 @@ class Gestor(tk.Toplevel):
     def editarSeccion2(self):
         if self.ValidarCeldaSeccion() and self.treeSeccion.selection():
             if messagebox.askyesno('Edit','¿Desea editar la sección selecionada?'):
-                self.query = 'UPDATE seccion SET Seccion = ? WHERE id = ?'
+                self.query = 'UPDATE seccion SET Seccion = ? WHERE seccion.id = ? and seccion.Estado = "Activo"'
                 self.parametros = (self.entrySeccion.get())
                 self.id = self.selecionarFilaSeccion()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -719,7 +719,7 @@ class Gestor(tk.Toplevel):
     def editarLaboratorio2(self):
         if self.ValidarCeldaLaboratorio() and self.treeLaboratorio.selection():
             if messagebox.askyesno('Edit','¿Desea editar el laboratorio selecionado?'):
-                self.query = 'UPDATE laboratorio SET Laboratorio = ? WHERE id = ?'
+                self.query = 'UPDATE laboratorio SET Laboratorio = ? WHERE laboratorio.id = ? and laboratorio.Estado = "Activo"'
                 self.parametros = (self.entryLaboratorio.get())
                 self.id = self.selecionarFilaLaboratorio()
                 self.conexion(self.query,(self.parametros, self.id))

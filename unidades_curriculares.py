@@ -27,27 +27,27 @@ class Unidades_curriculares(tk.Toplevel):
         ttk.Label(self.frameUnidadCurricular,text='Unidad Curricular').grid(column=0,row=0)
         self.entryUnidadCurricular = ttk.Entry(self.frameUnidadCurricular,width=20)
         self.entryUnidadCurricular.grid(column=1,row=0)
-        ttk.Button(self.frameUnidadCurricular, text='REGISTRAR UNIDAD CURRICILAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
-        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICILAR', command=self.modificarUnidadCurricular,width=33).grid(row=2,column=0)
-        ttk.Button(self.frameUnidadCurricular, text='ELIMINAR UNIDAD CURRICILAR', command=self.eliminarUnidadCurricular,width=33).grid(row=3,column=0)
+        ttk.Button(self.frameUnidadCurricular, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
+        ttk.Button(self.frameUnidadCurricular, text='EDITAR UNIDAD CURRICULAR', command=self.modificarUnidadCurricular,width=33).grid(row=2,column=0)
+        ttk.Button(self.frameUnidadCurricular, text='DESHABILITAR UNIDAD CURRICULAR', command=self.eliminarUnidadCurricular,width=33).grid(row=3,column=0)
         
         self.frameDEntry = ttk.Labelframe(self.container)
         self.frameDEntry.grid(column=1,row=0, padx=5)
         ttk.Label(self.frameDEntry,text='Departamento').grid(column=0,row=0)
         self.entryDEntry = ttk.Entry(self.frameDEntry,width=20)
         self.entryDEntry.grid(column=1,row=0)
-        ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command=self.RegistrarDepartamento,width=26).grid(row=1,column=0)
-        ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command=self.editarDepartamento,width=26).grid(row=2,column=0)
-        ttk.Button(self.frameDEntry, text='ELIMINAR DEPARTAMENTO', command=self.eliminarDepartamento,width=26).grid(row=3,column=0)
+        ttk.Button(self.frameDEntry, text='REGISTRAR DEPARTAMENTO', command=self.RegistrarDepartamento,width=30).grid(row=1,column=0)
+        ttk.Button(self.frameDEntry, text='EDITAR DEPARTAMENTO', command=self.editarDepartamento,width=30).grid(row=2,column=0)
+        ttk.Button(self.frameDEntry, text='DESHABILITAR DEPARTAMENTO', command=self.eliminarDepartamento,width=30).grid(row=3,column=0)
 
         self.framePEntry = ttk.Labelframe(self.container)
         self.framePEntry.grid(column=2,row=0, padx=5)
         ttk.Label(self.framePEntry,text='Pt').grid(column=0,row=0)
         self.entryPEntry = ttk.Entry(self.framePEntry,width=20)
         self.entryPEntry.grid(column=1,row=0)
-        ttk.Button(self.framePEntry, text='REGISTRAR PT', command=self.RegistrarPt,width=15).grid(row=1,column=0)
-        ttk.Button(self.framePEntry, text='EDITAR PT', command=self.editarPt,width=15).grid(row=2,column=0)
-        ttk.Button(self.framePEntry, text='ELIMINAR PT', command=self.eliminarPt,width=15).grid(row=3,column=0)
+        ttk.Button(self.framePEntry, text='REGISTRAR PT', command=self.RegistrarPt,width=16).grid(row=1,column=0)
+        ttk.Button(self.framePEntry, text='EDITAR PT', command=self.editarPt,width=16).grid(row=2,column=0)
+        ttk.Button(self.framePEntry, text='DESHABILITAR PT', command=self.eliminarPt,width=16).grid(row=3,column=0)
 
         self.frameHora = ttk.Labelframe(self.container)
         self.frameHora.grid(column=0,row=1,padx=5,pady=5)
@@ -164,25 +164,25 @@ class Unidades_curriculares(tk.Toplevel):
 
     def MostrarDatosHora(self):
         self.limpiarTablaHora()
-        self.rows = self.TraerDatos("SELECT * FROM hora")
+        self.rows = self.TraerDatos("SELECT * FROM hora WHERE hora.Estado = 'Activo'")
         for row in self.rows:
             self.treeHora.insert('',tk.END,values=row)
     
     def MostrarDatosDepartamento(self):
         self.limpiarTablaDepartamento()
-        self.rows = self.TraerDatos("SELECT * FROM departamento")
+        self.rows = self.TraerDatos("SELECT * FROM departamento WHERE departamento.Estado = 'Activo'")
         for row in self.rows:
             self.treeDepartamento.insert('',tk.END,values=row)
 
     def MostrarDatosPt(self):
         self.limpiarTablaPt()
-        self.rows = self.TraerDatos("SELECT * FROM pt")
+        self.rows = self.TraerDatos("SELECT * FROM pt WHERE pt.Estado = 'Activo'")
         for row in self.rows:
             self.treePt.insert('',tk.END,values=row)
 
     def MostrarDatosUnidadesCurriculares(self):
         self.limpiarTablaUnidadesCurriculares()
-        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular,Hora,Departamento,Pt COLLATE utf8_spanish2_ci FROM unidad_curricular ORDER BY UnidadCurricular")
+        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular,Hora,Departamento,Pt FROM unidad_curricular WHERE unidad_curricular.Estado = 'Activo' ORDER BY UnidadCurricular")
         for row in self.rows:
             self.treeUnidadesCurriculares.insert('',tk.END,values=row)
 
@@ -242,7 +242,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarUnidadCurricular(self):
         if self.ValidarCeldaUnidadCurricular():
-            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"","","")'
+            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"","","","Activo")'
             self.parametros = (self.entryUnidadCurricular.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosUnidadesCurriculares()
@@ -255,7 +255,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarDepartamento(self):
         if self.ValidarCeldaDEntry():
-            self.query = 'INSERT INTO departamento VALUES (NUll,?)'
+            self.query = 'INSERT INTO departamento VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryDEntry.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosDepartamento()
@@ -268,7 +268,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarPt(self):
         if self.ValidarCeldaPEntry():
-            self.query = 'INSERT INTO pt VALUES (NUll,?)'
+            self.query = 'INSERT INTO pt VALUES (NUll,?,"Activo")'
             self.parametros = (self.entryPEntry.get())
             if self.conexion(self.query,(self.parametros,)):
                 self.MostrarDatosPt()
@@ -282,7 +282,7 @@ class Unidades_curriculares(tk.Toplevel):
     def editarDepartamento(self):
         if self.ValidarCeldaDEntry() and self.treeDepartamento.selection():
             if messagebox.askyesno('Edit','¿Desea editar el departamento selecionado?'):
-                self.query = 'UPDATE departamento SET Departamento = ? WHERE Id = ?'
+                self.query = 'UPDATE departamento SET Departamento = ? WHERE departamento.Id = ? and departamento.Estado = "Activo"'
                 self.parametros = (self.entryDEntry.get())
                 self.id = self.selecionarFilaDepartamento()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -298,7 +298,7 @@ class Unidades_curriculares(tk.Toplevel):
     def editarPt(self):
         if self.ValidarCeldaPEntry() and self.treePt.selection():
             if messagebox.askyesno('Edit','¿Desea editar el PT selecionado?'):
-                self.query = 'UPDATE pt SET Pt = ? WHERE Id = ?'
+                self.query = 'UPDATE pt SET Pt = ? WHERE pt.Id = ? and pt.Estado = "Activo"'
                 self.parametros = (self.entryPEntry.get())
                 self.id = self.selecionarFilaPt()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -313,47 +313,47 @@ class Unidades_curriculares(tk.Toplevel):
     
     def eliminarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar la unidad curricular selecionada?'):
-                self.query = 'DELETE FROM unidad_curricular WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?'):
+                self.query = 'UPDATE unidad_curricular SET Estado = "Inactivo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Estado"'
                 self.parametros = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosUnidadesCurriculares()
-                messagebox.showinfo(title='Info', message='Unidad curricular eliminada correctamente.')
+                messagebox.showinfo(title='Info', message='Unidad curricular deshabilitada correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a deshabilitar.')
 
     def eliminarDepartamento(self):
         if self.treeDepartamento.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el departamento selecionado?'):
-                self.query = 'DELETE FROM departamento WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el departamento selecionado?'):
+                self.query = 'UPDATE departamento SET Estado = "Inactivo" WHERE departamento.Id = ? and departamento.Estado = "Activo"'
                 self.parametros = self.selecionarFilaDepartamento()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosDepartamento()
-                messagebox.showinfo(title='Info', message='Departamento eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='Departamento deshabilitado correctamente.')
             else:
                 self.MostrarDatosDepartamento()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un deparmento a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un deparmento a deshabilitar.')
 
     def eliminarPt(self):
         if self.treePt.selection():
-            if messagebox.askyesno('Delete','¿Desea eliminar el PT selecionado?'):
-                self.query = 'DELETE FROM pt WHERE Id = ?'
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el PT selecionado?'):
+                self.query = 'UPDATE pt SET Estado = "Inactivo" WHERE pt.Id = ? and pt.Estado = "Activo"'
                 self.parametros = self.selecionarFilaPt()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosPt()
-                messagebox.showinfo(title='Info', message='PT eliminado correctamente.')
+                messagebox.showinfo(title='Info', message='PT deshabilitado correctamente.')
             else:
                 self.MostrarDatosPt()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione un PT a eliminar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione un PT a deshabilitar.')
 
     def modificarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE id = ?'
+                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Estado"'
                 self.parametros = (self.entryUnidadCurricular.get())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
@@ -368,11 +368,12 @@ class Unidades_curriculares(tk.Toplevel):
     def modificarHora(self):
         if self.treeHora.selection() and self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET Hora = ? WHERE Id = ?'
+                self.query = 'UPDATE unidad_curricular SET Hora = ? WHERE unidad_curricular.Id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = (self.hora())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
                 self.MostrarDatosHora()
+                self.MostrarDatosUnidadesCurriculares()
                 messagebox.showinfo(title='Info', message='Hora Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
@@ -382,11 +383,12 @@ class Unidades_curriculares(tk.Toplevel):
     def modificarDepartamento(self):
         if self.treeDepartamento.selection() and self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET Departamento = ? WHERE Id = ?'
+                self.query = 'UPDATE unidad_curricular SET Departamento = ? WHERE unidad_curricular.Id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = (self.departamento())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
                 self.MostrarDatosDepartamento()
+                self.MostrarDatosUnidadesCurriculares()
                 messagebox.showinfo(title='Info', message='Departamento Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
@@ -396,11 +398,12 @@ class Unidades_curriculares(tk.Toplevel):
     def modificarPt(self):
         if self.treePt.selection() and self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET Pt = ? WHERE Id = ?'
+                self.query = 'UPDATE unidad_curricular SET Pt = ? WHERE unidad_curricular.Id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = (self.pt())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
                 self.MostrarDatosPt()
+                self.MostrarDatosUnidadesCurriculares()
                 messagebox.showinfo(title='Info', message='PT Editada Correctamente.')
             else:
                 self.MostrarDatosUnidadesCurriculares()
