@@ -317,12 +317,12 @@ class ReporteCargaAcademica(tk.Toplevel):
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las casillas y rellenar todas las celdas')
 
     def MostrarReporteDocente(self):
-        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
+        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente WHERE docente.Estado = 'Activo'")
         for row in self.rows:
             self.treeReportes.insert('',tk.END,values=row)
             
     def MostrarReporteLapso(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeReportesLapso.insert('',tk.END,values=row)
             
@@ -517,29 +517,29 @@ class ReporteCargaAcademica(tk.Toplevel):
                 [Paragraph('Razon de la descarga:',self.center)]
             ]
             
-            self.nombre = self.materia('SELECT docente.NombreApellido from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.nombre = self.materia('SELECT docente.NombreApellido from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[0].append(Paragraph(self.nombre,self.center))
             self.tabla1[0].append(Paragraph('Cedula:',self.center))
-            self.cedula = self.materia('SELECT docente.Cedula from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.cedula = self.materia('SELECT docente.Cedula from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[0].append(Paragraph(self.cedula,self.center))
-            self.categoria = self.materia('SELECT docente.Categoria from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.categoria = self.materia('SELECT docente.Categoria from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[1].append(Paragraph(self.categoria,self.left))
             self.setStyles.append(('SPAN',(1,1),(3,1)))
-            self.dedicacion = self.materia('SELECT docente.Dedicacion from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.dedicacion = self.materia('SELECT docente.Dedicacion from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[2].append(Paragraph(self.dedicacion,self.left))
             self.setStyles.append(('SPAN',(1,2),(3,2)))
-            self.pregrado = self.materia('SELECT docente.Pregrado from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.pregrado = self.materia('SELECT docente.Pregrado from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[3].append(Paragraph(self.pregrado,self.left))
             self.setStyles.append(('SPAN',(1,3),(3,3)))
-            self.postgrado = self.materia('SELECT docente.Postgrado from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.postgrado = self.materia('SELECT docente.Postgrado from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[4].append(Paragraph(self.postgrado,self.left))
             self.setStyles.append(('SPAN',(1,4),(3,4)))
-            self.descargaAcademica = self.materia('SELECT docente.DescargaAcademica from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.descargaAcademica = self.materia('SELECT docente.DescargaAcademica from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[5].append(Paragraph(self.descargaAcademica,self.left))
             self.tabla1[5].append(Paragraph('Condicion laboral:',self.left))
-            self.condicionLaboral = self.materia('SELECT docente.CondicionLaboral from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.condicionLaboral = self.materia('SELECT docente.CondicionLaboral from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[5].append(Paragraph(self.condicionLaboral,self.left))
-            self.razonDescarga = self.materia('SELECT docente.RazonDescarga from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.razonDescarga = self.materia('SELECT docente.RazonDescarga from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[6].append(Paragraph(self.razonDescarga,self.left))
             self.setStyles.append(('SPAN',(1,6),(3,6)))
 
@@ -620,7 +620,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             ]
 
             self.obtenermaterias = self.conexion(
-                'SELECT DISTINCT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ?',
+                'SELECT DISTINCT unidad_curricular.UnidadCurricular,seccion.Seccion,unidad_curricular.hora, unidad_curricular.departamento,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, unidad_curricular.Pt FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Estado = "Activo"',
                 self.parametrosReportes).fetchall()
 
             array1 = []
@@ -878,15 +878,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea lunes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,6,
                 1,self.morning,self.setStyles4
             )
@@ -894,15 +894,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Martes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,6,
                 1,self.morning,self.setStyles4
             )
@@ -910,15 +910,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Miercoles
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,6,
                 1,self.morning,self.setStyles4
             )
@@ -926,15 +926,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Jueves
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,6,
                 1,self.morning,self.setStyles4
             )
@@ -942,15 +942,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Viernes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,6,
                 1,self.morning,self.setStyles4
             )
@@ -959,13 +959,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea lunes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,6,
                 2,self.morning,self.setStyles4
             )
@@ -973,13 +973,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Martes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,6,
                 2,self.morning,self.setStyles4
             )
@@ -987,13 +987,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Miercoles
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,6,
                 2,self.morning,self.setStyles4
             )
@@ -1001,13 +1001,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Jueves
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,6,
                 2,self.morning,self.setStyles4
             )
@@ -1015,13 +1015,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Viernes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,6,
                 2,self.morning,self.setStyles4
             )
@@ -1030,11 +1030,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea lunes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,6,
                 3,self.morning,self.setStyles4
             )
@@ -1042,11 +1042,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Martes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,6,
                 3,self.morning,self.setStyles4
             )
@@ -1054,11 +1054,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Miercoles
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,6,
                 3,self.morning,self.setStyles4
             )
@@ -1066,11 +1066,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Jueves
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,6,
                 3,self.morning,self.setStyles4
             )
@@ -1078,11 +1078,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Viernes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,6,
                 3,self.morning,self.setStyles4
             )
@@ -1091,9 +1091,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea lunes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,6,
                 4,self.morning,self.setStyles4
             )
@@ -1101,9 +1101,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Martes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,6,
                 4,self.morning,self.setStyles4
             )
@@ -1111,9 +1111,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Miercoles
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,6,
                 4,self.morning,self.setStyles4
             )
@@ -1121,9 +1121,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Jueves
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,6,
                 4,self.morning,self.setStyles4
             )
@@ -1131,9 +1131,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Viernes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,6,
                 4,self.morning,self.setStyles4
             )
@@ -1142,7 +1142,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea lunes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 1,5,1,6,
                 5,self.morning,self.setStyles4
             )
@@ -1150,7 +1150,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Martes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 2,5,2,6,
                 5,self.morning,self.setStyles4
             )
@@ -1158,7 +1158,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Miercoles
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 3,5,3,6,
                 5,self.morning,self.setStyles4
             )
@@ -1166,7 +1166,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Jueves
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 4,5,4,6,
                 5,self.morning,self.setStyles4
             )
@@ -1174,7 +1174,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Viernes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
                 5,5,5,6,
                 5,self.morning,self.setStyles4
             )
@@ -1238,15 +1238,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea lunes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,6,
                 1,self.afternon,self.setStyles5
             )
@@ -1254,15 +1254,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Martes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,6,
                 1,self.afternon,self.setStyles5
             )
@@ -1270,15 +1270,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Miercoles
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,6,
                 1,self.afternon,self.setStyles5
             )
@@ -1286,15 +1286,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Jueves
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,6,
                 1,self.afternon,self.setStyles5
             )
@@ -1302,15 +1302,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Viernes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,6,
                 1,self.afternon,self.setStyles5
             )
@@ -1319,13 +1319,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea lunes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,6,
                 2,self.afternon,self.setStyles5
             )
@@ -1333,13 +1333,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Martes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,6,
                 2,self.afternon,self.setStyles5
             )
@@ -1347,13 +1347,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Miercoles
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,6,
                 2,self.afternon,self.setStyles5
             )
@@ -1361,13 +1361,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Jueves
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,6,
                 2,self.afternon,self.setStyles5
             )
@@ -1375,13 +1375,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Viernes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,6,
                 2,self.afternon,self.setStyles5
             )
@@ -1390,11 +1390,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea lunes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,6,
                 3,self.afternon,self.setStyles5
             )
@@ -1402,11 +1402,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Martes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,6,
                 3,self.afternon,self.setStyles5
             )
@@ -1414,11 +1414,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Miercoles
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,6,
                 3,self.afternon,self.setStyles5
             )
@@ -1426,11 +1426,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Jueves
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,6,
                 3,self.afternon,self.setStyles5
             )
@@ -1438,11 +1438,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Viernes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,6,
                 3,self.afternon,self.setStyles5
             )
@@ -1451,9 +1451,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea lunes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,6,
                 4,self.afternon,self.setStyles5
             )
@@ -1461,9 +1461,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Martes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,6,
                 4,self.afternon,self.setStyles5
             )
@@ -1471,9 +1471,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Miercoles
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,6,
                 4,self.afternon,self.setStyles5
             )
@@ -1481,9 +1481,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Jueves
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,6,
                 4,self.afternon,self.setStyles5
             )
@@ -1491,9 +1491,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Viernes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,6,
                 4,self.afternon,self.setStyles5
             )
@@ -1502,7 +1502,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea lunes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 1,5,1,6,
                 5,self.afternon,self.setStyles5
             )
@@ -1510,7 +1510,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Martes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 2,5,2,6,
                 5,self.afternon,self.setStyles5
             )
@@ -1518,7 +1518,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Miercoles
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 3,5,3,6,
                 5,self.afternon,self.setStyles5
             )
@@ -1526,7 +1526,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Jueves
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 4,5,4,6,
                 5,self.afternon,self.setStyles5
             )
@@ -1534,7 +1534,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Viernes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
                 5,5,5,6,
                 5,self.afternon,self.setStyles5
             )
@@ -1597,15 +1597,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea lunes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 1,1,1,6,
                 1,self.ninght,self.setStyles6
             )
@@ -1613,15 +1613,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Martes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 2,1,2,6,
                 1,self.ninght,self.setStyles6
             )
@@ -1629,15 +1629,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Miercoles
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 3,1,3,6,
                 1,self.ninght,self.setStyles6
             )
@@ -1645,15 +1645,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Jueves
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 4,1,4,6,
                 1,self.ninght,self.setStyles6
             )
@@ -1661,15 +1661,15 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Primera linea Viernes
             self.celda1x6(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,2,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 5,1,5,6,
                 1,self.ninght,self.setStyles6
             )
@@ -1678,13 +1678,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea lunes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 1,2,1,6,
                 2,self.ninght,self.setStyles6
             )
@@ -1692,13 +1692,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Martes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 2,2,2,6,
                 2,self.ninght,self.setStyles6
             )
@@ -1706,13 +1706,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Miercoles
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 3,2,3,6,
                 2,self.ninght,self.setStyles6
             )
@@ -1720,13 +1720,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Jueves
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 4,2,4,6,
                 2,self.ninght,self.setStyles6
             )
@@ -1734,13 +1734,13 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Segunda linea Viernes
             self.celda1x5(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,3,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 5,2,5,6,
                 2,self.ninght,self.setStyles6
             )
@@ -1749,11 +1749,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea lunes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 1,3,1,6,
                 3,self.ninght,self.setStyles6
             )
@@ -1761,11 +1761,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Martes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 2,3,2,6,
                 3,self.ninght,self.setStyles6
             )
@@ -1773,11 +1773,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Miercoles
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 3,3,3,6,
                 3,self.ninght,self.setStyles6
             )
@@ -1785,11 +1785,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Jueves
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 4,3,4,6,
                 3,self.ninght,self.setStyles6
             )
@@ -1797,11 +1797,11 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Tercera linea Viernes
             self.celda1x4(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,4,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 5,3,5,6,
                 3,self.ninght,self.setStyles6
             )
@@ -1810,9 +1810,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea lunes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 1,4,1,6,
                 4,self.ninght,self.setStyles6
             )
@@ -1820,9 +1820,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Martes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 2,4,2,6,
                 4,self.ninght,self.setStyles6
             )
@@ -1830,9 +1830,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Miercoles
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 3,4,3,6,
                 4,self.ninght,self.setStyles6
             )
@@ -1840,9 +1840,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Jueves
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 4,4,4,6,
                 4,self.ninght,self.setStyles6
             )
@@ -1850,9 +1850,9 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Cuarta linea Viernes
             self.celda1x3(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,5,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 5,4,5,6,
                 4,self.ninght,self.setStyles6
             )
@@ -1861,7 +1861,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea lunes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 1,5,1,6,
                 5,self.ninght,self.setStyles6
             )
@@ -1869,7 +1869,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Martes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 2,5,2,6,
                 5,self.ninght,self.setStyles6
             )
@@ -1877,7 +1877,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Miercoles
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 3,5,3,6,
                 5,self.ninght,self.setStyles6
             )
@@ -1885,7 +1885,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Jueves
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 4,5,4,6,
                 5,self.ninght,self.setStyles6
             )
@@ -1893,7 +1893,7 @@ class ReporteCargaAcademica(tk.Toplevel):
             # Quinta linea Viernes
             self.celda1x2(
                 self.parametrosReportes,
-                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+                'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
                 5,5,5,6,
                 5,self.ninght,self.setStyles6
             )
@@ -2001,10 +2001,10 @@ class ReporteCargaAcademica(tk.Toplevel):
                 [Paragraph('Leyenda:',self.center),Paragraph('PNF',self.center),Paragraph('Programa Nacional de Formación',self.center),Paragraph('PT',self.center),Paragraph('Programa Tradicional',self.center),Paragraph('TI',self.center),Paragraph('Trayecto Inicial',self.center)]
             ]
             
-            self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.labore = self.materia('SELECT docente.Labore from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.observacion[0].append(Paragraph(self.labore,self.center))
             self.observacion[0].append(Paragraph('Especifique:',self.center))
-            self.especifique = self.materia('SELECT docente.Especifique from docente WHERE docente.Id = ?',(self.docenteId,))
+            self.especifique = self.materia('SELECT docente.Especifique from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.observacion[0].append(Paragraph(self.especifique,self.center))
             self.setStyles8.append(('SPAN',(3,0),(6,0)))
 
