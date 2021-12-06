@@ -750,62 +750,62 @@ class Horarios(tk.Toplevel):
             self.treeTitulo.insert('',tk.END,values=row)
 
     def MostrarLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeLapsoAcademico.insert('',tk.END,values=row)
 
     def MostrarModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeModalidad.insert('',tk.END,values=row)
             
     def MostrarCohorte(self):
-        self.rows = self.TraerDatos("SELECT * FROM cohorte")
+        self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Activo'")
         for row in self.rows:
             self.treeCohorte.insert('',tk.END,values=row)
             
     def MostrarTrayecto(self):
-        self.rows = self.TraerDatos("SELECT * FROM trayecto")
+        self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrayecto.insert('',tk.END,values=row)
             
     def MostrarTrimestre(self):
-        self.rows = self.TraerDatos("SELECT * FROM trimestre")
+        self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrimestre.insert('',tk.END,values=row)
             
     def MostrarSeccion(self):
-        self.rows = self.TraerDatos("SELECT * FROM seccion")
+        self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Activo'")
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
             
     def MostrarDocente(self):
-        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
+        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente WHERE docente.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocente.insert('',tk.END,values=row)
             
     def MostrarDocenteLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocenteLapsoAcademico.insert('',tk.END,values=row)
 
     def MostrarDocenteModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocenteModalidad.insert('',tk.END,values=row)
 
     def MostrarLaboratorio(self):
-        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorio.insert('',tk.END,values=row)
 
     def MostrarLaboratorioLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorioLapso.insert('',tk.END,values=row)
 
     def MostrarLaboratorioModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorioModalidad.insert('',tk.END,values=row)
             
