@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
-from tkinter.constants import DISABLED
 from rutas import *
 import traceback
 import sys
