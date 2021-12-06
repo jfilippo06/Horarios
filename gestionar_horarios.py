@@ -750,62 +750,62 @@ class Horarios(tk.Toplevel):
             self.treeTitulo.insert('',tk.END,values=row)
 
     def MostrarLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeLapsoAcademico.insert('',tk.END,values=row)
 
     def MostrarModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeModalidad.insert('',tk.END,values=row)
             
     def MostrarCohorte(self):
-        self.rows = self.TraerDatos("SELECT * FROM cohorte")
+        self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Activo'")
         for row in self.rows:
             self.treeCohorte.insert('',tk.END,values=row)
             
     def MostrarTrayecto(self):
-        self.rows = self.TraerDatos("SELECT * FROM trayecto")
+        self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrayecto.insert('',tk.END,values=row)
             
     def MostrarTrimestre(self):
-        self.rows = self.TraerDatos("SELECT * FROM trimestre")
+        self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Activo'")
         for row in self.rows:
             self.treeTrimestre.insert('',tk.END,values=row)
             
     def MostrarSeccion(self):
-        self.rows = self.TraerDatos("SELECT * FROM seccion")
+        self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Activo'")
         for row in self.rows:
             self.treeSeccion.insert('',tk.END,values=row)
             
     def MostrarDocente(self):
-        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente")
+        self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente WHERE docente.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocente.insert('',tk.END,values=row)
             
     def MostrarDocenteLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocenteLapsoAcademico.insert('',tk.END,values=row)
 
     def MostrarDocenteModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeDocenteModalidad.insert('',tk.END,values=row)
 
     def MostrarLaboratorio(self):
-        self.rows = self.TraerDatos("SELECT * FROM laboratorio")
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorio.insert('',tk.END,values=row)
 
     def MostrarLaboratorioLapsoAcademico(self):
-        self.rows = self.TraerDatos("SELECT * FROM lapso_academico")
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorioLapso.insert('',tk.END,values=row)
 
     def MostrarLaboratorioModalidad(self):
-        self.rows = self.TraerDatos("SELECT * FROM modalidad")
+        self.rows = self.TraerDatos("SELECT * FROM modalidad WHERE modalidad.Estado = 'Activo'")
         for row in self.rows:
             self.treeLaboratorioModalidad.insert('',tk.END,values=row)
             
@@ -1553,15 +1553,15 @@ class Horarios(tk.Toplevel):
         # Primera linea lunes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
             1,1,1,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             1,1,1,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             1,1,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             1,1,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             1,1,1,6,
             1,self.diurno
         )
@@ -1569,15 +1569,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Martes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
             2,1,2,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             2,1,2,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             2,1,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             2,1,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             2,1,2,6,
             1,self.diurno
         ) 
@@ -1585,15 +1585,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Miercoles
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
             3,1,3,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             3,1,3,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             3,1,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             3,1,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             3,1,3,6,
             1,self.diurno
         )
@@ -1601,15 +1601,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Jueves
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
             4,1,4,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             4,1,4,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             4,1,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             4,1,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             4,1,4,6,
             1,self.diurno
         )
@@ -1617,15 +1617,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Viernes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 2 AND materias_asignadas.Estado = "Activo"',
             5,1,5,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             5,1,5,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             5,1,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             5,1,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 1 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             5,1,5,6,
             1,self.diurno
         )
@@ -1634,13 +1634,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea lunes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             1,2,1,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             1,2,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             1,2,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             1,2,1,6,
             2,self.diurno
         )
@@ -1648,13 +1648,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Martes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             2,2,2,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             2,2,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             2,2,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             2,2,2,6,
             2,self.diurno
         )
@@ -1662,13 +1662,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Miercoles
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             3,2,3,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             3,2,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             3,2,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             3,2,3,6,
             2,self.diurno
         )
@@ -1676,13 +1676,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Jueves
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             4,2,4,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             4,2,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             4,2,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             4,2,4,6,
             2,self.diurno
         )
@@ -1690,13 +1690,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Vierves
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 3 AND materias_asignadas.Estado = "Activo"',
             5,2,5,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             5,2,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             5,2,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 2 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             5,2,5,6,
             2,self.diurno
         )
@@ -1706,11 +1706,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea lunes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             1,3,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             1,3,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             1,3,1,6,
             3,self.diurno
         )
@@ -1718,11 +1718,11 @@ class Horarios(tk.Toplevel):
          # Tercera linea Martes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             2,3,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             2,3,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             2,3,2,6,
             3,self.diurno
         )
@@ -1730,11 +1730,11 @@ class Horarios(tk.Toplevel):
          # Tercera linea Miercoles
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             3,3,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             3,3,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             3,3,3,6,
             3,self.diurno
         )
@@ -1742,11 +1742,11 @@ class Horarios(tk.Toplevel):
          # Tercera linea Jueves
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             4,3,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             4,3,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             4,3,4,6,
             3,self.diurno
         )
@@ -1754,11 +1754,11 @@ class Horarios(tk.Toplevel):
          # Tercera linea Viernes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 4 AND materias_asignadas.Estado = "Activo"',
             5,3,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             5,3,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 3 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             5,3,5,6,
             3,self.diurno
         )
@@ -1768,9 +1768,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea lunes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             1,4,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             1,4,1,6,
             4,self.diurno
         )
@@ -1778,9 +1778,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Martes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             2,4,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             2,4,2,6,
             4,self.diurno
         )
@@ -1788,9 +1788,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Miercoles
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             3,4,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             3,4,3,6,
             4,self.diurno
         )
@@ -1798,9 +1798,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Jueves
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             4,4,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             4,4,4,6,
             4,self.diurno
         )
@@ -1808,9 +1808,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Viernes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 5 AND materias_asignadas.Estado = "Activo"',
             5,4,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 4 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             5,4,5,6,
             4,self.diurno
         )
@@ -1820,7 +1820,7 @@ class Horarios(tk.Toplevel):
         # Quinta linea lunes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             1,5,1,6,
             5,self.diurno
         )
@@ -1828,7 +1828,7 @@ class Horarios(tk.Toplevel):
         # Quinta linea Martes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             2,5,2,6,
             5,self.diurno
         )
@@ -1836,7 +1836,7 @@ class Horarios(tk.Toplevel):
         # Quinta linea Miercoles
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             3,5,3,6,
             5,self.diurno
         )
@@ -1844,7 +1844,7 @@ class Horarios(tk.Toplevel):
         # Quinta linea Jueves
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             4,5,4,6,
             5,self.diurno
         )
@@ -1852,7 +1852,7 @@ class Horarios(tk.Toplevel):
         # Quinta linea Viernes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 5 AND materias_asignadas.Id_hora_final = 6 AND materias_asignadas.Estado = "Activo"',
             5,5,5,6,
             5,self.diurno
         )
@@ -1862,15 +1862,15 @@ class Horarios(tk.Toplevel):
         # Septima linea lunes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
             1,7,1,8,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             1,7,1,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             1,7,1,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             1,7,1,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             1,7,1,12,
             7,self.diurno
         )
@@ -1878,15 +1878,15 @@ class Horarios(tk.Toplevel):
         # Septima linea Martes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
             2,7,2,8,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             2,7,2,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             2,7,2,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             2,7,2,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             2,7,2,12,
             7,self.diurno
         )
@@ -1894,15 +1894,15 @@ class Horarios(tk.Toplevel):
         # Septima linea Miercoles
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
             3,7,3,8,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             3,7,3,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             3,7,3,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             3,7,3,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             3,7,3,12,
             7,self.diurno
         )
@@ -1910,15 +1910,15 @@ class Horarios(tk.Toplevel):
         # Septima linea Jueves
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
             4,7,4,8,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             4,7,4,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             4,7,4,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             4,7,4,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             4,7,4,12,
             7,self.diurno
         )
@@ -1926,15 +1926,15 @@ class Horarios(tk.Toplevel):
         # Septima linea Viernes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 8 AND materias_asignadas.Estado = "Activo"',
             5,7,5,8,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             5,7,5,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             5,7,5,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             5,7,5,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 7 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             5,7,5,12,
             7,self.diurno
         )
@@ -1944,13 +1944,13 @@ class Horarios(tk.Toplevel):
         # Octava linea lunes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             1,8,1,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             1,8,1,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             1,8,1,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             1,8,1,12,
             8,self.diurno
         )
@@ -1958,13 +1958,13 @@ class Horarios(tk.Toplevel):
         # Octava linea Martes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             2,8,2,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             2,8,2,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             2,8,2,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             2,8,2,12,
             8,self.diurno
         )
@@ -1972,13 +1972,13 @@ class Horarios(tk.Toplevel):
         # Octava linea Miercoles
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             3,8,3,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             3,8,3,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             3,8,3,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             3,8,3,12,
             8,self.diurno
         )
@@ -1986,13 +1986,13 @@ class Horarios(tk.Toplevel):
         # Octava linea jueves
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             4,8,4,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             4,8,4,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             4,8,4,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             4,8,4,12,
             8,self.diurno
         )
@@ -2000,13 +2000,13 @@ class Horarios(tk.Toplevel):
         # Octava linea 
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 9 AND materias_asignadas.Estado = "Activo"',
             5,8,5,9,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             5,8,5,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             5,8,5,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 8 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             5,8,5,12,
             8,self.diurno
         )
@@ -2016,11 +2016,11 @@ class Horarios(tk.Toplevel):
         # Noveno linea lunes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             1,9,1,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             1,9,1,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             1,9,1,12,
             9,self.diurno
         )
@@ -2028,11 +2028,11 @@ class Horarios(tk.Toplevel):
         # Noveno linea Martes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             2,9,2,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             2,9,2,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             2,9,2,12,
             9,self.diurno
         )
@@ -2040,11 +2040,11 @@ class Horarios(tk.Toplevel):
         # Noveno linea Miercoles
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             3,9,3,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             3,9,3,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             3,9,3,12,
             9,self.diurno
         )
@@ -2052,11 +2052,11 @@ class Horarios(tk.Toplevel):
         # Noveno linea Jueves
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             4,9,4,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             4,9,4,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             4,9,4,12,
             9,self.diurno
         )
@@ -2064,11 +2064,11 @@ class Horarios(tk.Toplevel):
         # Noveno linea Viernes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 10 AND materias_asignadas.Estado = "Activo"',
             5,9,5,10,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             5,9,5,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 9 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             5,9,5,12,
             9,self.diurno
         )
@@ -2078,9 +2078,9 @@ class Horarios(tk.Toplevel):
         # Decimo linea lunes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             1,10,1,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             1,10,1,12,
             10,self.diurno
         )
@@ -2088,9 +2088,9 @@ class Horarios(tk.Toplevel):
         # Decimo linea Martes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             2,10,2,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             2,10,2,12,
             10,self.diurno
         )
@@ -2098,9 +2098,9 @@ class Horarios(tk.Toplevel):
         # Decimo linea Miercoles
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             3,10,3,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             3,10,3,12,
             10,self.diurno
         )
@@ -2108,9 +2108,9 @@ class Horarios(tk.Toplevel):
         # Decimo linea Jueves
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             4,10,4,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             4,10,4,12,
             10,self.diurno
         )
@@ -2118,9 +2118,9 @@ class Horarios(tk.Toplevel):
         # Decimo linea Viernes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 11 AND materias_asignadas.Estado = "Activo"',
             5,10,5,11,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 10 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             5,10,5,12,
             10,self.diurno
         )
@@ -2130,7 +2130,7 @@ class Horarios(tk.Toplevel):
         # Decima primera lunes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             1,11,1,12,
             11,self.diurno
         )
@@ -2138,7 +2138,7 @@ class Horarios(tk.Toplevel):
         # Decima primera Martes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             2,11,2,12,
             11,self.diurno
         )
@@ -2146,7 +2146,7 @@ class Horarios(tk.Toplevel):
         # Decima primera Miercoles
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             3,11,3,12,
             11,self.diurno
         )
@@ -2154,7 +2154,7 @@ class Horarios(tk.Toplevel):
         # Decima primera Jueves
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             4,11,4,12,
             11,self.diurno
         )
@@ -2162,7 +2162,7 @@ class Horarios(tk.Toplevel):
         # Decima primera Viernes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 11 AND materias_asignadas.Id_hora_final = 12 AND materias_asignadas.Estado = "Activo"',
             5,11,5,12,
             11,self.diurno
         )
@@ -2185,15 +2185,15 @@ class Horarios(tk.Toplevel):
         # Primera linea lunes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
             1,1,1,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             1,1,1,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             1,1,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             1,1,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             1,1,1,6,
             1,self.nocturno
         )
@@ -2201,15 +2201,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Martes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
             2,1,2,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             2,1,2,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             2,1,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             2,1,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             2,1,2,6,
             1,self.nocturno
         )
@@ -2217,15 +2217,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Miercoles
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
             3,1,3,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             3,1,3,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             3,1,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             3,1,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             3,1,3,6,
             1,self.nocturno
         )
@@ -2233,15 +2233,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Jueves
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
             4,1,4,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             4,1,4,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             4,1,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             4,1,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             4,1,4,6,
             1,self.nocturno
         )
@@ -2249,15 +2249,15 @@ class Horarios(tk.Toplevel):
         # Primera linea lunes
         self.celda1x6(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 14 AND materias_asignadas.Estado = "Activo"',
             5,1,5,2,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             5,1,5,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             5,1,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             5,1,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 13 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             5,1,5,6,
             1,self.nocturno
         )
@@ -2267,13 +2267,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea lunes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             1,2,1,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             1,2,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             1,2,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             1,2,1,6,
             2,self.nocturno
         )
@@ -2281,13 +2281,13 @@ class Horarios(tk.Toplevel):
          # Segunda linea Martes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             2,2,2,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             2,2,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             2,2,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             2,2,2,6,
             2,self.nocturno
         )
@@ -2295,13 +2295,13 @@ class Horarios(tk.Toplevel):
          # Segunda linea Miercoles
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             3,2,3,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             3,2,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             3,2,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             3,2,3,6,
             2,self.nocturno
         )
@@ -2309,13 +2309,13 @@ class Horarios(tk.Toplevel):
          # Segunda linea Jueves
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             4,2,4,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             4,2,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             4,2,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             4,2,4,6,
             2,self.nocturno
         )
@@ -2323,13 +2323,13 @@ class Horarios(tk.Toplevel):
          # Segunda linea Viernes
         self.celda1x5(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 15 AND materias_asignadas.Estado = "Activo"',
             5,2,5,3,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             5,2,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             5,2,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 14 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             5,2,5,6,
             2,self.nocturno
         )
@@ -2339,11 +2339,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea lunes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             1,3,1,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             1,3,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             1,3,1,6,
             3,self.nocturno
         )
@@ -2351,11 +2351,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Martes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             2,3,2,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             2,3,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             2,3,2,6,
             3,self.nocturno
         )
@@ -2363,11 +2363,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Miercoles
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             3,3,3,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             3,3,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             3,3,3,6,
             3,self.nocturno
         )
@@ -2375,11 +2375,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea jueves
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             4,3,4,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             4,3,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             4,3,4,6,
             3,self.nocturno
         )
@@ -2387,11 +2387,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Viernes
         self.celda1x4(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 16 AND materias_asignadas.Estado = "Activo"',
             5,3,5,4,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             5,3,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 15 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             5,3,5,6,
             3,self.nocturno
         )
@@ -2401,9 +2401,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea lunes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             1,4,1,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             1,4,1,6,
             4,self.nocturno
         )
@@ -2411,9 +2411,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Martes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             2,4,2,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             2,4,2,6,
             4,self.nocturno
         )
@@ -2421,9 +2421,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Miercoles
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             3,4,3,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             3,4,3,6,
             4,self.nocturno
         )
@@ -2431,9 +2431,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Jueves
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             4,4,4,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             4,4,4,6,
             4,self.nocturno
         )
@@ -2441,9 +2441,9 @@ class Horarios(tk.Toplevel):
         # Cuarta linea Viernes
         self.celda1x3(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 17 AND materias_asignadas.Estado = "Activo"',
             5,4,5,5,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 16 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             5,4,5,6,
             4,self.nocturno
         )
@@ -2453,7 +2453,7 @@ class Horarios(tk.Toplevel):
         # Quinta primera lunes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 1 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             1,5,1,6,
             5,self.nocturno
         )
@@ -2461,7 +2461,7 @@ class Horarios(tk.Toplevel):
         # Quinta primera Martes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 2 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             2,5,2,6,
             5,self.nocturno
         )
@@ -2469,7 +2469,7 @@ class Horarios(tk.Toplevel):
         # Quinta primera Miercoles
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 3 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             3,5,3,6,
             5,self.nocturno
         )
@@ -2477,7 +2477,7 @@ class Horarios(tk.Toplevel):
         # Quinta primera Jueves
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 4 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             4,5,4,6,
             5,self.nocturno
         )
@@ -2485,7 +2485,7 @@ class Horarios(tk.Toplevel):
         # Quinta primera Viernes
         self.celda1x2(
             self.parametros,
-            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18',
+            'SELECT unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto  = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_semana = 5 AND materias_asignadas.Id_hora_inicial = 17 AND materias_asignadas.Id_hora_final = 18 AND materias_asignadas.Estado = "Activo"',
             5,5,5,6,
             5,self.nocturno
         )
@@ -2497,7 +2497,7 @@ class Horarios(tk.Toplevel):
             [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
         ]
         self.tabla = self.conexion(
-            'SELECT DISTINCT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
+            'SELECT DISTINCT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Estado = "Activo"',
             self.parametros).fetchall()
         for row in self.tabla:
             self.tablaInformacion.append(row)
@@ -2512,7 +2512,7 @@ class Horarios(tk.Toplevel):
             [Paragraph('UNIDAD CURRICULAR',self.center),Paragraph('NOMBRE DEL DOCENTE',self.center),Paragraph('TELEFONO DE CONTACTO',self.center)]
         ]
         self.tabla = self.conexion(
-            'SELECT DISTINCT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ?',
+            'SELECT DISTINCT unidad_curricular.UnidadCurricular, docente.NombreApellido, docente.Telefono FROM materias_asignadas  INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular INNER JOIN docente ON docente.Id = materias_asignadas.Id_docente  WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Estado = "Activo"',
             self.parametros).fetchall()
         for row in self.tabla:
             self.tablaInformacion.append(row)
@@ -2544,15 +2544,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2 AND materias_docentes.Estado = "Activo"',
             1,1,1,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             1,1,1,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             1,1,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             1,1,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             1,1,1,6,
             1,self.diurnoDocente            
         )
@@ -2560,15 +2560,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Martes
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2 AND materias_docentes.Estado = "Activo"',
             2,1,2,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             2,1,2,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             2,1,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             2,1,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             2,1,2,6,
             1,self.diurnoDocente            
         )
@@ -2576,15 +2576,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Miercoles
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2 AND materias_docentes.Estado = "Activo"',
             3,1,3,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             3,1,3,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             3,1,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             3,1,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             3,1,3,6,
             1,self.diurnoDocente            
         )
@@ -2592,15 +2592,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Jueves
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2 AND materias_docentes.Estado = "Activo"',
             4,1,4,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             4,1,4,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             4,1,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             4,1,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             4,1,4,6,
             1,self.diurnoDocente            
         )
@@ -2608,15 +2608,15 @@ class Horarios(tk.Toplevel):
         # Primera linea Viernes
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 2 AND materias_docentes.Estado = "Activo"',
             5,1,5,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             5,1,5,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             5,1,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             5,1,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 1 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             5,1,5,6,
             1,self.diurnoDocente            
         )
@@ -2626,13 +2626,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea lunes
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             1,2,1,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             1,2,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             1,2,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             1,2,1,6,
             2,self.diurnoDocente        
         )
@@ -2640,13 +2640,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Martes
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             2,2,2,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             2,2,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             2,2,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             2,2,2,6,
             2,self.diurnoDocente        
         )
@@ -2654,13 +2654,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Miercoles
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             3,2,3,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             3,2,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             3,2,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             3,2,3,6,
             2,self.diurnoDocente        
         )
@@ -2668,13 +2668,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Jueves
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             4,2,4,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             4,2,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             4,2,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             4,2,4,6,
             2,self.diurnoDocente        
         )
@@ -2682,13 +2682,13 @@ class Horarios(tk.Toplevel):
         # Segunda linea Viernes
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 3 AND materias_docentes.Estado = "Activo"',
             5,2,5,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             5,2,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             5,2,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 2 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             5,2,5,6,
             2,self.diurnoDocente        
         )
@@ -2698,11 +2698,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea lunes
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             1,3,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             1,3,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             1,3,1,6,
             3,self.diurnoDocente        
         )
@@ -2710,11 +2710,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Martes
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             2,3,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             2,3,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             2,3,2,6,
             3,self.diurnoDocente        
         )
@@ -2722,11 +2722,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Miercoles
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             3,3,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             3,3,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             3,3,3,6,
             3,self.diurnoDocente        
         )
@@ -2734,11 +2734,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Jueves
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             4,3,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             4,3,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             4,3,4,6,
             3,self.diurnoDocente        
         )
@@ -2746,11 +2746,11 @@ class Horarios(tk.Toplevel):
         # Tercera linea Viernes
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 4 AND materias_docentes.Estado = "Activo"',
             5,3,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             5,3,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 3 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             5,3,5,6,
             3,self.diurnoDocente        
         )
@@ -2760,9 +2760,9 @@ class Horarios(tk.Toplevel):
         #  Cuarta linea lunes
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             1,4,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             1,4,1,6,
             4,self.diurnoDocente        
         )
@@ -2770,9 +2770,9 @@ class Horarios(tk.Toplevel):
         #  Cuarta linea Martes
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             2,4,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             2,4,2,6,
             4,self.diurnoDocente        
         )
@@ -2780,9 +2780,9 @@ class Horarios(tk.Toplevel):
         #  Cuarta linea Miercoles
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             3,4,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             3,4,3,6,
             4,self.diurnoDocente        
         )
@@ -2790,9 +2790,9 @@ class Horarios(tk.Toplevel):
         #  Cuarta linea Jueves
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             4,4,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             4,4,4,6,
             4,self.diurnoDocente        
         )
@@ -2800,9 +2800,9 @@ class Horarios(tk.Toplevel):
         #  Cuarta linea Viernes
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 5 AND materias_docentes.Estado = "Activo"',
             5,4,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 4 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             5,4,5,6,
             4,self.diurnoDocente        
         )
@@ -2812,7 +2812,7 @@ class Horarios(tk.Toplevel):
         #  Quinta linea lunes
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             1,5,1,6,
             5,self.diurnoDocente        
         )
@@ -2820,7 +2820,7 @@ class Horarios(tk.Toplevel):
         #  Quinta linea Martes
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             2,5,2,6,
             5,self.diurnoDocente        
         )
@@ -2828,7 +2828,7 @@ class Horarios(tk.Toplevel):
         #  Quinta linea Miercoles
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             3,5,3,6,
             5,self.diurnoDocente        
         )
@@ -2836,7 +2836,7 @@ class Horarios(tk.Toplevel):
         #  Quinta linea Jueves
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             4,5,4,6,
             5,self.diurnoDocente        
         )
@@ -2844,7 +2844,7 @@ class Horarios(tk.Toplevel):
         #  Quinta linea Viernes
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 5 AND materias_docentes.Id_hora_final = 6 AND materias_docentes.Estado = "Activo"',
             5,5,5,6,
             5,self.diurnoDocente        
         )
@@ -2854,15 +2854,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8 AND materias_docentes.Estado = "Activo"',
             1,7,1,8,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             1,7,1,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             1,7,1,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             1,7,1,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             1,7,1,12,
             7,self.diurnoDocente            
         )
@@ -2871,15 +2871,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8 AND materias_docentes.Estado = "Activo"',
             2,7,2,8,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             2,7,2,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             2,7,2,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             2,7,2,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             2,7,2,12,
             7,self.diurnoDocente            
         )
@@ -2888,15 +2888,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8 AND materias_docentes.Estado = "Activo"',
             3,7,3,8,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             3,7,3,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             3,7,3,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             3,7,3,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             3,7,3,12,
             7,self.diurnoDocente            
         )
@@ -2905,15 +2905,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8 AND materias_docentes.Estado = "Activo"',
             4,7,4,8,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             4,7,4,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             4,7,4,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             4,7,4,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             4,7,4,12,
             7,self.diurnoDocente            
         )
@@ -2921,15 +2921,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 8 AND materias_docentes.Estado = "Activo"',
             5,7,5,8,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             5,7,5,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             5,7,5,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             5,7,5,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 7 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             5,7,5,12,
             7,self.diurnoDocente            
         )
@@ -2939,13 +2939,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             1,8,1,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             1,8,1,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             1,8,1,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             1,8,1,12,
             8,self.diurnoDocente            
         )
@@ -2954,13 +2954,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             2,8,2,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             2,8,2,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             2,8,2,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             2,8,2,12,
             8,self.diurnoDocente            
         )
@@ -2969,13 +2969,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             3,8,3,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             3,8,3,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             3,8,3,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             3,8,3,12,
             8,self.diurnoDocente            
         )
@@ -2984,13 +2984,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             4,8,4,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             4,8,4,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             4,8,4,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             4,8,4,12,
             8,self.diurnoDocente            
         )
@@ -2999,13 +2999,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 9 AND materias_docentes.Estado = "Activo"',
             5,8,5,9,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             5,8,5,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             5,8,5,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 8 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             5,8,5,12,
             8,self.diurnoDocente            
         )
@@ -3015,11 +3015,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             1,9,1,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             1,9,1,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             1,9,1,12,
             9,self.diurnoDocente            
         )
@@ -3028,11 +3028,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             2,9,2,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             2,9,2,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             2,9,2,12,
             9,self.diurnoDocente            
         )
@@ -3041,11 +3041,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             3,9,3,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             3,9,3,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             3,9,3,12,
             9,self.diurnoDocente            
         )
@@ -3054,11 +3054,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             4,9,4,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             4,9,4,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             4,9,4,12,
             9,self.diurnoDocente            
         )
@@ -3067,11 +3067,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 10 AND materias_docentes.Estado = "Activo"',
             5,9,5,10,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             5,9,5,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 9 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             5,9,5,12,
             9,self.diurnoDocente            
         )
@@ -3082,9 +3082,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             1,10,1,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             1,10,1,12,
             10,self.diurnoDocente            
         )
@@ -3093,9 +3093,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             2,10,2,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             2,10,2,12,
             10,self.diurnoDocente            
         )
@@ -3104,9 +3104,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             3,10,3,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             3,10,3,12,
             10,self.diurnoDocente            
         )
@@ -3115,9 +3115,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             4,10,4,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             4,10,4,12,
             10,self.diurnoDocente            
         )
@@ -3126,9 +3126,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 11 AND materias_docentes.Estado = "Activo"',
             5,10,5,11,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 10 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             5,10,5,12,
             10,self.diurnoDocente            
         )
@@ -3138,7 +3138,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             1,11,1,12,
             11,self.diurnoDocente            
         )
@@ -3147,7 +3147,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             2,11,2,12,
             11,self.diurnoDocente            
         )
@@ -3156,7 +3156,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             3,11,3,12,
             11,self.diurnoDocente            
         )
@@ -3165,7 +3165,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             4,11,4,12,
             11,self.diurnoDocente            
         )
@@ -3174,7 +3174,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 11 AND materias_docentes.Id_hora_final = 12 AND materias_docentes.Estado = "Activo"',
             5,11,5,12,
             11,self.diurnoDocente            
         )
@@ -3198,15 +3198,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14 AND materias_docentes.Estado = "Activo"',
             1,1,1,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             1,1,1,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             1,1,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             1,1,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             1,1,1,6,
             1,self.nocturnoDocente          
         )
@@ -3215,15 +3215,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14 AND materias_docentes.Estado = "Activo"',
             2,1,2,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             2,1,2,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             2,1,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             2,1,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             2,1,2,6,
             1,self.nocturnoDocente          
         )
@@ -3232,15 +3232,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14 AND materias_docentes.Estado = "Activo"',
             3,1,3,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             3,1,3,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             3,1,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             3,1,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             3,1,3,6,
             1,self.nocturnoDocente          
         )
@@ -3249,15 +3249,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14 AND materias_docentes.Estado = "Activo"',
             4,1,4,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             4,1,4,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             4,1,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             4,1,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             4,1,4,6,
             1,self.nocturnoDocente          
         )
@@ -3266,15 +3266,15 @@ class Horarios(tk.Toplevel):
         
         self.celda1x6(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 14 AND materias_docentes.Estado = "Activo"',
             5,1,5,2,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             5,1,5,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             5,1,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             5,1,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 13 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             5,1,5,6,
             1,self.nocturnoDocente          
         )
@@ -3284,13 +3284,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             1,2,1,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             1,2,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             1,2,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             1,2,1,6,
             2,self.nocturnoDocente          
         )
@@ -3299,13 +3299,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             2,2,2,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             2,2,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             2,2,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             2,2,2,6,
             2,self.nocturnoDocente          
         )
@@ -3314,13 +3314,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             3,2,3,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             3,2,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             3,2,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             3,2,3,6,
             2,self.nocturnoDocente          
         )
@@ -3329,13 +3329,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             4,2,4,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             4,2,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             4,2,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             4,2,4,6,
             2,self.nocturnoDocente          
         )
@@ -3344,13 +3344,13 @@ class Horarios(tk.Toplevel):
         
         self.celda1x5(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 15 AND materias_docentes.Estado = "Activo"',
             5,2,5,3,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             5,2,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             5,2,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 14 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             5,2,5,6,
             2,self.nocturnoDocente          
         )
@@ -3360,11 +3360,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             1,3,1,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             1,3,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             1,3,1,6,
             3,self.nocturnoDocente          
         )
@@ -3373,11 +3373,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             2,3,2,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             2,3,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             2,3,2,6,
             3,self.nocturnoDocente          
         )
@@ -3386,11 +3386,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             3,3,3,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             3,3,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             3,3,3,6,
             3,self.nocturnoDocente          
         )
@@ -3399,11 +3399,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             4,3,4,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             4,3,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             4,3,4,6,
             3,self.nocturnoDocente          
         )
@@ -3412,11 +3412,11 @@ class Horarios(tk.Toplevel):
         
         self.celda1x4(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 16 AND materias_docentes.Estado = "Activo"',
             5,3,5,4,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             5,3,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 15 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             5,3,5,6,
             3,self.nocturnoDocente          
         )
@@ -3426,9 +3426,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             1,4,1,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             1,4,1,6,
             4,self.nocturnoDocente          
         )
@@ -3437,9 +3437,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             2,4,2,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             2,4,2,6,
             4,self.nocturnoDocente          
         )
@@ -3448,9 +3448,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             3,4,3,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             3,4,3,6,
             4,self.nocturnoDocente          
         )
@@ -3459,9 +3459,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             4,4,4,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             4,4,4,6,
             4,self.nocturnoDocente          
         )
@@ -3470,9 +3470,9 @@ class Horarios(tk.Toplevel):
         
         self.celda1x3(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 17 AND materias_docentes.Estado = "Activo"',
             5,4,5,5,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 16 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             5,4,5,6,
             4,self.nocturnoDocente          
         )
@@ -3482,7 +3482,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 1 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             1,5,1,6,
             5,self.nocturnoDocente          
         )
@@ -3491,7 +3491,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 2 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             2,5,2,6,
             5,self.nocturnoDocente          
         )
@@ -3500,7 +3500,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 3 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             3,5,3,6,
             5,self.nocturnoDocente          
         )
@@ -3509,7 +3509,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 4 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             4,5,4,6,
             5,self.nocturnoDocente          
         )
@@ -3518,7 +3518,7 @@ class Horarios(tk.Toplevel):
         
         self.celda1x2(
             self.parametrosDocentes,
-            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18',
+            'SELECT materias_docentes.materia FROM materias_docentes WHERE materias_docentes.Id_docente = ? AND materias_docentes.Id_lapso_academico = ? AND materias_docentes.Id_modalidad = ? AND materias_docentes.Id_semana = 5 AND materias_docentes.Id_hora_inicial = 17 AND materias_docentes.Id_hora_final = 18 AND materias_docentes.Estado = "Activo"',
             5,5,5,6,
             5,self.nocturnoDocente          
         )
@@ -3547,15 +3547,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,6,
             1,self.diurnoLaboratorio
         )
@@ -3564,15 +3564,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,6,
             1,self.diurnoLaboratorio
         )
@@ -3581,15 +3581,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,6,
             1,self.diurnoLaboratorio
         )
@@ -3598,15 +3598,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4 AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4 AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,6,
             1,self.diurnoLaboratorio
         )
@@ -3615,15 +3615,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 2 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 1 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,6,
             1,self.diurnoLaboratorio
         )
@@ -3633,13 +3633,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,6,
             2,self.diurnoLaboratorio
         )
@@ -3648,13 +3648,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,6,
             2,self.diurnoLaboratorio
         )
@@ -3663,13 +3663,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,6,
             2,self.diurnoLaboratorio
         )
@@ -3678,13 +3678,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,6,
             2,self.diurnoLaboratorio
         )
@@ -3693,13 +3693,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 3 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 2 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,6,
             2,self.diurnoLaboratorio
         )
@@ -3709,11 +3709,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,6,
             3,self.diurnoLaboratorio
         )
@@ -3722,11 +3722,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,6,
             3,self.diurnoLaboratorio
         )
@@ -3735,11 +3735,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,6,
             3,self.diurnoLaboratorio
         )
@@ -3748,11 +3748,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,6,
             3,self.diurnoLaboratorio
         )
@@ -3761,11 +3761,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 4 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 3 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,6,
             3,self.diurnoLaboratorio
         )
@@ -3775,9 +3775,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             1,4,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             1,4,1,6,
             4,self.diurnoLaboratorio
         )
@@ -3786,9 +3786,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             2,4,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             2,4,2,6,
             4,self.diurnoLaboratorio
         )
@@ -3797,9 +3797,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             3,4,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             3,4,3,6,
             4,self.diurnoLaboratorio
         )
@@ -3808,9 +3808,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             4,4,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             4,4,4,6,
             4,self.diurnoLaboratorio
         )
@@ -3819,9 +3819,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 5 AND materias_laboratorios.Estado = "Activo"',
             5,4,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 4 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             5,4,5,6,
             4,self.diurnoLaboratorio
         )
@@ -3831,7 +3831,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             1,5,1,6,
             5,self.diurnoLaboratorio
         )
@@ -3840,7 +3840,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             2,5,2,6,
             5,self.diurnoLaboratorio
         )
@@ -3849,7 +3849,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             3,5,3,6,
             5,self.diurnoLaboratorio
         )
@@ -3858,7 +3858,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             4,5,4,6,
             5,self.diurnoLaboratorio
         )
@@ -3867,7 +3867,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 5 AND materias_laboratorios.Id_hora_final = 6 AND materias_laboratorios.Estado = "Activo"',
             5,5,5,6,
             5,self.diurnoLaboratorio
         )
@@ -3877,15 +3877,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8 AND materias_laboratorios.Estado = "Activo"',
             1,7,1,8,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             1,7,1,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             1,7,1,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             1,7,1,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             1,7,1,12,
             7,self.diurnoLaboratorio
         )
@@ -3894,15 +3894,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8 AND materias_laboratorios.Estado = "Activo"',
             2,7,2,8,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             2,7,2,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             2,7,2,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             2,7,2,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             2,7,2,12,
             7,self.diurnoLaboratorio
         )
@@ -3911,15 +3911,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8 AND materias_laboratorios.Estado = "Activo"',
             3,7,3,8,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             3,7,3,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             3,7,3,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             3,7,3,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             3,7,3,12,
             7,self.diurnoLaboratorio
         )
@@ -3928,15 +3928,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8 AND materias_laboratorios.Estado = "Activo"',
             4,7,4,8,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             4,7,4,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             4,7,4,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             4,7,4,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             4,7,4,12,
             7,self.diurnoLaboratorio
         )
@@ -3945,15 +3945,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 8 AND materias_laboratorios.Estado = "Activo"',
             5,7,5,8,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             5,7,5,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             5,7,5,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             5,7,5,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 7 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             5,7,5,12,
             7,self.diurnoLaboratorio
         )
@@ -3963,13 +3963,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             1,8,1,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             1,8,1,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             1,8,1,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             1,8,1,12,
             8,self.diurnoLaboratorio
         )
@@ -3978,13 +3978,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             2,8,2,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             2,8,2,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             2,8,2,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             2,8,2,12,
             8,self.diurnoLaboratorio
         )
@@ -3993,13 +3993,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             3,8,3,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             3,8,3,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             3,8,3,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             3,8,3,12,
             8,self.diurnoLaboratorio
         )
@@ -4008,13 +4008,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             4,8,4,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             4,8,4,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             4,8,4,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             4,8,4,12,
             8,self.diurnoLaboratorio
         )
@@ -4023,13 +4023,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 9 AND materias_laboratorios.Estado = "Activo"',
             5,8,5,9,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             5,8,5,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             5,8,5,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 8 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             5,8,5,12,
             8,self.diurnoLaboratorio
         )
@@ -4039,11 +4039,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             1,9,1,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             1,9,1,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             1,9,1,12,
             9,self.diurnoLaboratorio
         )
@@ -4052,11 +4052,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             2,9,2,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             2,9,2,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             2,9,2,12,
             9,self.diurnoLaboratorio
         )
@@ -4065,11 +4065,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             3,9,3,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             3,9,3,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             3,9,3,12,
             9,self.diurnoLaboratorio
         )
@@ -4078,11 +4078,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             4,9,4,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             4,9,4,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             4,9,4,12,
             9,self.diurnoLaboratorio
         )
@@ -4091,11 +4091,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 10 AND materias_laboratorios.Estado = "Activo"',
             5,9,5,10,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             5,9,5,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 9 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             5,9,5,12,
             9,self.diurnoLaboratorio
         )
@@ -4105,9 +4105,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             1,10,1,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             1,10,1,12,
             10,self.diurnoLaboratorio
         )
@@ -4116,9 +4116,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             2,10,2,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             2,10,2,12,
             10,self.diurnoLaboratorio
         )
@@ -4127,9 +4127,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             3,10,3,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             3,10,3,12,
             10,self.diurnoLaboratorio
         )
@@ -4138,9 +4138,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             4,10,4,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             4,10,4,12,
             10,self.diurnoLaboratorio
         )
@@ -4149,9 +4149,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 11 AND materias_laboratorios.Estado = "Activo"',
             5,10,5,11,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 10 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             5,10,5,12,
             10,self.diurnoLaboratorio
         )
@@ -4161,7 +4161,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             1,11,1,12,
             11,self.diurnoLaboratorio
         )
@@ -4170,7 +4170,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             2,11,2,12,
             11,self.diurnoLaboratorio
         )
@@ -4179,7 +4179,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             3,11,3,12,
             11,self.diurnoLaboratorio
         )
@@ -4188,7 +4188,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             4,11,4,12,
             11,self.diurnoLaboratorio
         )
@@ -4197,7 +4197,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 11 AND materias_laboratorios.Id_hora_final = 12 AND materias_laboratorios.Estado = "Activo"',
             5,11,5,12,
             11,self.diurnoLaboratorio
         )
@@ -4222,15 +4222,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             1,1,1,6,
             1,self.nocturnoLabolatorio
         )
@@ -4239,15 +4239,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             2,1,2,6,
             1,self.nocturnoLabolatorio
         )
@@ -4256,15 +4256,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             3,1,3,6,
             1,self.nocturnoLabolatorio
         )
@@ -4273,15 +4273,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             4,1,4,6,
             1,self.nocturnoLabolatorio
         )
@@ -4290,15 +4290,15 @@ class Horarios(tk.Toplevel):
 
         self.celda1x6(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 14 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,2,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 13 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             5,1,5,6,
             1,self.nocturnoLabolatorio
         )
@@ -4308,13 +4308,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             1,2,1,6,
             2,self.nocturnoLabolatorio
         )
@@ -4323,13 +4323,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             2,2,2,6,
             2,self.nocturnoLabolatorio
         )
@@ -4338,13 +4338,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             3,2,3,6,
             2,self.nocturnoLabolatorio
         )
@@ -4353,13 +4353,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             4,2,4,6,
             2,self.nocturnoLabolatorio
         )
@@ -4368,13 +4368,13 @@ class Horarios(tk.Toplevel):
 
         self.celda1x5(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 15 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,3,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 14 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             5,2,5,6,
             2,self.nocturnoLabolatorio
         )
@@ -4384,11 +4384,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             1,3,1,6,
             3,self.nocturnoLabolatorio
         )
@@ -4397,11 +4397,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             2,3,2,6,
             3,self.nocturnoLabolatorio
         )
@@ -4410,11 +4410,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             3,3,3,6,
             3,self.nocturnoLabolatorio
         )
@@ -4423,11 +4423,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             4,3,4,6,
             3,self.nocturnoLabolatorio
         )
@@ -4436,11 +4436,11 @@ class Horarios(tk.Toplevel):
 
         self.celda1x4(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 16 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,4,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 15 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             5,3,5,6,
             3,self.nocturnoLabolatorio
         )
@@ -4450,9 +4450,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             1,4,1,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             1,4,1,6,
             4,self.nocturnoLabolatorio
         )
@@ -4461,9 +4461,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             2,4,2,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             2,4,2,6,
             4,self.nocturnoLabolatorio
         )
@@ -4472,9 +4472,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             3,4,3,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             3,4,3,6,
             4,self.nocturnoLabolatorio
         )
@@ -4483,9 +4483,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             4,4,4,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             4,4,4,6,
             4,self.nocturnoLabolatorio
         )
@@ -4494,9 +4494,9 @@ class Horarios(tk.Toplevel):
 
         self.celda1x3(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 17 AND materias_laboratorios.Estado = "Activo"',
             5,4,5,5,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 16 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             5,4,5,6,
             4,self.nocturnoLabolatorio
         )
@@ -4506,7 +4506,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 1  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             1,5,1,6,
             5,self.nocturnoLabolatorio
         )
@@ -4515,7 +4515,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 2  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             2,5,2,6,
             5,self.nocturnoLabolatorio
         )
@@ -4524,7 +4524,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 3  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             3,5,3,6,
             5,self.nocturnoLabolatorio
         )
@@ -4533,7 +4533,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 4  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             4,5,4,6,
             5,self.nocturnoLabolatorio
         )
@@ -4542,7 +4542,7 @@ class Horarios(tk.Toplevel):
 
         self.celda1x2(
             self.parametrosLaboratorios,
-            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18',
+            'SELECT materias_laboratorios.materia FROM materias_laboratorios WHERE materias_laboratorios.Id_laboratorio = ? AND materias_laboratorios.Id_lapso_academico = ? AND materias_laboratorios.Id_modalidad = ? AND materias_laboratorios.Id_semana = 5  AND materias_laboratorios.Id_hora_inicial = 17 AND materias_laboratorios.Id_hora_final = 18 AND materias_laboratorios.Estado = "Activo"',
             5,5,5,6,
             5,self.nocturnoLabolatorio
         )
