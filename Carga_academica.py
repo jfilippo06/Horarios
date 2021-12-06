@@ -623,7 +623,7 @@ class CargaAcademica(tk.Toplevel):
 			self.scrollbarGestionar.grid(column=1,row=0, sticky='ns')
 
 			ttk.Button(self.frameGestionar, text='EDITAR MATERIA', command=self.editarMateria).grid(row=1,column=0,sticky = tk.W + tk.E)
-			ttk.Button(self.frameGestionar, text='DESHAILITAR MATERIA', command=self.eliminarMateria).grid(row=2,column=0,sticky = tk.W + tk.E)
+			ttk.Button(self.frameGestionar, text='DESHABILITAR MATERIA', command=self.eliminarMateria).grid(row=2,column=0,sticky = tk.W + tk.E)
 			
 			self.MostrarDatosGestionar()
 			self.MostrarLapsoAcademico()
