@@ -19,5 +19,7 @@ class Usuarios(tk.Toplevel):
         self.menubar.add_cascade(label="Volver", command=self.volver)
         self.config(menu=self.menubar)
         
+        ttk.Label(self, text='GESTIÓN DE USUARIOS',font=('Helvetica',14)).place(x='125',y='10')
+
     def volver(self):
         self.destroy()
