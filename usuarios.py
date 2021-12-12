@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
-from tkinter.constants import X
 from rutas import *
 import traceback
 import sys
+import hashlib
 
 class Usuarios(tk.Toplevel):
     def __init__(self,master = None):
@@ -32,9 +32,9 @@ class Usuarios(tk.Toplevel):
         self.treeUsuarios.configure(yscroll=self.scrollbarUsuarios.set)
         self.scrollbarUsuarios.grid(column=1,row=0, sticky='ns')
 
-        ttk.Button(self, text='CREAR USUARIO', command='', width=65).place(x=10,y=280)
-        ttk.Button(self, text='EDITAR USUARIO', command='', width=65).place(x=10,y=305)
-        ttk.Button(self, text='DESHABILITAR USUARIO', command='', width=65).place(x=10,y=330)
+        ttk.Button(self, text='CREAR USUARIO', command=self.crear, width=65).place(x=10,y=280)
+        ttk.Button(self, text='EDITAR USUARIO', command=self.editar, width=65).place(x=10,y=305)
+        ttk.Button(self, text='DESHABILITAR USUARIO', command=self.deshabilitar, width=65).place(x=10,y=330)
 
         self.mostrarDatosUsuarios()
 
@@ -75,3 +75,27 @@ class Usuarios(tk.Toplevel):
         self.rows = self.TraerDatos("SELECT Id, Usuario FROM usuario_admin WHERE usuario_admin.Estado = 'Activo'")
         for row in self.rows:
             self.treeUsuarios.insert('',tk.END,values=row)
+
+    def crear(self):
+        new = tk.Toplevel()
+        new.title('Crear usuarios')
+        new.geometry('360x100')
+        new.resizable(width=0,height=0)
+        new.iconbitmap(uptpc)
+
+        ttk.Label(new, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
+        self.newUser = ttk.Entry(new,width=40)
+        self.newUser.grid(row=0,column=1,padx=5,pady=5)
+        self.newUser.focus()
+        ttk.Label(new, text='Contraseña:').grid(row=1,column=0,padx=5,pady=5)
+        self.newPassword = ttk.Entry(new,width=40)
+        self.newPassword.grid(row=1,column=1,padx=5,pady=5)
+        ttk.Button(new,text='CREAR USUARIO', command='',width=40).place(x=80, y=60)
+
+        new.mainloop()
+
+    def editar(self):
+        pass
+    
+    def deshabilitar(self):
+        pass
