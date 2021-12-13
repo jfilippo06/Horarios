@@ -11,6 +11,7 @@ from rutas import *
 import sqlite3
 import traceback
 import sys
+import hashlib
 
 class App(tk.Tk):
     def __init__(self):
@@ -79,7 +80,8 @@ class App(tk.Tk):
    
     def change(self):
         if self.validarCeldas():
-            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
+            blake2b = hashlib.blake2b(self.userPassword.get().encode()).hexdigest()
+            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),blake2b)).fetchall()
             if validar:
                 self.userName.delete(0, tk.END)
                 self.userPassword.delete(0, tk.END)
