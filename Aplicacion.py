@@ -6,10 +6,12 @@ from gestor_bd import Gestor
 from gestionar_horarios import Horarios
 from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
+from usuarios import Usuarios
 from rutas import *
 import sqlite3
 import traceback
 import sys
+import hashlib
 
 class App(tk.Tk):
     def __init__(self):
@@ -41,12 +43,13 @@ class App(tk.Tk):
         self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)
         self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
         self.menubar.add_cascade(label="Adminitración del Sistema", menu=self.filemenu1)
+        self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu2.add_command(label="Usuarios", command=self.usuarios)
+        self.menubar.add_cascade(label="Configuración", menu=self.filemenu2)
         self.menubar.add_cascade(label="Datos basicos", command=self.gestor)
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu3.add_command(label='Compartar BD')
-        self.filemenu3.add_command(label='Indexar BD')
-        self.filemenu3.add_command(label='Respaldar BD')
-        self.filemenu3.add_command(label='Restaurar BD')
+        self.filemenu3.add_command(label='Base de datos')
+        self.filemenu3.add_command(label='Registros')
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
@@ -74,7 +77,8 @@ class App(tk.Tk):
    
     def change(self):
         if self.validarCeldas():
-            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),self.userPassword.get())).fetchall()
+            blake2b = hashlib.blake2b(self.userPassword.get().encode()).hexdigest()
+            validar = self.conexion('SELECT * FROM usuario_admin WHERE Usuario = ? and Contraseña = ? and Estado = "Activo"', (self.userName.get(),blake2b)).fetchall()
             if validar:
                 self.userName.delete(0, tk.END)
                 self.userPassword.delete(0, tk.END)
@@ -136,5 +140,9 @@ class App(tk.Tk):
     def reporteCargaAcademica(self):
         self.lower()
         ReporteCargaAcademica(self)
+
+    def usuarios(self):
+        self.lower()
+        Usuarios(self)
                 
         
