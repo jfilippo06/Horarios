@@ -103,19 +103,19 @@ class Usuarios(tk.Toplevel):
         if self.treeUsuarios.selection():
             self.id = self.selecionarFila()
             new = tk.Toplevel()
-            new.title('Crear usuarios')
+            new.title('Editar usuario')
             new.geometry('480x80')
             new.resizable(width=0,height=0)
             new.iconbitmap(uptpc)
             ttk.Label(new, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
             self.newUserEditar = ttk.Entry(new,width=40)
             self.newUserEditar.grid(row=0,column=1,padx=5,pady=5)
-            ttk.Button(new,text='EDITAR USUARIO', command='',width=20).grid(row=0,column=2,padx=5,pady=5)
+            ttk.Button(new,text='EDITAR USUARIO', command=self.editarUsuario,width=20).grid(row=0,column=2,padx=5,pady=5)
             ttk.Label(new, text='Contraseña:').grid(row=1,column=0,padx=5,pady=5)
             self.newPasswordEditar = ttk.Entry(new,width=40)
             self.newPasswordEditar.grid(row=1,column=1,padx=5,pady=5)
             self.newPasswordEditar.config(show='*')
-            ttk.Button(new,text='EDITAR CONTRASEÑA', command=self.encriptarEditar,width=20).grid(row=1,column=2,padx=5,pady=5)
+            ttk.Button(new,text='EDITAR CONTRASEÑA', command=self.editarPass,width=20).grid(row=1,column=2,padx=5,pady=5)
             new.mainloop()
 
         else:
@@ -133,16 +133,15 @@ class Usuarios(tk.Toplevel):
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor')
 
-    #  def encriptarEditar(self):
-    #     if len(self.newPasswordEditar.get()):
-    #         blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
-    #         self.conexion('UPDATE usuario_admin SET Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (blake2b, self.id))
-    #         self.mostrarDatosUsuarios()
-    #         messagebox.showinfo(title='Info', message='Contraseña Editada')
-    #     else:
-    #         messagebox.showwarning(title='Warning', message='Introduzca un valor')
+    def editarUsuario(self):
+        if len(self.newUserEditar.get()):
+            self.conexion('UPDATE usuario_admin SET Usuario = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.newUserEditar.get(), self.id))
+            self.mostrarDatosUsuarios()
+            messagebox.showinfo(title='Info', message='Usuario Editado')
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor')
 
-    def encriptarEditar(self):
+    def editarPass(self):
         if len(self.newPasswordEditar.get()):
             blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
             self.conexion('UPDATE usuario_admin SET Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (blake2b, self.id))
