@@ -122,7 +122,16 @@ class Usuarios(tk.Toplevel):
             messagebox.showwarning(title='Warning', message='Seleccione un usuario')
 
     def deshabilitar(self):
-        pass
+        if self.treeUsuarios.selection():
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el usuario seleccionado?'):
+                self.id = self.selecionarFila()
+                self.conexion('UPDATE usuario_admin SET Estado = "Inactivo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.id,))
+                self.mostrarDatosUsuarios()
+                messagebox.showinfo(title='Info', message='Usuario deshabilitado')
+            else:
+                self.mostrarDatosUsuarios()
+        else:
+            messagebox.showwarning(title='Warning', message='Seleccione un usuario')
 
     def encriptar(self):
         if len(self.newUser.get()) != 0 and len(self.newPassword.get()):
