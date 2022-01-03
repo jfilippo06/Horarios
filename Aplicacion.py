@@ -49,7 +49,7 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Datos basicos", command=self.gestor)
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu3.add_command(label='Base de datos')
-        self.filemenu3.add_command(label='Registros')
+        self.filemenu3.add_command(label='Registros', command=self.registro)
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
@@ -144,5 +144,6 @@ class App(tk.Tk):
     def usuarios(self):
         self.lower()
         Usuarios(self)
-                
-        
+
+    def registro(self):
+        pass    
