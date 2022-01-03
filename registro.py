@@ -62,11 +62,10 @@ class Registro(tk.Toplevel):
         self.datos.add(self.noteSeccion, text='sección')
         self.datos.add(self.noteLaboratorio, text='Laboratorio')
 
-        # Pantalla Cohorte 0/3
+        # Pantalla Cohorte 0/1
         self.frameCohorte = ttk.LabelFrame(self.noteCohorte)
         self.frameCohorte.grid(column=0,row=0,pady=5, padx=5)
-
-        # Cohorte Tabla 2/3
+        # Cohorte Tabla 1/1
         self.treeCohorte = ttk.Treeview(self.frameCohorte,columns = ['#1','#2'], show='headings')
         self.treeCohorte.grid(column=0,row=0, sticky='nsew')
         self.treeCohorte.heading('#1', text = 'Id')
@@ -74,8 +73,20 @@ class Registro(tk.Toplevel):
         self.scrollbarCohorte = ttk.Scrollbar(self.frameCohorte, orient=tk.VERTICAL, command=self.treeCohorte.yview)
         self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
         self.scrollbarCohorte.grid(column=1,row=0, sticky='ns')
+        ttk.Button(self.noteCohorte,text='HABILITAR COHORTE',command='', width=68).grid(row=1,column=0)
 
-        
+        # Pantalla LapsoAcademico 0/1
+        self.frameLapsoAcademico = ttk.LabelFrame(self.noteLapsoAcademico)
+        self.frameLapsoAcademico.grid(column=0,row=0,pady=5, padx=5)
+        # Cohorte Tabla 1/1
+        self.treeLapsoAcademico = ttk.Treeview(self.frameLapsoAcademico,columns = ['#1','#2'], show='headings')
+        self.treeLapsoAcademico.grid(column=0,row=0, sticky='nsew')
+        self.treeLapsoAcademico.heading('#1', text = 'Id')
+        self.treeLapsoAcademico.heading('#2', text = 'Lapso Académico')
+        self.scrollbarLapsoAcademico = ttk.Scrollbar(self.frameLapsoAcademico, orient=tk.VERTICAL, command=self.treeCohorte.yview)
+        self.treeLapsoAcademico.configure(yscroll=self.scrollbarLapsoAcademico.set)
+        self.scrollbarLapsoAcademico.grid(column=1,row=0, sticky='ns')
+        ttk.Button(self.noteLapsoAcademico,text='HABILITAR LAPSO ACADÉMICO',command='', width=68).grid(row=1,column=0)
 
     def conexion(self,query,parametros = ()):
         try:
