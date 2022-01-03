@@ -7,6 +7,7 @@ from gestionar_horarios import Horarios
 from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
 from usuarios import Usuarios
+from registro import Registro
 from rutas import *
 import sqlite3
 import traceback
@@ -146,4 +147,5 @@ class App(tk.Tk):
         Usuarios(self)
 
     def registro(self):
-        pass    
+        self.lower()
+        Registro(self)   
