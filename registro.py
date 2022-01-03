@@ -22,20 +22,20 @@ class Registro(tk.Toplevel):
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(pady=0,padx=5,expand=True)
         # create frames
-        self.noteCohorte = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteLapsoAcademico = ttk.Frame(self.notebook,width=800, height=450)
-        self.noteTrayecto = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteTrimestre = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteDatos = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteCarga = ttk.Frame(self.notebook,width=800, height=450)
+        self.noteUnidades = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteUsuarios = ttk.Frame(self.notebook, width=800, height=450)
         # create frames
-        self.noteCohorte.pack(fill='both', expand=True)
-        self.noteLapsoAcademico.pack(fill='both', expand=True)
-        self.noteTrayecto.pack(fill='both', expand=True)
-        self.noteTrimestre.pack(fill='both', expand=True)
+        self.noteDatos.pack(fill='both', expand=True)
+        self.noteCarga.pack(fill='both', expand=True)
+        self.noteUnidades.pack(fill='both', expand=True)
+        self.noteUsuarios.pack(fill='both', expand=True)
         # add frames to notebook
-        self.notebook.add(self.noteCohorte, text='Datos basicos')
-        self.notebook.add(self.noteLapsoAcademico, text='Carga académica')
-        self.notebook.add(self.noteTrayecto, text='Unidades curriculares')
-        self.notebook.add(self.noteTrimestre, text='Usuarios')
+        self.notebook.add(self.noteDatos, text='Datos basicos')
+        self.notebook.add(self.noteCarga, text='Carga académica')
+        self.notebook.add(self.noteUnidades, text='Unidades curriculares')
+        self.notebook.add(self.noteUsuarios, text='Usuarios')
 
 
     def conexion(self,query,parametros = ()):
