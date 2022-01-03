@@ -37,6 +37,45 @@ class Registro(tk.Toplevel):
         self.notebook.add(self.noteUnidades, text='Unidades curriculares')
         self.notebook.add(self.noteUsuarios, text='Usuarios')
 
+        # Notebook datos basicos -----------------------------------------
+        self.datos = ttk.Notebook(self.noteDatos)
+        self.datos.pack(pady=0,padx=5,expand=True)
+        # create frames
+        self.noteCohorte = ttk.Frame(self.datos, width=800, height=450)
+        self.noteLapsoAcademico = ttk.Frame(self.notebook,width=800, height=450)
+        self.noteTrayecto = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteTrimestre = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteSeccion = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteLaboratorio = ttk.Frame(self.notebook, width=800, height=450)
+        # create frames
+        self.noteCohorte.pack(fill='both', expand=True)
+        self.noteLapsoAcademico.pack(fill='both', expand=True)
+        self.noteTrayecto.pack(fill='both', expand=True)
+        self.noteTrimestre.pack(fill='both', expand=True)
+        self.noteSeccion.pack(fill='both', expand=True)
+        self.noteLaboratorio.pack(fill='both', expand=True)
+        # add frames to notebook
+        self.datos.add(self.noteCohorte, text='Cohorte')
+        self.datos.add(self.noteLapsoAcademico, text='Lapso Académico')
+        self.datos.add(self.noteTrayecto, text='Trayecto')
+        self.datos.add(self.noteTrimestre, text='Trimestre')
+        self.datos.add(self.noteSeccion, text='sección')
+        self.datos.add(self.noteLaboratorio, text='Laboratorio')
+
+        # Pantalla Cohorte 0/3
+        self.frameCohorte = ttk.LabelFrame(self.noteCohorte)
+        self.frameCohorte.grid(column=0,row=0,pady=5, padx=5)
+
+        # Cohorte Tabla 2/3
+        self.treeCohorte = ttk.Treeview(self.frameCohorte,columns = ['#1','#2'], show='headings')
+        self.treeCohorte.grid(column=0,row=0, sticky='nsew')
+        self.treeCohorte.heading('#1', text = 'Id')
+        self.treeCohorte.heading('#2', text = 'Cohorte')
+        self.scrollbarCohorte = ttk.Scrollbar(self.frameCohorte, orient=tk.VERTICAL, command=self.treeCohorte.yview)
+        self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
+        self.scrollbarCohorte.grid(column=1,row=0, sticky='ns')
+
+        
 
     def conexion(self,query,parametros = ()):
         try:
