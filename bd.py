@@ -10,7 +10,7 @@ class BD(tk.Toplevel):
     def __init__(self,master = None):
         super().__init__(master)
         # Config:
-        self.title('Registros')
+        self.title('BD mantenimiento')
         self.geometry('800x450')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
@@ -22,20 +22,20 @@ class BD(tk.Toplevel):
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(pady=0,padx=5,expand=True)
         # create frames
-        self.noteDatos = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteCarga = ttk.Frame(self.notebook,width=800, height=450)
-        self.noteUnidades = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteUsuarios = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteCompatar = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteIndexar = ttk.Frame(self.notebook,width=800, height=450)
+        self.noteRespaldar = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteRestaurar = ttk.Frame(self.notebook, width=800, height=450)
         # create frames
-        self.noteDatos.pack(fill='both', expand=True)
-        self.noteCarga.pack(fill='both', expand=True)
-        self.noteUnidades.pack(fill='both', expand=True)
-        self.noteUsuarios.pack(fill='both', expand=True)
+        self.noteCompatar.pack(fill='both', expand=True)
+        self.noteIndexar.pack(fill='both', expand=True)
+        self.noteRespaldar.pack(fill='both', expand=True)
+        self.noteRestaurar.pack(fill='both', expand=True)
         # add frames to notebook
-        self.notebook.add(self.noteDatos, text='Datos basicos')
-        self.notebook.add(self.noteCarga, text='Carga académica')
-        self.notebook.add(self.noteUnidades, text='Unidades curriculares')
-        self.notebook.add(self.noteUsuarios, text='Usuarios')
+        self.notebook.add(self.noteCompatar, text='Compactar BD')
+        self.notebook.add(self.noteIndexar, text='Indexar BD')
+        self.notebook.add(self.noteRespaldar, text='Respaldar BD')
+        self.notebook.add(self.noteRestaurar, text='Restaurar BD')
 
     def conexion(self,query,parametros = ()):
         try:

@@ -8,6 +8,7 @@ from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
 from usuarios import Usuarios
 from registro import Registro
+from bd import BD
 from rutas import *
 import sqlite3
 import traceback
@@ -49,7 +50,7 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Configuración", menu=self.filemenu2)
         self.menubar.add_cascade(label="Datos basicos", command=self.gestor)
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu3.add_command(label='Base de datos')
+        self.filemenu3.add_command(label='Base de datos', command= self.bd)
         self.filemenu3.add_command(label='Registros', command=self.registro)
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
@@ -148,4 +149,8 @@ class App(tk.Tk):
 
     def registro(self):
         self.lower()
-        Registro(self)   
+        Registro(self)
+
+    def bd(self):
+        self.lower()
+        BD(self)
