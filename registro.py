@@ -11,7 +11,7 @@ class Registro(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Registros')
-        self.geometry('800x450')
+        self.geometry('505x330')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
         # Menu:
@@ -22,10 +22,10 @@ class Registro(tk.Toplevel):
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(pady=0,padx=5,expand=True)
         # create frames
-        self.noteDatos = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteCarga = ttk.Frame(self.notebook,width=800, height=450)
-        self.noteUnidades = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteUsuarios = ttk.Frame(self.notebook, width=800, height=450)
+        self.noteDatos = ttk.Frame(self.notebook, width=500, height=400)
+        self.noteCarga = ttk.Frame(self.notebook,width=500, height=400)
+        self.noteUnidades = ttk.Frame(self.notebook, width=500, height=400)
+        self.noteUsuarios = ttk.Frame(self.notebook, width=500, height=400)
         # create frames
         self.noteDatos.pack(fill='both', expand=True)
         self.noteCarga.pack(fill='both', expand=True)
@@ -37,56 +37,22 @@ class Registro(tk.Toplevel):
         self.notebook.add(self.noteUnidades, text='Unidades curriculares')
         self.notebook.add(self.noteUsuarios, text='Usuarios')
 
-        # Notebook datos basicos -----------------------------------------
-        self.datos = ttk.Notebook(self.noteDatos)
-        self.datos.pack(pady=0,padx=5,expand=True)
-        # create frames
-        self.noteCohorte = ttk.Frame(self.datos, width=800, height=450)
-        self.noteLapsoAcademico = ttk.Frame(self.notebook,width=800, height=450)
-        self.noteTrayecto = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteTrimestre = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteSeccion = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteLaboratorio = ttk.Frame(self.notebook, width=800, height=450)
-        # create frames
-        self.noteCohorte.pack(fill='both', expand=True)
-        self.noteLapsoAcademico.pack(fill='both', expand=True)
-        self.noteTrayecto.pack(fill='both', expand=True)
-        self.noteTrimestre.pack(fill='both', expand=True)
-        self.noteSeccion.pack(fill='both', expand=True)
-        self.noteLaboratorio.pack(fill='both', expand=True)
-        # add frames to notebook
-        self.datos.add(self.noteCohorte, text='Cohorte')
-        self.datos.add(self.noteLapsoAcademico, text='Lapso Académico')
-        self.datos.add(self.noteTrayecto, text='Trayecto')
-        self.datos.add(self.noteTrimestre, text='Trimestre')
-        self.datos.add(self.noteSeccion, text='sección')
-        self.datos.add(self.noteLaboratorio, text='Laboratorio')
-
-        # Pantalla Cohorte 0/1
-        self.frameCohorte = ttk.LabelFrame(self.noteCohorte)
-        self.frameCohorte.grid(column=0,row=0,pady=5, padx=5)
-        # Cohorte Tabla 1/1
-        self.treeCohorte = ttk.Treeview(self.frameCohorte,columns = ['#1','#2'], show='headings')
-        self.treeCohorte.grid(column=0,row=0, sticky='nsew')
-        self.treeCohorte.heading('#1', text = 'Id')
-        self.treeCohorte.heading('#2', text = 'Cohorte')
-        self.scrollbarCohorte = ttk.Scrollbar(self.frameCohorte, orient=tk.VERTICAL, command=self.treeCohorte.yview)
+        self.frameChoose = ttk.Frame(self.noteDatos)
+        self.frameChoose.grid(row=0,column=0)
+        self.Chosee = tk.StringVar()
+        ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.Chosee, command='').grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.Chosee, command='').grid(row=0,column=1)
+        ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.Chosee, command='').grid(row=0,column=2)
+        ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.Chosee, command='').grid(row=0,column=3)
+        ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.Chosee, command='').grid(row=0,column=4)
+        ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.Chosee, command='').grid(row=0,column=5)
+        
+        self.treeCohorte = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
+        self.treeCohorte.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
+        self.scrollbarCohorte = ttk.Scrollbar(self.noteDatos, orient=tk.VERTICAL, command=self.treeCohorte.yview)
         self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
-        self.scrollbarCohorte.grid(column=1,row=0, sticky='ns')
-        ttk.Button(self.noteCohorte,text='HABILITAR COHORTE',command='', width=68).grid(row=1,column=0)
-
-        # Pantalla LapsoAcademico 0/1
-        self.frameLapsoAcademico = ttk.LabelFrame(self.noteLapsoAcademico)
-        self.frameLapsoAcademico.grid(column=0,row=0,pady=5, padx=5)
-        # Cohorte Tabla 1/1
-        self.treeLapsoAcademico = ttk.Treeview(self.frameLapsoAcademico,columns = ['#1','#2'], show='headings')
-        self.treeLapsoAcademico.grid(column=0,row=0, sticky='nsew')
-        self.treeLapsoAcademico.heading('#1', text = 'Id')
-        self.treeLapsoAcademico.heading('#2', text = 'Lapso Académico')
-        self.scrollbarLapsoAcademico = ttk.Scrollbar(self.frameLapsoAcademico, orient=tk.VERTICAL, command=self.treeCohorte.yview)
-        self.treeLapsoAcademico.configure(yscroll=self.scrollbarLapsoAcademico.set)
-        self.scrollbarLapsoAcademico.grid(column=1,row=0, sticky='ns')
-        ttk.Button(self.noteLapsoAcademico,text='HABILITAR LAPSO ACADÉMICO',command='', width=68).grid(row=1,column=0)
+        self.scrollbarCohorte.grid(column=1,row=1, sticky='ns')
+        ttk.Button(self.noteDatos,text='HABILITAR',command='', width=75).grid(row=2,column=0)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -106,3 +72,5 @@ class Registro(tk.Toplevel):
 
     def volver(self):
         self.destroy()
+
+    
