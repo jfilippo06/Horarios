@@ -39,20 +39,20 @@ class Registro(tk.Toplevel):
 
         self.frameChoose = ttk.Frame(self.noteDatos)
         self.frameChoose.grid(row=0,column=0)
-        self.Chosee = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.Chosee, command=self.mostrarCohorte).grid(row=0,column=0)
-        ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.Chosee, command=self.mostrarLapsoAcademico).grid(row=0,column=1)
-        ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.Chosee, command=self.mostrarTrayecto).grid(row=0,column=2)
-        ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.Chosee, command=self.mostrarTrimestre).grid(row=0,column=3)
-        ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.Chosee, command=self.mostrarSeccion).grid(row=0,column=4)
-        ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.Chosee, command=self.mostrarLaboratorio).grid(row=0,column=5)
+        self.chosee = tk.StringVar()
+        ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.chosee, command=self.mostrarCohorte).grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.chosee, command=self.mostrarLapsoAcademico).grid(row=0,column=1)
+        ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.chosee, command=self.mostrarTrayecto).grid(row=0,column=2)
+        ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.chosee, command=self.mostrarTrimestre).grid(row=0,column=3)
+        ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.chosee, command=self.mostrarSeccion).grid(row=0,column=4)
+        ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.chosee, command=self.mostrarLaboratorio).grid(row=0,column=5)
         
         self.tree = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
         self.tree.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
         self.scrollbar = ttk.Scrollbar(self.noteDatos, orient=tk.VERTICAL, command=self.tree.yview)
         self.tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(column=1,row=1, sticky='ns')
-        ttk.Button(self.noteDatos,text='HABILITAR',command='', width=75).grid(row=2,column=0)
+        ttk.Button(self.noteDatos,text='HABILITAR',command=self.habilitarDatosBasicos, width=75).grid(row=2,column=0)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -70,29 +70,69 @@ class Registro(tk.Toplevel):
             exc_type, exc_value, exc_tb = sys.exc_info()
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
+    def TraerDatos(self,query):
+        self.mostrar = self.conexion(query)
+        self.rows = self.mostrar.fetchall()
+        return self.rows
+
     def volver(self):
         self.destroy()
+
+    def limpiarTabla(self):
+        self.DeleteChildren = self.tree.get_children()
+        for element in self.DeleteChildren:
+            self.tree.delete(element)
 
     def mostrarCohorte(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Cohorte')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
+
 
     def mostrarLapsoAcademico(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Lapso Académico')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
 
     def mostrarTrayecto(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Trayecto')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
 
     def mostrarTrimestre(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Triyecto')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
 
     def mostrarSeccion(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Sección')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
 
     def mostrarLaboratorio(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Laboratorio')
+        self.limpiarTabla()
+        self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree.insert('',tk.END,values=row)
+
+    def habilitarDatosBasicos(self):
+        if self.chosee.get() == 'Cohorte' and self.tree.selection():
+            print(1)
+        pass
