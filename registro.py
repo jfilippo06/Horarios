@@ -40,18 +40,18 @@ class Registro(tk.Toplevel):
         self.frameChoose = ttk.Frame(self.noteDatos)
         self.frameChoose.grid(row=0,column=0)
         self.Chosee = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.Chosee, command='').grid(row=0,column=0)
-        ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.Chosee, command='').grid(row=0,column=1)
+        ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.Chosee, command=self.mostrarCohorte).grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.Chosee, command=self.mostrarLapsoAcademico).grid(row=0,column=1)
         ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.Chosee, command='').grid(row=0,column=2)
         ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.Chosee, command='').grid(row=0,column=3)
         ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.Chosee, command='').grid(row=0,column=4)
         ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.Chosee, command='').grid(row=0,column=5)
         
-        self.treeCohorte = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
-        self.treeCohorte.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
-        self.scrollbarCohorte = ttk.Scrollbar(self.noteDatos, orient=tk.VERTICAL, command=self.treeCohorte.yview)
-        self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
-        self.scrollbarCohorte.grid(column=1,row=1, sticky='ns')
+        self.tree = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
+        self.tree.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
+        self.scrollbar = ttk.Scrollbar(self.noteDatos, orient=tk.VERTICAL, command=self.tree.yview)
+        self.tree.configure(yscroll=self.scrollbar.set)
+        self.scrollbar.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteDatos,text='HABILITAR',command='', width=75).grid(row=2,column=0)
 
     def conexion(self,query,parametros = ()):
@@ -73,4 +73,10 @@ class Registro(tk.Toplevel):
     def volver(self):
         self.destroy()
 
-    
+    def mostrarCohorte(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Cohorte')
+
+    def mostrarLapsoAcademico(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Lapso Académico')
