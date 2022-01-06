@@ -42,10 +42,10 @@ class Registro(tk.Toplevel):
         self.Chosee = tk.StringVar()
         ttk.Radiobutton(self.frameChoose, text='Cohorte', value='Cohorte',variable=self.Chosee, command=self.mostrarCohorte).grid(row=0,column=0)
         ttk.Radiobutton(self.frameChoose, text='Lapso académico', value='Lapso académico',variable=self.Chosee, command=self.mostrarLapsoAcademico).grid(row=0,column=1)
-        ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.Chosee, command='').grid(row=0,column=2)
-        ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.Chosee, command='').grid(row=0,column=3)
-        ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.Chosee, command='').grid(row=0,column=4)
-        ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.Chosee, command='').grid(row=0,column=5)
+        ttk.Radiobutton(self.frameChoose, text='Trayecto', value='Trayecto',variable=self.Chosee, command=self.mostrarTrayecto).grid(row=0,column=2)
+        ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.Chosee, command=self.mostrarTrimestre).grid(row=0,column=3)
+        ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.Chosee, command=self.mostrarSeccion).grid(row=0,column=4)
+        ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.Chosee, command=self.mostrarLaboratorio).grid(row=0,column=5)
         
         self.tree = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
         self.tree.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
@@ -80,3 +80,19 @@ class Registro(tk.Toplevel):
     def mostrarLapsoAcademico(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Lapso Académico')
+
+    def mostrarTrayecto(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Trayecto')
+
+    def mostrarTrimestre(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Triyecto')
+
+    def mostrarSeccion(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Sección')
+
+    def mostrarLaboratorio(self):
+        self.tree.heading('#1', text = 'Id')
+        self.tree.heading('#2', text = 'Laboratorio')
