@@ -57,8 +57,8 @@ class Registro(tk.Toplevel):
         self.frameChoose2 = ttk.Frame(self.noteCarga)
         self.frameChoose2.grid(row=0,column=0)
         self.chosee2 = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose2, text='Docente', value='Docente',variable=self.chosee2, command='').grid(row=0,column=0)
-        ttk.Radiobutton(self.frameChoose2, text='Materias asignadas', value='Materias asignadas',variable=self.chosee2, command='').grid(row=0,column=1)
+        ttk.Radiobutton(self.frameChoose2, text='Docente', value='Docente',variable=self.chosee2, command=self.mostrarDocentes).grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose2, text='Materias asignadas', value='Materias asignadas',variable=self.chosee2, command=self.mostrarMateriasAsignadas).grid(row=0,column=1)
 
         self.tree2 = ttk.Treeview(self.noteCarga,columns = ['#1','#2'], show='headings')
         self.tree2.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
@@ -97,15 +97,15 @@ class Registro(tk.Toplevel):
     def volver(self):
         self.destroy()
 
-    def limpiarTabla(self):
-        self.DeleteChildren = self.tree.get_children()
+    def limpiarTabla(self,tabla):
+        self.DeleteChildren = tabla.get_children()
         for element in self.DeleteChildren:
-            self.tree.delete(element)
+            tabla.delete(element)
 
     def mostrarCohorte(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Cohorte')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
@@ -114,7 +114,7 @@ class Registro(tk.Toplevel):
     def mostrarLapsoAcademico(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Lapso Académico')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM lapso_academico WHERE lapso_academico.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
@@ -122,7 +122,7 @@ class Registro(tk.Toplevel):
     def mostrarTrayecto(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Trayecto')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM trayecto WHERE trayecto.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
@@ -130,7 +130,7 @@ class Registro(tk.Toplevel):
     def mostrarTrimestre(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Triyecto')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM trimestre WHERE trimestre.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
@@ -138,7 +138,7 @@ class Registro(tk.Toplevel):
     def mostrarSeccion(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Sección')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM seccion WHERE seccion.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
@@ -146,10 +146,24 @@ class Registro(tk.Toplevel):
     def mostrarLaboratorio(self):
         self.tree.heading('#1', text = 'Id')
         self.tree.heading('#2', text = 'Laboratorio')
-        self.limpiarTabla()
+        self.limpiarTabla(self.tree)
         self.rows = self.TraerDatos("SELECT * FROM laboratorio WHERE laboratorio.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
+
+    def mostrarDocentes(self):
+        self.tree2.heading('#1', text = 'Id')
+        self.tree2.heading('#2', text = 'Docentes')
+        self.limpiarTabla(self.tree2)
+        self.rows = self.TraerDatos("SELECT Id,NombreApellido FROM docente WHERE docente.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree2.insert('',tk.END,values=row)
+
+    def mostrarMateriasAsignadas(self):
+        self.tree2.heading('#1', text = 'Id')
+        self.tree2.heading('#2', text = 'Materias Asignadas')
+        self.limpiarTabla(self.tree2)
+
 
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
