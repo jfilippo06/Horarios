@@ -54,6 +54,19 @@ class Registro(tk.Toplevel):
         self.scrollbar.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteDatos,text='HABILITAR',command=self.habilitarDatosBasicos, width=75).grid(row=2,column=0)
 
+        self.frameChoose2 = ttk.Frame(self.noteCarga)
+        self.frameChoose2.grid(row=0,column=0)
+        self.chosee2 = tk.StringVar()
+        ttk.Radiobutton(self.frameChoose2, text='Docente', value='Docente',variable=self.chosee2, command='').grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose2, text='Materias asignadas', value='Materias asignadas',variable=self.chosee2, command='').grid(row=0,column=1)
+
+        self.tree2 = ttk.Treeview(self.noteCarga,columns = ['#1','#2'], show='headings')
+        self.tree2.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
+        self.scrollbar2 = ttk.Scrollbar(self.noteCarga, orient=tk.VERTICAL, command=self.tree2.yview)
+        self.tree2.configure(yscroll=self.scrollbar2.set)
+        self.scrollbar2.grid(column=1,row=1, sticky='ns')
+        ttk.Button(self.noteCarga,text='HABILITAR',command=self.habilitarDatosBasicos, width=75).grid(row=2,column=0)
+
     def conexion(self,query,parametros = ()):
         try:
             self.con = sqlite3.connect(baseDeDatos)
