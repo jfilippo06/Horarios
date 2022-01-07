@@ -135,4 +135,17 @@ class Registro(tk.Toplevel):
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
             print(1)
-        pass
+        elif self.chosee.get() == 'Lapso académico' and self.tree.selection():
+            print(2)
+        elif self.chosee.get() == 'Trayecto' and self.tree.selection():
+            print(3)
+        elif self.chosee.get() == 'Trimestre' and self.tree.selection():
+            print(4)
+        elif self.chosee.get() == 'Sección' and self.tree.selection():
+            print(5)
+        elif self.chosee.get() == 'Laboratorio' and self.tree.selection():
+            print(6)
+        else:
+            print(7)
+
+
