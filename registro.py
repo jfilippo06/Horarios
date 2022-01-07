@@ -65,7 +65,7 @@ class Registro(tk.Toplevel):
         self.scrollbar2 = ttk.Scrollbar(self.noteCarga, orient=tk.VERTICAL, command=self.tree2.yview)
         self.tree2.configure(yscroll=self.scrollbar2.set)
         self.scrollbar2.grid(column=1,row=1, sticky='ns')
-        ttk.Button(self.noteCarga,text='HABILITAR',command=self.habilitarDatosBasicos, width=75).grid(row=2,column=0)
+        ttk.Button(self.noteCarga,text='HABILITAR',command=self.habilitarCarga, width=75).grid(row=2,column=0)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -91,6 +91,12 @@ class Registro(tk.Toplevel):
     def selecionarFila(self):
         self.item = self.tree.focus()
         self.data = self.tree.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
+    def selecionarFila2(self):
+        self.item = self.tree2.focus()
+        self.data = self.tree2.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -196,5 +202,19 @@ class Registro(tk.Toplevel):
                 self.conexion('UPDATE laboratorio SET Estado = "Activo" WHERE laboratorio.id = ? and laboratorio.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.mostrarLaboratorio()
                 messagebox.showinfo(title='Info', message='Laboratorio habilitado.')
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+
+    def habilitarCarga(self):
+        if self.chosee2.get() == 'Docente' and self.tree2.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar al docente?'):
+                self.conexion('UPDATE docente SET Estado = "Activo" WHERE docente.Id = ? AND docente.Estado = "Inactivo"',(self.selecionarFila2(),))
+                self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila2(),))
+                self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila2(),))
+                self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila2(),))
+                self.mostrarDocentes()
+                messagebox.showinfo(title='Info', message='Docente y todos sus registros habilitados')
+        elif self.chosee2.get() == 'Materias asignadas' and self.tree2.selection():
+            pass
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
