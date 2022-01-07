@@ -75,6 +75,12 @@ class Registro(tk.Toplevel):
         self.rows = self.mostrar.fetchall()
         return self.rows
 
+    def selecionarFila(self):
+        self.item = self.tree.focus()
+        self.data = self.tree.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
     def volver(self):
         self.destroy()
 
@@ -134,18 +140,34 @@ class Registro(tk.Toplevel):
 
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
-            print(1)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el cohorte?'):
+                self.conexion('UPDATE cohorte SET Estado = "Activo" WHERE cohorte.id = ? and cohorte.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarCohorte()
+                messagebox.showinfo(title='Info', message='Cohorte habilitado.')
         elif self.chosee.get() == 'Lapso académico' and self.tree.selection():
-            print(2)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el lapso académico?'):
+                self.conexion('UPDATE lapso_academico SET Estado = "Activo" WHERE lapso_academico.id = ? and lapso_academico.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarLapsoAcademico()
+                messagebox.showinfo(title='Info', message='Lapso académico habilitado.')
         elif self.chosee.get() == 'Trayecto' and self.tree.selection():
-            print(3)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el trayecto?'):
+                self.conexion('UPDATE trayecto SET Estado = "Activo" WHERE trayecto.id = ? and trayecto.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarTrayecto()
+                messagebox.showinfo(title='Info', message='Trayecto habilitado.')
         elif self.chosee.get() == 'Trimestre' and self.tree.selection():
-            print(4)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el trimestre?'):
+                self.conexion('UPDATE trimestre SET Estado = "Activo" WHERE trimestre.id = ? and trimestre.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarTrimestre()
+                messagebox.showinfo(title='Info', message='Trimestre habilitado.')
         elif self.chosee.get() == 'Sección' and self.tree.selection():
-            print(5)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la sección?'):
+                self.conexion('UPDATE seccion SET Estado = "Activo" WHERE seccion.id = ? and seccion.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarSeccion()
+                messagebox.showinfo(title='Info', message='Sección habilitada.')
         elif self.chosee.get() == 'Laboratorio' and self.tree.selection():
-            print(6)
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el laboratorio?'):
+                self.conexion('UPDATE laboratorio SET Estado = "Activo" WHERE laboratorio.id = ? and laboratorio.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarLaboratorio()
+                messagebox.showinfo(title='Info', message='Laboratorio habilitado.')
         else:
-            print(7)
-
-
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
