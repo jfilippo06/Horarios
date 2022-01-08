@@ -79,7 +79,7 @@ class Registro(tk.Toplevel):
         self.scrollbar3 = ttk.Scrollbar(self.noteUnidades, orient=tk.VERTICAL, command=self.tree3.yview)
         self.tree3.configure(yscroll=self.scrollbar3.set)
         self.scrollbar3.grid(column=1,row=1, sticky='ns')
-        ttk.Button(self.noteUnidades,text='HABILITAR',command='', width=75).grid(row=2,column=0)
+        ttk.Button(self.noteUnidades,text='HABILITAR',command=self.habilitarUnidades, width=75).grid(row=2,column=0)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -111,6 +111,12 @@ class Registro(tk.Toplevel):
     def selecionarFila2(self):
         self.item = self.tree2.focus()
         self.data = self.tree2.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+        
+    def selecionarFila3(self):
+        self.item = self.tree3.focus()
+        self.data = self.tree3.item(self.item)
         self.id = self.data['values'][0]
         return self.id
 
@@ -255,3 +261,23 @@ class Registro(tk.Toplevel):
             pass
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+
+    def habilitarUnidades(self):
+        if self.chosee3.get() == 'Unidades curriculares' and self.tree3.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la unidad curricular?'):
+                self.conexion('UPDATE unidad_curricular SET Estado = "Activo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Inactivo"',(self.selecionarFila3(),))
+                self.mostrarMaterias()
+                messagebox.showinfo(title='Info', message='Unidad curricular habilitada')
+        elif self.chosee3.get() == 'Departamento' and self.tree3.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el departamento?'):
+                self.conexion('UPDATE departamento SET Estado = "Activo" WHERE departamento.Id = ? and departamento.Estado = "Inactivo"',(self.selecionarFila3(),))
+                self.mostrarDepartamento()
+                messagebox.showinfo(title='Info', message='Departamento habilitado')
+        elif self.chosee3.get() == 'Pt' and self.tree3.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el pt?'):
+                self.conexion('UPDATE pt SET Estado = "Activo" WHERE pt.Id = ? and pt.Estado = "Inactivo"',(self.selecionarFila3(),))
+                self.mostrarPt()
+                messagebox.showinfo(title='Info', message='Pt habilitado')
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+        

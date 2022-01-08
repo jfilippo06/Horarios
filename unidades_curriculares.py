@@ -314,7 +314,7 @@ class Unidades_curriculares(tk.Toplevel):
     def eliminarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET Estado = "Inactivo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Estado"'
+                self.query = 'UPDATE unidad_curricular SET Estado = "Inactivo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosUnidadesCurriculares()
@@ -353,7 +353,7 @@ class Unidades_curriculares(tk.Toplevel):
     def modificarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Estado"'
+                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = (self.entryUnidadCurricular.get())
                 self.id = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query,(self.parametros, self.id))
