@@ -67,6 +67,20 @@ class Registro(tk.Toplevel):
         self.scrollbar2.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteCarga,text='HABILITAR',command=self.habilitarCarga, width=75).grid(row=2,column=0)
 
+        self.frameChoose3 = ttk.Frame(self.noteUnidades)
+        self.frameChoose3.grid(row=0,column=0)
+        self.chosee3 = tk.StringVar()
+        ttk.Radiobutton(self.frameChoose3, text='Unidades curriculares', value='Unidades curriculares',variable=self.chosee3, command=self.mostrarMaterias).grid(row=0,column=0)
+        ttk.Radiobutton(self.frameChoose3, text='Departamento', value='Departamento',variable=self.chosee3, command=self.mostrarDepartamento).grid(row=0,column=1)
+        ttk.Radiobutton(self.frameChoose3, text='Pt', value='Pt',variable=self.chosee3, command=self.mostrarPt).grid(row=0,column=2)
+
+        self.tree3 = ttk.Treeview(self.noteUnidades,columns = ['#1','#2'], show='headings')
+        self.tree3.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
+        self.scrollbar3 = ttk.Scrollbar(self.noteUnidades, orient=tk.VERTICAL, command=self.tree3.yview)
+        self.tree3.configure(yscroll=self.scrollbar3.set)
+        self.scrollbar3.grid(column=1,row=1, sticky='ns')
+        ttk.Button(self.noteUnidades,text='HABILITAR',command='', width=75).grid(row=2,column=0)
+
     def conexion(self,query,parametros = ()):
         try:
             self.con = sqlite3.connect(baseDeDatos)
@@ -170,6 +184,29 @@ class Registro(tk.Toplevel):
         self.tree2.heading('#2', text = 'Materias Asignadas')
         self.limpiarTabla(self.tree2)
 
+    def mostrarMaterias(self):
+        self.tree3.heading('#1', text = 'Id')
+        self.tree3.heading('#2', text = 'Materias')
+        self.limpiarTabla(self.tree3)
+        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular FROM unidad_curricular WHERE unidad_curricular.Estado = 'Inactivo' ORDER BY UnidadCurricular")
+        for row in self.rows:
+            self.tree3.insert('',tk.END,values=row)
+
+    def mostrarDepartamento(self):
+        self.tree3.heading('#1', text = 'Id')
+        self.tree3.heading('#2', text = 'Departamento')
+        self.limpiarTabla(self.tree3)
+        self.rows = self.TraerDatos("SELECT * FROM departamento WHERE departamento.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree3.insert('',tk.END,values=row)
+
+    def mostrarPt(self):
+        self.tree3.heading('#1', text = 'Id')
+        self.tree3.heading('#2', text = 'Pt')
+        self.limpiarTabla(self.tree3)
+        self.rows = self.TraerDatos("SELECT * FROM pt WHERE pt.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree3.insert('',tk.END,values=row)
 
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
