@@ -52,6 +52,7 @@ class App(tk.Tk):
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu3.add_command(label='Base de datos', command= self.bd)
         self.filemenu3.add_command(label='Registros', command=self.registro)
+        self.filemenu3.add_command(label='Materias asignadas', command='',)
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)

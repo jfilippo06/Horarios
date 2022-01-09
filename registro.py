@@ -81,6 +81,18 @@ class Registro(tk.Toplevel):
         self.scrollbar3.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteUnidades,text='HABILITAR',command=self.habilitarUnidades, width=75).grid(row=2,column=0)
 
+        self.frameChoose4 = ttk.Frame(self.noteUsuarios)
+        self.frameChoose4.grid(row=0,column=0)
+        self.chosee4 = tk.StringVar()
+        ttk.Radiobutton(self.frameChoose4, text='Usuarios', value='Usuarios',variable=self.chosee4, command=self.mostrarUsuarios).grid(row=0,column=0)
+        
+        self.tree4 = ttk.Treeview(self.noteUsuarios,columns = ['#1','#2'], show='headings')
+        self.tree4.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
+        self.scrollbar4 = ttk.Scrollbar(self.noteUsuarios, orient=tk.VERTICAL, command=self.tree4.yview)
+        self.tree4.configure(yscroll=self.scrollbar4.set)
+        self.scrollbar4.grid(column=1,row=1, sticky='ns')
+        ttk.Button(self.noteUsuarios,text='HABILITAR',command=self.habilitarUsuarios, width=75).grid(row=2,column=0)
+
     def conexion(self,query,parametros = ()):
         try:
             self.con = sqlite3.connect(baseDeDatos)
@@ -120,6 +132,12 @@ class Registro(tk.Toplevel):
         self.id = self.data['values'][0]
         return self.id
 
+    def selecionarFila4(self):
+        self.item = self.tree4.focus()
+        self.data = self.tree4.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
     def volver(self):
         self.destroy()
 
@@ -135,7 +153,6 @@ class Registro(tk.Toplevel):
         self.rows = self.TraerDatos("SELECT * FROM cohorte WHERE cohorte.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
-
 
     def mostrarLapsoAcademico(self):
         self.tree.heading('#1', text = 'Id')
@@ -214,6 +231,15 @@ class Registro(tk.Toplevel):
         for row in self.rows:
             self.tree3.insert('',tk.END,values=row)
 
+    def mostrarUsuarios(self):
+        self.tree4.heading('#1', text = 'Id')
+        self.tree4.heading('#2', text = 'Usuarios')
+        self.limpiarTabla(self.tree4)
+        self.rows = self.TraerDatos("SELECT Id, Usuario FROM usuario_admin WHERE usuario_admin.Estado = 'Inactivo'")
+        for row in self.rows:
+            self.tree4.insert('',tk.END,values=row)
+
+
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el cohorte?'):
@@ -281,3 +307,11 @@ class Registro(tk.Toplevel):
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
         
+    def habilitarUsuarios(self):
+        if self.chosee4.get() == 'Usuarios' and self.tree4.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el usuario?'):
+                self.conexion('UPDATE usuario_admin SET Estado = "Activo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Inactivo"',(self.selecionarFila4(),))
+                self.mostrarUsuarios()
+                messagebox.showinfo(title='Info', message='Usuarios habilitado')
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
