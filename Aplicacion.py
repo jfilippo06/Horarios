@@ -8,6 +8,7 @@ from unidades_curriculares import Unidades_curriculares
 from reporte_carga_academica import ReporteCargaAcademica
 from usuarios import Usuarios
 from registro import Registro
+from materias_asignadas import Materias_asignadas
 from bd import BD
 from rutas import *
 import sqlite3
@@ -52,7 +53,7 @@ class App(tk.Tk):
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu3.add_command(label='Base de datos', command= self.bd)
         self.filemenu3.add_command(label='Registros', command=self.registro)
-        self.filemenu3.add_command(label='Materias asignadas', command='',)
+        self.filemenu3.add_command(label='Materias asignadas', command=self.materias)
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
@@ -155,3 +156,7 @@ class App(tk.Tk):
     def bd(self):
         self.lower()
         BD(self)
+
+    def materias(self):
+        self.lower()
+        Materias_asignadas(self)
