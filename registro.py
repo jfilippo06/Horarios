@@ -58,7 +58,6 @@ class Registro(tk.Toplevel):
         self.frameChoose2.grid(row=0,column=0)
         self.chosee2 = tk.StringVar()
         ttk.Radiobutton(self.frameChoose2, text='Docente', value='Docente',variable=self.chosee2, command=self.mostrarDocentes).grid(row=0,column=0)
-        ttk.Radiobutton(self.frameChoose2, text='Materias asignadas', value='Materias asignadas',variable=self.chosee2, command=self.mostrarMateriasAsignadas).grid(row=0,column=1)
 
         self.tree2 = ttk.Treeview(self.noteCarga,columns = ['#1','#2'], show='headings')
         self.tree2.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
@@ -202,11 +201,6 @@ class Registro(tk.Toplevel):
         for row in self.rows:
             self.tree2.insert('',tk.END,values=row)
 
-    def mostrarMateriasAsignadas(self):
-        self.tree2.heading('#1', text = 'Id')
-        self.tree2.heading('#2', text = 'Materias Asignadas')
-        self.limpiarTabla(self.tree2)
-
     def mostrarMaterias(self):
         self.tree3.heading('#1', text = 'Id')
         self.tree3.heading('#2', text = 'Materias')
@@ -283,8 +277,6 @@ class Registro(tk.Toplevel):
                 self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila2(),))
                 self.mostrarDocentes()
                 messagebox.showinfo(title='Info', message='Docente y todos sus registros habilitados')
-        elif self.chosee2.get() == 'Materias asignadas' and self.tree2.selection():
-            pass
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
 
