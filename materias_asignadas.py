@@ -11,7 +11,7 @@ class Materias_asignadas(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Materias asignadas')
-        self.geometry('1280x400')
+        self.geometry('1280x310')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
         # Menu:
@@ -55,7 +55,7 @@ class Materias_asignadas(tk.Toplevel):
         self.scrollbar = ttk.Scrollbar(self.frame, orient=tk.VERTICAL, command=self.tree.yview)
         self.tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(column=1,row=0, sticky='ns')
-        ttk.Button(self,text='HABILITAR MATERIA',command='', width=180).grid(row=2,column=0)
+        ttk.Button(self,text='HABILITAR MATERIA',command=self.habilitarMateria, width=205).grid(row=2,column=0)
     
     def volver(self):
         self.destroy()
@@ -81,6 +81,12 @@ class Materias_asignadas(tk.Toplevel):
         self.rows = self.mostrar.fetchall()
         return self.rows
 
+    def selecionarFila(self):
+        self.item = self.tree.focus()
+        self.data = self.tree.item(self.item)
+        self.id = self.data['values'][0]
+        return self.id
+
     def limpiarTabla(self,tabla):
         self.DeleteChildren = tabla.get_children()
         for element in self.DeleteChildren:
@@ -91,3 +97,14 @@ class Materias_asignadas(tk.Toplevel):
         self.rows = self.TraerDatos("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno,semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Estado = 'Inactivo'")
         for row in self.rows:
             self.tree.insert('',tk.END,values=row)
+
+    def habilitarMateria(self):
+        if self.chosee.get() == 'Materias asignadas' and self.tree.selection():
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?'):
+                self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_materias_asignadas = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.mostrarMateriasAsignadas()
+                messagebox.showinfo(title='Info', message='Materia habilitada')
+        else:
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
