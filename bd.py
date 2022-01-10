@@ -11,31 +11,14 @@ class BD(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('BD mantenimiento')
-        self.geometry('800x450')
+        self.geometry('380x150')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
-        # Menu:
-        self.menubar = tk.Menu(self)
-        self.menubar.add_cascade(label="Volver", command=self.volver)
-        self.config(menu=self.menubar)
-        # create a notebook
-        self.notebook = ttk.Notebook(self)
-        self.notebook.pack(pady=0,padx=5,expand=True)
-        # create frames
-        self.noteCompatar = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteIndexar = ttk.Frame(self.notebook,width=800, height=450)
-        self.noteRespaldar = ttk.Frame(self.notebook, width=800, height=450)
-        self.noteRestaurar = ttk.Frame(self.notebook, width=800, height=450)
-        # create frames
-        self.noteCompatar.pack(fill='both', expand=True)
-        self.noteIndexar.pack(fill='both', expand=True)
-        self.noteRespaldar.pack(fill='both', expand=True)
-        self.noteRestaurar.pack(fill='both', expand=True)
-        # add frames to notebook
-        self.notebook.add(self.noteCompatar, text='Compactar BD')
-        self.notebook.add(self.noteIndexar, text='Indexar BD')
-        self.notebook.add(self.noteRespaldar, text='Respaldar BD')
-        self.notebook.add(self.noteRestaurar, text='Restaurar BD')
+        
+        ttk.Button(self, text='Compactar Base de datos', command='', width=60).grid(row=0,column=0,padx=5,pady=5)
+        ttk.Button(self, text= 'Indexar Base de datos', command='', width=60).grid(row=1,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Respaldar Base de datos', command='', width=60).grid(row=2,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Restaurar Base de datos', command='', width=60).grid(row=3,column=0,padx=5,pady=5)
 
     def conexion(self,query,parametros = ()):
         try:
