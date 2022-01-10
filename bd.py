@@ -1,0 +1,40 @@
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+import sqlite3
+from rutas import *
+import traceback
+import sys
+
+class BD(tk.Toplevel):
+    def __init__(self,master = None):
+        super().__init__(master)
+        # Config:
+        self.title('BD mantenimiento')
+        self.geometry('380x150')
+        self.resizable(width=0,height=0)
+        self.iconbitmap(uptpc)
+        
+        ttk.Button(self, text='Compactar Base de datos', command='', width=60).grid(row=0,column=0,padx=5,pady=5)
+        ttk.Button(self, text= 'Indexar Base de datos', command='', width=60).grid(row=1,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Respaldar Base de datos', command='', width=60).grid(row=2,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Restaurar Base de datos', command='', width=60).grid(row=3,column=0,padx=5,pady=5)
+
+    def conexion(self,query,parametros = ()):
+        try:
+            self.con = sqlite3.connect(baseDeDatos)
+            self.cursor = self.con.cursor()
+            self.cursor.execute(query,parametros)
+            self.con.commit()
+            return self.cursor
+        except sqlite3.IntegrityError:
+            pass
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Exception class is: ", er.__class__)
+            print('SQLite traceback: ')
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            print(traceback.format_exception(exc_type, exc_value, exc_tb))
+
+    def volver(self):
+        self.destroy()
