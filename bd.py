@@ -11,10 +11,14 @@ class BD(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('BD mantenimiento')
-        self.geometry('380x150')
+        self.geometry('380x160')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
-        
+        # Menu:
+        self.menubar = tk.Menu(self)
+        self.menubar.add_cascade(label="Volver", command=self.volver)
+        self.config(menu=self.menubar)
+
         ttk.Button(self, text='Compactar Base de datos', command=self.compactar, width=60).grid(row=0,column=0,padx=5,pady=5)
         ttk.Button(self, text= 'Indexar Base de datos', command=self.indexar, width=60).grid(row=1,column=0,padx=5,pady=5)
         ttk.Button(self, text='Respaldar Base de datos', command=self.respaldar, width=60).grid(row=2,column=0,padx=5,pady=5)
@@ -40,9 +44,9 @@ class BD(tk.Toplevel):
         self.destroy()
 
     def compactar(self):
-        if messagebox.askyesno('Compactar','¿Desea compactar la Base de Datos?'):    
+        if messagebox.askyesno('Compactar','¿Desea compactar la Base de datos?'):    
             self.conexion('VACUUM')
-            messagebox.showinfo(title='Info', message='Base de Datos compactada')
+            messagebox.showinfo(title='Info', message='Base de datos compactada')
 
     def indexar(self):
         pass
