@@ -15,10 +15,10 @@ class BD(tk.Toplevel):
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
         
-        ttk.Button(self, text='Compactar Base de datos', command='', width=60).grid(row=0,column=0,padx=5,pady=5)
-        ttk.Button(self, text= 'Indexar Base de datos', command='', width=60).grid(row=1,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Respaldar Base de datos', command='', width=60).grid(row=2,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Restaurar Base de datos', command='', width=60).grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Compactar Base de datos', command=self.compactar, width=60).grid(row=0,column=0,padx=5,pady=5)
+        ttk.Button(self, text= 'Indexar Base de datos', command=self.indexar, width=60).grid(row=1,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Respaldar Base de datos', command=self.respaldar, width=60).grid(row=2,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Restaurar Base de datos', command=self.restaurar, width=60).grid(row=3,column=0,padx=5,pady=5)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -38,3 +38,17 @@ class BD(tk.Toplevel):
 
     def volver(self):
         self.destroy()
+
+    def compactar(self):
+        if messagebox.askyesno('Compactar','¿Desea compactar la Base de Datos?'):    
+            self.conexion('VACUUM')
+            messagebox.showinfo(title='Info', message='Base de Datos compactada')
+
+    def indexar(self):
+        pass
+
+    def respaldar(self):
+        pass
+
+    def restaurar(self):
+        pass
