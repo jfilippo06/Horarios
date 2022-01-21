@@ -22,10 +22,10 @@ class BD(tk.Toplevel):
         self.menubar.add_cascade(label="Volver", command=self.volver)
         self.config(menu=self.menubar)
 
-        ttk.Button(self, text='Compactar Base de datos', command=self.compactar, width=60).grid(row=0,column=0,padx=5,pady=5)
-        ttk.Button(self, text= 'Indexar Base de datos', command=self.indexar, width=60).grid(row=1,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Respaldar Base de datos', command=self.respaldar, width=60).grid(row=2,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Restaurar Base de datos', command=self.restaurar, width=60).grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Compactar base de datos', command=self.compactar, width=60).grid(row=0,column=0,padx=5,pady=5)
+        ttk.Button(self, text= 'Indexar base de datos', command=self.indexar, width=60).grid(row=1,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Respaldar base de datos', command=self.respaldar, width=60).grid(row=2,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Restaurar base de datos', command=self.restaurar, width=60).grid(row=3,column=0,padx=5,pady=5)
 
     def conexion(self,query,parametros = ()):
         try:
