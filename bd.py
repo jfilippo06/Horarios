@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
@@ -46,7 +47,7 @@ class BD(tk.Toplevel):
         self.destroy()
 
     def compactar(self):
-        if messagebox.askyesno('Compactar','¿Desea compactar la Base de datos?'):    
+        if messagebox.askyesno('Compactar','¿Desea compactar la base de datos?'):    
             self.conexion('VACUUM')
             messagebox.showinfo(title='Info', message='Base de datos compactada')
 
@@ -54,10 +55,14 @@ class BD(tk.Toplevel):
         pass
 
     def respaldar(self):
-        if messagebox.askyesno('Respaldar','¿Desea respaldar la Base de datos?'):    
+        if messagebox.askyesno('Respaldar','¿Desea respaldar la base de datos?'):    
             guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
             shutil.copyfile(baseDeDatos, guardar)
-            messagebox.showinfo(title='Info', message='Base de datos Respaldada')
+            messagebox.showinfo(title='Info', message='Base de datos respaldada')
 
     def restaurar(self):
-        pass
+        if messagebox.askyesno('Restaurar','¿Desea restaurar la base de datos?'):    
+            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
+            shutil.copyfile(guardar, baseDeDatos)
+            messagebox.showinfo(title='Info', message='Base de datos restaurada')
+        
