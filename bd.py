@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from tkinter import messagebox
 import sqlite3
 from rutas import *
 import traceback
 import sys
+import shutil
 
 class BD(tk.Toplevel):
     def __init__(self,master = None):
@@ -52,7 +54,10 @@ class BD(tk.Toplevel):
         pass
 
     def respaldar(self):
-        pass
+        if messagebox.askyesno('Respaldar','¿Desea respaldar la Base de datos?'):    
+            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
+            shutil.copyfile(baseDeDatos, guardar)
+            messagebox.showinfo(title='Info', message='Base de datos Respaldada')
 
     def restaurar(self):
         pass
