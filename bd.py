@@ -1,4 +1,3 @@
-import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
@@ -14,7 +13,7 @@ class BD(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('BD mantenimiento')
-        self.geometry('380x160')
+        self.geometry('380x130')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
         # Menu:
@@ -23,9 +22,8 @@ class BD(tk.Toplevel):
         self.config(menu=self.menubar)
 
         ttk.Button(self, text='Compactar base de datos', command=self.compactar, width=60).grid(row=0,column=0,padx=5,pady=5)
-        ttk.Button(self, text= 'Indexar base de datos', command=self.indexar, width=60).grid(row=1,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Respaldar base de datos', command=self.respaldar, width=60).grid(row=2,column=0,padx=5,pady=5)
-        ttk.Button(self, text='Restaurar base de datos', command=self.restaurar, width=60).grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Respaldar base de datos', command=self.respaldar, width=60).grid(row=1,column=0,padx=5,pady=5)
+        ttk.Button(self, text='Restaurar base de datos', command=self.restaurar, width=60).grid(row=2,column=0,padx=5,pady=5)
 
     def conexion(self,query,parametros = ()):
         try:
@@ -51,9 +49,6 @@ class BD(tk.Toplevel):
             self.conexion('VACUUM')
             messagebox.showinfo(title='Info', message='Base de datos compactada')
 
-    def indexar(self):
-        pass
-
     def respaldar(self):
         if messagebox.askyesno('Respaldar','¿Desea respaldar la base de datos?'):    
             guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
@@ -64,5 +59,4 @@ class BD(tk.Toplevel):
         if messagebox.askyesno('Restaurar','¿Desea restaurar la base de datos?'):    
             guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
             shutil.copyfile(guardar, baseDeDatos)
-            messagebox.showinfo(title='Info', message='Base de datos restaurada')
-        
+            messagebox.showinfo(title='Info', message='Base de datos restaurada')     
