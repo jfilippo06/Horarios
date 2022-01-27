@@ -64,6 +64,7 @@ class Gestor(tk.Toplevel):
         self.treeCohorte.grid(column=0,row=1, sticky='nsew')
         self.treeCohorte.heading('#1', text = 'Id')
         self.treeCohorte.heading('#2', text = 'Cohorte')
+        self.treeCohorte.bind('<Double-1>',lambda e, t = self.treeCohorte: self.prueba(t))
         self.scrollbarCohorte = ttk.Scrollbar(self.noteCohorte, orient=tk.VERTICAL, command=self.treeCohorte.yview)
         self.treeCohorte.configure(yscroll=self.scrollbarCohorte.set)
         self.scrollbarCohorte.grid(column=1,row=1, sticky='ns')
@@ -193,7 +194,6 @@ class Gestor(tk.Toplevel):
         ttk.Button(self.noteLaboratorio,text = 'EDITAR LABORATORIO', command =self.editarLaboratorio).grid(column=0,row=2, sticky = tk.W + tk.E)
         ttk.Button(self.noteLaboratorio,text = 'DESHABILITAR LABORATORIO', command = self.eliminarLaboratorio).grid(column=0,row=3,sticky = tk.W + tk.E)
 
-
         self.MostrarDatosCohorte()
         self.MostrarDatosLapsoAcademico()
         self.MostrarDatosTrayecto()
@@ -203,6 +203,13 @@ class Gestor(tk.Toplevel):
 
     def volver(self):
         self.destroy()
+
+    def prueba(self,t):
+        item = t.focus()
+        data = t.item(item)
+        id = data['values'][0]
+        self.entryCohorte.delete(0, tk.END)
+        self.entryCohorte.insert(0,id)
 
     def conexion(self,query,parametros = ()):
         try:
