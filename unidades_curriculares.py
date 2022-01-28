@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Frame, ttk
 from tkinter import messagebox
 import sqlite3
 from rutas import *
@@ -11,7 +11,7 @@ class Unidades_curriculares(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Unidades Curriculares')
-        self.geometry('1050x620')
+        self.geometry('605x480')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
@@ -20,13 +20,16 @@ class Unidades_curriculares(tk.Toplevel):
         self.config(menu=self.menubar)
 
         self.frame = ttk.Labelframe(self)
-        self.frame.grid(column=0,row=0, padx=5)
-        ttk.Label(self.frame,text='Unidad Curricular').grid(column=0,row=0)
-        self.entryUnidadCurricular = ttk.Entry(self.frame,width=20)
-        self.entryUnidadCurricular.grid(column=1,row=0)
-        ttk.Button(self.frame, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
-        ttk.Button(self.frame, text='EDITAR UNIDAD CURRICULAR', command=self.modificarUnidadCurricular,width=33).grid(row=2,column=0)
-        ttk.Button(self.frame, text='DESHABILITAR UNIDAD CURRICULAR', command=self.eliminarUnidadCurricular,width=33).grid(row=3,column=0)
+        self.frame.grid(column=0,row=0,padx=5,pady=5)
+        ttk.Label(self.frame,text='Unidad Curricular:').grid(row=0,column=0,padx=5,pady=5)
+        self.entryUnidadCurricular = ttk.Entry(self.frame,width=40)
+        self.entryUnidadCurricular.grid(row=0,column=1,padx=5,pady=5)
+        ttk.Label(self.frame,text='Departamento:').grid(row=1,column=0,padx=5,pady=5)
+        self.entryDepartamento = ttk.Entry(self.frame,width=40)
+        self.entryDepartamento.grid(row=1,column=1,padx=5,pady=5)
+        ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=2,column=0,padx=5,pady=5)
+        ttk.Label(self.frame,text='Hora:').grid(row=3,column=0,padx=5,pady=5)
+        # ttk.Button(self.frame, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
         
         self.frameUnidadesCurriculares = ttk.Labelframe(self)
         self.frameUnidadesCurriculares.grid(column=0,row=1,padx=5)
@@ -46,6 +49,10 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares.configure(yscroll=self.scrollbarUnidadesCurriculares.set)
         self.scrollbarUnidadesCurriculares.grid(column=1,row=0, sticky='ns')
 
+        self.frameButton = ttk.LabelFrame(self)
+        self.frameButton.grid(column=0,row=2,padx=5)
+        ttk.Button(self.frameButton, text='EDITAR UNIDAD CURRICULAR', command=self.modificarUnidadCurricular,width=33).grid(row=0,column=0)
+        ttk.Button(self.frameButton, text='DESHABILITAR UNIDAD CURRICULAR', command=self.eliminarUnidadCurricular,width=33).grid(row=0,column=1)
 
         self.MostrarDatosUnidadesCurriculares()
 
