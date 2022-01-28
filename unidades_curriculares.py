@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Frame, ttk
+from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
 from rutas import *
@@ -11,7 +11,7 @@ class Unidades_curriculares(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Unidades Curriculares')
-        self.geometry('615x480')
+        self.geometry('615x580')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
@@ -24,18 +24,35 @@ class Unidades_curriculares(tk.Toplevel):
         ttk.Label(self.frame,text='Unidad Curricular:').grid(row=0,column=0,padx=5,pady=5)
         self.entryUnidadCurricular = ttk.Entry(self.frame,width=40)
         self.entryUnidadCurricular.grid(row=0,column=1,padx=5,pady=5)
+        self.entryUnidadCurricular.focus()
         ttk.Label(self.frame,text='Departamento:').grid(row=1,column=0,padx=5,pady=5)
         self.entryDepartamento = ttk.Entry(self.frame,width=40)
         self.entryDepartamento.grid(row=1,column=1,padx=5,pady=5)
-        ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=2,column=0,padx=5,pady=5)
+        self.entryDepartamento.config(state=tk.DISABLED)
+        ttk.Button(self.frame, text='ACTIVAR', command=self.activar2).grid(row=2,column=0)
+        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar2).grid(row=2,column=1)
+        ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=3,column=0,padx=5,pady=5)
         self.entryPrograma = ttk.Entry(self.frame,width=40)
-        self.entryPrograma.grid(row=2,column=1,padx=5,pady=5)
+        self.entryPrograma.grid(row=3,column=1,padx=5,pady=5)
         self.entryPrograma.config(state=tk.DISABLED)
-        ttk.Label(self.frame,text='Hora:').grid(row=3,column=0,padx=5,pady=5)
-        # ttk.Button(self.frame, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
+        ttk.Button(self.frame, text='ACTIVAR', command=self.activar).grid(row=4,column=0)
+        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar).grid(row=4,column=1)
+        ttk.Label(self.frame,text='Hora:').grid(row=5,column=0,padx=5,pady=5)
+        self.hora = tk.StringVar()
+        self.frameRadio = ttk.Labelframe(self.frame)
+        self.frameRadio.grid(row=5,column=1)
+        ttk.Radiobutton(self.frameRadio, text='2', value='2',variable=self.hora).grid(row=0,column=0)
+        ttk.Radiobutton(self.frameRadio, text='3', value='3',variable=self.hora).grid(row=0,column=1)
+        ttk.Radiobutton(self.frameRadio, text='4', value='4',variable=self.hora).grid(row=0,column=2)
+        ttk.Radiobutton(self.frameRadio, text='5', value='5',variable=self.hora).grid(row=0,column=3)
+        ttk.Radiobutton(self.frameRadio, text='6', value='6',variable=self.hora).grid(row=0,column=4)
+        self.frame2 = ttk.LabelFrame(self)
+        self.frame2.grid(column=0,row=1)
+        ttk.Button(self.frame2, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=0,column=0)
+        ttk.Button(self.frame2, text='EDITAR UNIDAD CURRICULAR', command=self.modificarUnidadCurricular,width=33).grid(row=0,column=1)
         
         self.frameUnidadesCurriculares = ttk.Labelframe(self)
-        self.frameUnidadesCurriculares.grid(column=0,row=1,padx=5)
+        self.frameUnidadesCurriculares.grid(column=0,row=2,padx=5)
         self.treeUnidadesCurriculares = ttk.Treeview(self.frameUnidadesCurriculares, columns=['#1',"#2",'#3','#4','#5'],show='headings',height=10)
         self.treeUnidadesCurriculares.grid(row=0,column=0)
         self.treeUnidadesCurriculares.heading('#1', text = 'Id',)
@@ -53,14 +70,29 @@ class Unidades_curriculares(tk.Toplevel):
         self.scrollbarUnidadesCurriculares.grid(column=1,row=0, sticky='ns')
 
         self.frameButton = ttk.LabelFrame(self)
-        self.frameButton.grid(column=0,row=2,padx=5)
-        ttk.Button(self.frameButton, text='EDITAR UNIDAD CURRICULAR', command=self.modificarUnidadCurricular,width=33).grid(row=0,column=0)
+        self.frameButton.grid(column=0,row=3,padx=5)
         ttk.Button(self.frameButton, text='DESHABILITAR UNIDAD CURRICULAR', command=self.eliminarUnidadCurricular,width=33).grid(row=0,column=1)
 
         self.MostrarDatosUnidadesCurriculares()
 
     def volver(self):
         self.destroy()
+
+    def activar(self):
+        self.entryPrograma.config(state=tk.NORMAL)
+        self.entryPrograma.focus()
+
+    def activar2(self):
+        self.entryDepartamento.config(state=tk.NORMAL)
+        self.entryDepartamento.focus()
+
+    def desactivar(self):
+        self.entryPrograma.config(state=tk.DISABLED)
+        self.entryUnidadCurricular.focus()
+        
+    def desactivar2(self):
+        self.entryDepartamento.config(state=tk.DISABLED)
+        self.entryUnidadCurricular.focus()
 
     def conexion(self,query,parametros = ()):
         try:

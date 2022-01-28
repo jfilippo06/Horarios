@@ -11,18 +11,13 @@ class Materias_asignadas(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Materias asignadas')
-        self.geometry('1280x310')
+        self.geometry('1280x290')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
         # Menu:
         self.menubar = tk.Menu(self)
         self.menubar.add_cascade(label="Volver", command=self.volver)
         self.config(menu=self.menubar)
-
-        self.frame= ttk.Frame(self)
-        self.frame.grid(row=0,column=0)
-        self.chosee = tk.StringVar()
-        ttk.Radiobutton(self.frame, text='Materias asignadas', value='Materias asignadas',variable=self.chosee, command=self.mostrarMateriasAsignadas).grid(row=0,column=0)
 
         self.frame = ttk.Labelframe(self)
         self.frame.grid(column=0,row=1,pady=5,padx=5)
@@ -56,7 +51,9 @@ class Materias_asignadas(tk.Toplevel):
         self.tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(column=1,row=0, sticky='ns')
         ttk.Button(self,text='HABILITAR MATERIA',command=self.habilitarMateria, width=205).grid(row=2,column=0)
-    
+
+        self.mostrarMateriasAsignadas()
+
     def volver(self):
         self.destroy()
 
@@ -99,7 +96,7 @@ class Materias_asignadas(tk.Toplevel):
             self.tree.insert('',tk.END,values=row)
 
     def habilitarMateria(self):
-        if self.chosee.get() == 'Materias asignadas' and self.tree.selection():
+        if self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?'):
                 self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_materias_asignadas = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(),))
