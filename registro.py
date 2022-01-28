@@ -164,7 +164,7 @@ class Registro(tk.Toplevel):
 
     def mostrarDocentes(self):
         self.tree2.heading('#1', text = 'Id')
-        self.tree2.heading('#2', text = 'Docentes')
+        self.tree2.heading('#2', text = 'Docente')
         self.limpiarTabla(self.tree2)
         self.rows = self.TraerDatos("SELECT Id,NombreApellido FROM docente WHERE docente.Estado = 'Inactivo'")
         for row in self.rows:
@@ -172,7 +172,7 @@ class Registro(tk.Toplevel):
 
     def mostrarMaterias(self):
         self.tree3.heading('#1', text = 'Id')
-        self.tree3.heading('#2', text = 'Materias')
+        self.tree3.heading('#2', text = 'Materia')
         self.limpiarTabla(self.tree3)
         self.rows = self.TraerDatos("SELECT Id,UnidadCurricular FROM unidad_curricular WHERE unidad_curricular.Estado = 'Inactivo' ORDER BY UnidadCurricular")
         for row in self.rows:
@@ -180,7 +180,7 @@ class Registro(tk.Toplevel):
 
     def mostrarUsuarios(self):
         self.tree4.heading('#1', text = 'Id')
-        self.tree4.heading('#2', text = 'Usuarios')
+        self.tree4.heading('#2', text = 'Usuario')
         self.limpiarTabla(self.tree4)
         self.rows = self.TraerDatos("SELECT Id, Usuario FROM usuario_admin WHERE usuario_admin.Estado = 'Inactivo'")
         for row in self.rows:

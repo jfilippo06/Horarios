@@ -11,7 +11,7 @@ class Unidades_curriculares(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Unidades Curriculares')
-        self.geometry('605x480')
+        self.geometry('615x480')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
@@ -28,6 +28,9 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryDepartamento = ttk.Entry(self.frame,width=40)
         self.entryDepartamento.grid(row=1,column=1,padx=5,pady=5)
         ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=2,column=0,padx=5,pady=5)
+        self.entryPrograma = ttk.Entry(self.frame,width=40)
+        self.entryPrograma.grid(row=2,column=1,padx=5,pady=5)
+        self.entryPrograma.config(state=tk.DISABLED)
         ttk.Label(self.frame,text='Hora:').grid(row=3,column=0,padx=5,pady=5)
         # ttk.Button(self.frame, text='REGISTRAR UNIDAD CURRICULAR', command=self.RegistrarUnidadCurricular,width=33).grid(row=1,column=0)
         
@@ -39,12 +42,12 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares.heading('#2', text = 'Unidad Curricular')
         self.treeUnidadesCurriculares.heading('#3', text = 'Hora')
         self.treeUnidadesCurriculares.heading('#4', text = 'Departamento')
-        self.treeUnidadesCurriculares.heading('#5', text = 'PT')
+        self.treeUnidadesCurriculares.heading('#5', text = 'Programa Tradiciónal')
         self.treeUnidadesCurriculares.column('#1', width=50)
         self.treeUnidadesCurriculares.column('#2', width=240)
         self.treeUnidadesCurriculares.column('#3', width=40)
         self.treeUnidadesCurriculares.column('#4', width=120)
-        self.treeUnidadesCurriculares.column('#5', width=120)
+        self.treeUnidadesCurriculares.column('#5', width=130)
         self.scrollbarUnidadesCurriculares = ttk.Scrollbar(self.frameUnidadesCurriculares, orient=tk.VERTICAL, command=self.treeUnidadesCurriculares.yview)
         self.treeUnidadesCurriculares.configure(yscroll=self.scrollbarUnidadesCurriculares.set)
         self.scrollbarUnidadesCurriculares.grid(column=1,row=0, sticky='ns')
