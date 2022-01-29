@@ -193,7 +193,6 @@ class CargaAcademica(tk.Toplevel):
 			self.entryEditarTposgrado = ttk.Entry(self.frame, width=40)
 			self.entryEditarTposgrado.grid(row=4,column=1,padx=5,pady=5)
 			self.DescargaAcademicaEditar = tk.StringVar()
-			self.DescargaAcademicaEditar.set(value='No')
 			ttk.Label(self.frame,text='Descarga Académica').grid(row=5,column=0)
 			ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.DescargaAcademicaEditar, command= self.descargaAcademicaSi).grid(row=6,column=0)
 			ttk.Radiobutton(self.frame, text='No', value='No',variable=self.DescargaAcademicaEditar, command= self.descargaAcademicaNo).grid(row=6,column=1)
@@ -209,7 +208,6 @@ class CargaAcademica(tk.Toplevel):
 			self.entryEditarTelefono = ttk.Entry(self.frame,width=40)
 			self.entryEditarTelefono.grid(row=10,column=1,padx=5,pady=5)
 			self.laboraEditar = tk.StringVar()
-			self.laboraEditar.set(value='No')
 			ttk.Label(self.frame, text='Labora en otra empresa:').grid(row=11,column=0)
 			ttk.Radiobutton(self.frame, text='Si', value='Si',variable=self.laboraEditar, command=self.especifiqueSi).grid(row=12,column=0)
 			ttk.Radiobutton(self.frame, text='No', value='No',variable=self.laboraEditar, command=self.especifiqueNo).grid(row=12,column=1)
@@ -238,7 +236,42 @@ class CargaAcademica(tk.Toplevel):
 	def dataDocente(self,id):
 		nombreApellido = self.conexion('SELECT NombreApellido FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		self.entryEditarNombre.insert(0,nombreApellido[0])
-
+		categoria = self.conexion('SELECT Categoria FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarCategoria.insert(0,categoria[0])
+		dedicacion = self.conexion('SELECT Dedicacion FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarDedicación.insert(0,dedicacion[0])
+		pregrado = self.conexion('SELECT Pregrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarTpregado.insert(0,pregrado[0])
+		postgrado = self.conexion('SELECT Postgrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarTposgrado.insert(0,postgrado[0])
+		descargaAcademica = self.conexion('SELECT DescargaAcademica FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		if descargaAcademica[0] == 'Si':
+			self.DescargaAcademicaEditar.set(value='Si')
+			self.entryEditarRazon.config(state=tk.NORMAL)
+			razonDescarga = self.conexion('SELECT RazonDescarga FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+			self.entryEditarRazon.insert(0,razonDescarga)		
+		elif descargaAcademica[0] == 'No':
+			self.DescargaAcademicaEditar.set(value='No')
+			self.entryEditarRazon.config(state=tk.DISABLED)
+		else:
+			self.DescargaAcademicaEditar.set(value='No')
+			self.entryEditarRazon.config(state=tk.DISABLED)
+		condicionLaboral = self.conexion('SELECT CondicionLaboral FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.CondicionLaboralEditar.set(value=condicionLaboral)
+		telefono = self.conexion('SELECT Telefono FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarTelefono.insert(0,telefono[0])
+		labore = self.conexion('SELECT Labore FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		if labore[0] == 'Si':
+			self.laboraEditar.set(value='Si')
+			self.entryEditarEspecifique.config(state=tk.NORMAL)
+			especifique = self.conexion('SELECT Especifique FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+			self.entryEditarEspecifique.insert(0,especifique[0])
+		elif labore[0] == 'No':
+			self.laboraEditar.set(value='No')
+			self.entryEditarEspecifique.config(state=tk.DISABLED)
+		else:
+			self.laboraEditar.set(value='No')
+			self.entryEditarEspecifique.config(state=tk.DISABLED)
 
 	def editar2(self):
 		self.conexion('UPDATE docente SET NombreApellido = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.seleccion))
