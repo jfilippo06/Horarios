@@ -54,11 +54,6 @@ class Registro(tk.Toplevel):
         self.scrollbar.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteDatos,text='HABILITAR',command=self.habilitarDatosBasicos, width=75).grid(row=2,column=0)
 
-        self.frameChoose2 = ttk.Frame(self.noteCarga)
-        self.frameChoose2.grid(row=0,column=0)
-        self.chosee2 = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose2, text='Docente', value='Docente',variable=self.chosee2, command=self.mostrarDocentes).grid(row=0,column=0)
-
         self.tree2 = ttk.Treeview(self.noteCarga,columns = ['#1','#2'], show='headings')
         self.tree2.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
         self.scrollbar2 = ttk.Scrollbar(self.noteCarga, orient=tk.VERTICAL, command=self.tree2.yview)
@@ -66,31 +61,23 @@ class Registro(tk.Toplevel):
         self.scrollbar2.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteCarga,text='HABILITAR',command=self.habilitarCarga, width=75).grid(row=2,column=0)
 
-        self.frameChoose3 = ttk.Frame(self.noteUnidades)
-        self.frameChoose3.grid(row=0,column=0)
-        self.chosee3 = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose3, text='Unidades curriculares', value='Unidades curriculares',variable=self.chosee3, command=self.mostrarMaterias).grid(row=0,column=0)
-        ttk.Radiobutton(self.frameChoose3, text='Departamento', value='Departamento',variable=self.chosee3, command=self.mostrarDepartamento).grid(row=0,column=1)
-        ttk.Radiobutton(self.frameChoose3, text='Pt', value='Pt',variable=self.chosee3, command=self.mostrarPt).grid(row=0,column=2)
-
         self.tree3 = ttk.Treeview(self.noteUnidades,columns = ['#1','#2'], show='headings')
         self.tree3.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
         self.scrollbar3 = ttk.Scrollbar(self.noteUnidades, orient=tk.VERTICAL, command=self.tree3.yview)
         self.tree3.configure(yscroll=self.scrollbar3.set)
         self.scrollbar3.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteUnidades,text='HABILITAR',command=self.habilitarUnidades, width=75).grid(row=2,column=0)
-
-        self.frameChoose4 = ttk.Frame(self.noteUsuarios)
-        self.frameChoose4.grid(row=0,column=0)
-        self.chosee4 = tk.StringVar()
-        ttk.Radiobutton(self.frameChoose4, text='Usuarios', value='Usuarios',variable=self.chosee4, command=self.mostrarUsuarios).grid(row=0,column=0)
-        
+ 
         self.tree4 = ttk.Treeview(self.noteUsuarios,columns = ['#1','#2'], show='headings')
         self.tree4.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
         self.scrollbar4 = ttk.Scrollbar(self.noteUsuarios, orient=tk.VERTICAL, command=self.tree4.yview)
         self.tree4.configure(yscroll=self.scrollbar4.set)
         self.scrollbar4.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteUsuarios,text='HABILITAR',command=self.habilitarUsuarios, width=75).grid(row=2,column=0)
+
+        self.mostrarDocentes()
+        self.mostrarMaterias()
+        self.mostrarUsuarios()
 
     def conexion(self,query,parametros = ()):
         try:
@@ -113,29 +100,11 @@ class Registro(tk.Toplevel):
         self.rows = self.mostrar.fetchall()
         return self.rows
 
-    def selecionarFila(self):
-        self.item = self.tree.focus()
-        self.data = self.tree.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
-
-    def selecionarFila2(self):
-        self.item = self.tree2.focus()
-        self.data = self.tree2.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
-        
-    def selecionarFila3(self):
-        self.item = self.tree3.focus()
-        self.data = self.tree3.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
-
-    def selecionarFila4(self):
-        self.item = self.tree4.focus()
-        self.data = self.tree4.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
+    def selecionarFila(self,tree):
+        item = tree.focus()
+        data = tree.item(item)
+        id = data['values'][0]
+        return id
 
     def volver(self):
         self.destroy()
@@ -195,7 +164,7 @@ class Registro(tk.Toplevel):
 
     def mostrarDocentes(self):
         self.tree2.heading('#1', text = 'Id')
-        self.tree2.heading('#2', text = 'Docentes')
+        self.tree2.heading('#2', text = 'Docente')
         self.limpiarTabla(self.tree2)
         self.rows = self.TraerDatos("SELECT Id,NombreApellido FROM docente WHERE docente.Estado = 'Inactivo'")
         for row in self.rows:
@@ -203,31 +172,15 @@ class Registro(tk.Toplevel):
 
     def mostrarMaterias(self):
         self.tree3.heading('#1', text = 'Id')
-        self.tree3.heading('#2', text = 'Materias')
+        self.tree3.heading('#2', text = 'Materia')
         self.limpiarTabla(self.tree3)
         self.rows = self.TraerDatos("SELECT Id,UnidadCurricular FROM unidad_curricular WHERE unidad_curricular.Estado = 'Inactivo' ORDER BY UnidadCurricular")
         for row in self.rows:
             self.tree3.insert('',tk.END,values=row)
 
-    def mostrarDepartamento(self):
-        self.tree3.heading('#1', text = 'Id')
-        self.tree3.heading('#2', text = 'Departamento')
-        self.limpiarTabla(self.tree3)
-        self.rows = self.TraerDatos("SELECT * FROM departamento WHERE departamento.Estado = 'Inactivo'")
-        for row in self.rows:
-            self.tree3.insert('',tk.END,values=row)
-
-    def mostrarPt(self):
-        self.tree3.heading('#1', text = 'Id')
-        self.tree3.heading('#2', text = 'Pt')
-        self.limpiarTabla(self.tree3)
-        self.rows = self.TraerDatos("SELECT * FROM pt WHERE pt.Estado = 'Inactivo'")
-        for row in self.rows:
-            self.tree3.insert('',tk.END,values=row)
-
     def mostrarUsuarios(self):
         self.tree4.heading('#1', text = 'Id')
-        self.tree4.heading('#2', text = 'Usuarios')
+        self.tree4.heading('#2', text = 'Usuario')
         self.limpiarTabla(self.tree4)
         self.rows = self.TraerDatos("SELECT Id, Usuario FROM usuario_admin WHERE usuario_admin.Estado = 'Inactivo'")
         for row in self.rows:
@@ -237,72 +190,62 @@ class Registro(tk.Toplevel):
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el cohorte?'):
-                self.conexion('UPDATE cohorte SET Estado = "Activo" WHERE cohorte.id = ? and cohorte.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE cohorte SET Estado = "Activo" WHERE cohorte.id = ? and cohorte.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarCohorte()
                 messagebox.showinfo(title='Info', message='Cohorte habilitado.')
         elif self.chosee.get() == 'Lapso académico' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el lapso académico?'):
-                self.conexion('UPDATE lapso_academico SET Estado = "Activo" WHERE lapso_academico.id = ? and lapso_academico.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE lapso_academico SET Estado = "Activo" WHERE lapso_academico.id = ? and lapso_academico.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarLapsoAcademico()
                 messagebox.showinfo(title='Info', message='Lapso académico habilitado.')
         elif self.chosee.get() == 'Trayecto' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el trayecto?'):
-                self.conexion('UPDATE trayecto SET Estado = "Activo" WHERE trayecto.id = ? and trayecto.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE trayecto SET Estado = "Activo" WHERE trayecto.id = ? and trayecto.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarTrayecto()
                 messagebox.showinfo(title='Info', message='Trayecto habilitado.')
         elif self.chosee.get() == 'Trimestre' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el trimestre?'):
-                self.conexion('UPDATE trimestre SET Estado = "Activo" WHERE trimestre.id = ? and trimestre.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE trimestre SET Estado = "Activo" WHERE trimestre.id = ? and trimestre.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarTrimestre()
                 messagebox.showinfo(title='Info', message='Trimestre habilitado.')
         elif self.chosee.get() == 'Sección' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar la sección?'):
-                self.conexion('UPDATE seccion SET Estado = "Activo" WHERE seccion.id = ? and seccion.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE seccion SET Estado = "Activo" WHERE seccion.id = ? and seccion.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarSeccion()
                 messagebox.showinfo(title='Info', message='Sección habilitada.')
         elif self.chosee.get() == 'Laboratorio' and self.tree.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el laboratorio?'):
-                self.conexion('UPDATE laboratorio SET Estado = "Activo" WHERE laboratorio.id = ? and laboratorio.Estado = "Inactivo"',(self.selecionarFila(),))
+                self.conexion('UPDATE laboratorio SET Estado = "Activo" WHERE laboratorio.id = ? and laboratorio.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarLaboratorio()
                 messagebox.showinfo(title='Info', message='Laboratorio habilitado.')
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
 
     def habilitarCarga(self):
-        if self.chosee2.get() == 'Docente' and self.tree2.selection():
+        if self.tree2.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar al docente?'):
-                self.conexion('UPDATE docente SET Estado = "Activo" WHERE docente.Id = ? AND docente.Estado = "Inactivo"',(self.selecionarFila2(),))
-                self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila2(),))
-                self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila2(),))
-                self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila2(),))
+                self.conexion('UPDATE docente SET Estado = "Activo" WHERE docente.Id = ? AND docente.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
+                self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
+                self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
+                self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
                 self.mostrarDocentes()
                 messagebox.showinfo(title='Info', message='Docente y todos sus registros habilitados')
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
 
     def habilitarUnidades(self):
-        if self.chosee3.get() == 'Unidades curriculares' and self.tree3.selection():
+        if self.tree3.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar la unidad curricular?'):
-                self.conexion('UPDATE unidad_curricular SET Estado = "Activo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Inactivo"',(self.selecionarFila3(),))
+                self.conexion('UPDATE unidad_curricular SET Estado = "Activo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Inactivo"',(self.selecionarFila(self.tree3),))
                 self.mostrarMaterias()
                 messagebox.showinfo(title='Info', message='Unidad curricular habilitada')
-        elif self.chosee3.get() == 'Departamento' and self.tree3.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el departamento?'):
-                self.conexion('UPDATE departamento SET Estado = "Activo" WHERE departamento.Id = ? and departamento.Estado = "Inactivo"',(self.selecionarFila3(),))
-                self.mostrarDepartamento()
-                messagebox.showinfo(title='Info', message='Departamento habilitado')
-        elif self.chosee3.get() == 'Pt' and self.tree3.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el pt?'):
-                self.conexion('UPDATE pt SET Estado = "Activo" WHERE pt.Id = ? and pt.Estado = "Inactivo"',(self.selecionarFila3(),))
-                self.mostrarPt()
-                messagebox.showinfo(title='Info', message='Pt habilitado')
         else:
             messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
         
     def habilitarUsuarios(self):
-        if self.chosee4.get() == 'Usuarios' and self.tree4.selection():
+        if self.tree4.selection():
             if messagebox.askyesno('Habilitar','¿Desea habilitar el usuario?'):
-                self.conexion('UPDATE usuario_admin SET Estado = "Activo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Inactivo"',(self.selecionarFila4(),))
+                self.conexion('UPDATE usuario_admin SET Estado = "Activo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Inactivo"',(self.selecionarFila(self.tree4),))
                 self.mostrarUsuarios()
                 messagebox.showinfo(title='Info', message='Usuarios habilitado')
         else:
