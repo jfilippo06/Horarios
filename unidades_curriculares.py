@@ -65,6 +65,7 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares.column('#3', width=40)
         self.treeUnidadesCurriculares.column('#4', width=120)
         self.treeUnidadesCurriculares.column('#5', width=130)
+        self.treeUnidadesCurriculares.bind('<Double-1>',lambda e, tree = self.treeUnidadesCurriculares: self.doubleClick(tree))
         self.scrollbarUnidadesCurriculares = ttk.Scrollbar(self.frameUnidadesCurriculares, orient=tk.VERTICAL, command=self.treeUnidadesCurriculares.yview)
         self.treeUnidadesCurriculares.configure(yscroll=self.scrollbarUnidadesCurriculares.set)
         self.scrollbarUnidadesCurriculares.grid(column=1,row=0, sticky='ns')
@@ -93,6 +94,31 @@ class Unidades_curriculares(tk.Toplevel):
     def desactivar2(self):
         self.entryDepartamento.config(state=tk.DISABLED)
         self.entryUnidadCurricular.focus()
+
+    def doubleClick(self,tree):
+        item = tree.focus()
+        data = tree.item(item)
+        unidad = data['values'][1]
+        hora = data['values'][2]
+        departamento = data['values'][3]
+        programa = data['values'][4]
+        self.entryUnidadCurricular.delete(0, tk.END)
+        self.entryUnidadCurricular.insert(0,unidad)
+        self.hora.set(value=hora)
+        if not departamento == ' ':
+            self.entryDepartamento.config(state=tk.NORMAL)
+            self.entryDepartamento.delete(0, tk.END)
+            self.entryDepartamento.insert(0,departamento)
+        else:
+            self.entryDepartamento.delete(0, tk.END)
+            self.entryDepartamento.config(state=tk.DISABLED)
+        if not programa == ' ':
+            self.entryPrograma.config(state=tk.NORMAL)
+            self.entryPrograma.delete(0, tk.END)
+            self.entryPrograma.insert(0,programa)
+        else:
+            self.entryPrograma.delete(0, tk.END)
+            self.entryPrograma.config(state=tk.DISABLED)        
 
     def conexion(self,query,parametros = ()):
         try:
@@ -128,9 +154,6 @@ class Unidades_curriculares(tk.Toplevel):
         for row in self.rows:
             self.treeUnidadesCurriculares.insert('',tk.END,values=row)
 
-    def ValidarCeldaUnidadCurricular(self):
-        return len(self.entryUnidadCurricular.get())
-
     def selecionarFilaUnidadesCurriculares(self):
         self.item = self.treeUnidadesCurriculares.focus()
         self.data = self.treeUnidadesCurriculares.item(self.item)
@@ -138,18 +161,41 @@ class Unidades_curriculares(tk.Toplevel):
         return self.id
 
     def RegistrarUnidadCurricular(self):
-        if self.ValidarCeldaUnidadCurricular():
-            self.query = 'INSERT INTO unidad_curricular VALUES (NUll,?,"","","","Activo")'
-            self.parametros = (self.entryUnidadCurricular.get())
-            if self.conexion(self.query,(self.parametros,)):
-                self.MostrarDatosUnidadesCurriculares()
-                self.LimpiarCeldaUnidadCurricular()
-                messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
+        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
+            if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?'):
+                if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo")',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa())):
+                    self.MostrarDatosUnidadesCurriculares()
+                    self.entryUnidadCurricular.delete(0, tk.END)
+                    self.entryDepartamento.delete(0, tk.END)
+                    self.entryPrograma.delete(0, tk.END)
+                    self.hora.set(value='')
+                    messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
+                else:
+                    messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada')
             else:
-                messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada')
+                self.entryUnidadCurricular.focus()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor')
+
+
+    def departamento(self):
+        if not self.entryDepartamento.state():
+            return self.entryDepartamento.get()
+        else:
+            return ' '
+
+    def programa(self):
+        if not self.entryPrograma.state():
+            return self.entryPrograma.get()
+        else:
+            return ' '
     
+    def cantidad(self):
+        if self.hora.get():
+            return self.hora.get()
+        else:
+            return ' '        
+
     def eliminarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?'):
