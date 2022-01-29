@@ -160,24 +160,6 @@ class Unidades_curriculares(tk.Toplevel):
         self.id = self.data['values'][0]
         return self.id
 
-    def RegistrarUnidadCurricular(self):
-        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
-            if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?'):
-                if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo")',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa())):
-                    self.MostrarDatosUnidadesCurriculares()
-                    self.entryUnidadCurricular.delete(0, tk.END)
-                    self.entryDepartamento.delete(0, tk.END)
-                    self.entryPrograma.delete(0, tk.END)
-                    self.hora.set(value='')
-                    messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
-                else:
-                    messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada')
-            else:
-                self.entryUnidadCurricular.focus()
-        else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor')
-
-
     def departamento(self):
         if not self.entryDepartamento.state():
             return self.entryDepartamento.get()
@@ -196,6 +178,23 @@ class Unidades_curriculares(tk.Toplevel):
         else:
             return ' '        
 
+    def RegistrarUnidadCurricular(self):
+        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
+            if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?'):
+                if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo")',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa())):
+                    self.MostrarDatosUnidadesCurriculares()
+                    self.entryUnidadCurricular.delete(0, tk.END)
+                    self.entryDepartamento.delete(0, tk.END)
+                    self.entryPrograma.delete(0, tk.END)
+                    self.hora.set(value='')
+                    messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
+                else:
+                    messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada')
+            else:
+                self.entryUnidadCurricular.focus()
+        else:
+            messagebox.showwarning(title='Warning', message='Introduzca un valor')
+
     def eliminarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?'):
@@ -210,16 +209,17 @@ class Unidades_curriculares(tk.Toplevel):
             messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a deshabilitar.')
 
     def modificarUnidadCurricular(self):
-        if self.treeUnidadesCurriculares.selection():
+        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
-                self.query = 'UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"'
-                self.parametros = (self.entryUnidadCurricular.get())
-                self.id = self.selecionarFilaUnidadesCurriculares()
-                self.conexion(self.query,(self.parametros, self.id))
+                self.conexion('UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.entryUnidadCurricular.get(), self.selecionarFilaUnidadesCurriculares()))
+                self.conexion('UPDATE unidad_curricular SET Hora = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.cantidad(), self.selecionarFilaUnidadesCurriculares()))
+                self.conexion('UPDATE unidad_curricular SET Departamento = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.departamento(), self.selecionarFilaUnidadesCurriculares()))
+                self.conexion('UPDATE unidad_curricular SET Pt = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.programa(), self.selecionarFilaUnidadesCurriculares()))
                 self.MostrarDatosUnidadesCurriculares()
-                self.LimpiarCeldaUnidadCurricular()
+                self.entryUnidadCurricular.delete(0, tk.END)
+                self.entryDepartamento.delete(0, tk.END)
+                self.entryPrograma.delete(0, tk.END)
+                self.hora.set(value='')
                 messagebox.showinfo(title='Info', message='Unidad curricular Editada Correctamente.')
-            else:
-                self.MostrarDatosUnidadesCurriculares()
         else:
             messagebox.showwarning(title='Warning', message='Seleccione una la unidad curricular a editar.')
