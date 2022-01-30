@@ -132,7 +132,7 @@ class CargaAcademica(tk.Toplevel):
 	def registrarDocente(self):
 		if len(self.entryNombreApellido.get()) != 0:
 			if messagebox.askyesno('Registrar','Registrar docente'):
-				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","","","","","","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
+				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","Si","","","","No","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente Registrado.')
 				self.docenteCancelar()
@@ -215,7 +215,7 @@ class CargaAcademica(tk.Toplevel):
 			self.entryEditarEspecifique = ttk.Entry(self.frame,width=40)
 			self.entryEditarEspecifique.grid(row=13,column=1,padx=5,pady=5)
 			self.entryEditarEspecifique.config(state=tk.DISABLED)
-			ttk.Button(self.new,text='ACTUALIZAR').grid(row=1,column=0)
+			ttk.Button(self.new,text='ACTUALIZAR', command=self.editar2).grid(row=1,column=0)
 			self.dataDocente(self.seleccion)
 			self.new.mainloop()	
 		else: 
@@ -249,7 +249,7 @@ class CargaAcademica(tk.Toplevel):
 			self.DescargaAcademicaEditar.set(value='Si')
 			self.entryEditarRazon.config(state=tk.NORMAL)
 			razonDescarga = self.conexion('SELECT RazonDescarga FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
-			self.entryEditarRazon.insert(0,razonDescarga)		
+			self.entryEditarRazon.insert(0,razonDescarga[0])		
 		elif descargaAcademica[0] == 'No':
 			self.DescargaAcademicaEditar.set(value='No')
 			self.entryEditarRazon.config(state=tk.DISABLED)
@@ -257,7 +257,7 @@ class CargaAcademica(tk.Toplevel):
 			self.DescargaAcademicaEditar.set(value='No')
 			self.entryEditarRazon.config(state=tk.DISABLED)
 		condicionLaboral = self.conexion('SELECT CondicionLaboral FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
-		self.CondicionLaboralEditar.set(value=condicionLaboral)
+		self.CondicionLaboralEditar.set(value=condicionLaboral[0])
 		telefono = self.conexion('SELECT Telefono FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		self.entryEditarTelefono.insert(0,telefono[0])
 		labore = self.conexion('SELECT Labore FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
@@ -273,19 +273,36 @@ class CargaAcademica(tk.Toplevel):
 			self.laboraEditar.set(value='No')
 			self.entryEditarEspecifique.config(state=tk.DISABLED)
 
+	def razon(self):
+		if self.DescargaAcademicaEditar.get() == 'Si':
+			return self.entryEditarRazon.get()
+		elif self.DescargaAcademicaEditar.get() == 'No':
+			return ''
+		else:
+			return ''
+
+	def especifique(self):
+		if self.laboraEditar.get() == 'Si':
+			return self.entryEditarEspecifique.get()
+		elif self.laboraEditar.get() == 'No':
+			return ''
+		else:
+			return ''
+
+	def condicion(self):
+		if self.CondicionLaboralEditar.get() == 'Ordinario':
+			return self.CondicionLaboralEditar.get()
+		elif self.CondicionLaboralEditar.get() == 'Contratado':
+			return self.CondicionLaboralEditar.get()
+		else: 
+			return ''
+
 	def editar2(self):
-		self.conexion('UPDATE docente SET NombreApellido = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Categoria = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarCategoria.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Dedicacion = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarDedicación.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Pregrado = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTpregado.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Postgrado = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTposgrado.get(), self.seleccion))
-		self.conexion('UPDATE docente SET DescargaAcademica = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.DescargaAcademicaEditar.get(), self.seleccion))
-		self.conexion('UPDATE docente SET CondicionLaboral = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.CondicionLaboralEditar.get(), self.seleccion))
-		self.conexion('UPDATE docente SET RazonDescarga = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarRazon.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Telefono = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarTelefono.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Labore = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.laboraEditar.get(), self.seleccion))
-		self.conexion('UPDATE docente SET Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarEspecifique.get(), self.seleccion))
-		
+		if messagebox.askyesno('actualizar','¿Desea actualizar la data?'):
+			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Postgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
+			messagebox.showinfo(title='Info', message='Data actualizada.')
+			self.new.destroy()
+
 	def gestionarMaterias(self):
 		if self.tree.selection():
 			self.lower()
