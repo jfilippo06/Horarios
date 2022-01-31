@@ -151,15 +151,10 @@ class CargaAcademica(tk.Toplevel):
 	def eliminar(self):
 		if self.tree.selection():
 			if messagebox.askyesno('Deshabilitado','¿Desea deshabilitar al docente selecionado?'):
-				self.parametros = self.selecionarFila(self.tree)
-				self.query1 = 'UPDATE docente SET Estado = "Inactivo" WHERE docente.Id = ? AND docente.Estado = "Activo"'
-				self.query2 = 'UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Activo"'
-				self.query3 = 'UPDATE materias_docentes SET Estado = "Inactivo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Activo"'
-				self.query4 = 'UPDATE materias_laboratorios SET Estado = "Inactivo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Activo"'
-				self.conexion(self.query1, (self.parametros,))
-				self.conexion(self.query2, (self.parametros,))
-				self.conexion(self.query3, (self.parametros,))
-				self.conexion(self.query4, (self.parametros,))
+				self.conexion( 'UPDATE docente SET Estado = "Inactivo" WHERE docente.Id = ? AND docente.Estado = "Activo"', (self.selecionarFila(self.tree),))
+				self.conexion('UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Activo"', (self.selecionarFila(self.tree),))
+				self.conexion('UPDATE materias_docentes SET Estado = "Inactivo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Activo"', (self.selecionarFila(self.tree),))
+				self.conexion('UPDATE materias_laboratorios SET Estado = "Inactivo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Activo"', (self.selecionarFila(self.tree),))
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente y todos sus registros deshabilitados correctamente.')
 			else:
@@ -1880,7 +1875,7 @@ class CargaAcademica(tk.Toplevel):
 		self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
 		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?,'Activo')",(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='info', message='Materia registrada correctamente NO')
+		messagebox.showinfo(title='info', message='Materia registrada correctamente')
 
 	def registrarSi(self):
 		self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,'Activo')",(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular)))
@@ -1890,7 +1885,7 @@ class CargaAcademica(tk.Toplevel):
 		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?,'Activo')",(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='info', message='Materia registrada  SI')
+		messagebox.showinfo(title='info', message='Materia registrada')
 
 	def editarNo(self):
 		self.conexion('UPDATE materias_asignadas SET Id_lapso_academico = ?, Id_cohorte = ?,Id_trayecto = ?,Id_trimestre = ?,Id_seccion = ?,Id_modalidad = ?,Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ?,Id_unidad_curricular = ? WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeGestionar)))
