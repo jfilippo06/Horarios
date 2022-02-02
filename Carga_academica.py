@@ -137,7 +137,7 @@ class CargaAcademica(tk.Toplevel):
 
 	def registrarDocente(self):
 		if len(self.entryNombreApellido.get()) != 0:
-			if messagebox.askyesno('Registrar','Registrar docente'):
+			if messagebox.askyesno('Registrar','¿Desea registrar al docente?'):
 				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","Si","","","","No","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente Registrado.')
