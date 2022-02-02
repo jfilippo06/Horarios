@@ -165,154 +165,159 @@ class ReporteCargaAcademica(tk.Toplevel):
 
     def generarReporte(self):
         if self.treeReportes.selection() and self.treeReportesLapso.selection() and len(self.entryAdscripcion.get()) != 0 and len(self.entryHorario.get()) != 0 and len(self.entryCargo.get()) != 0:
+            descargaAcademica = self.conexion('SELECT docente.DescargaAcademica FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"',(self.selecionarFila(self.treeReportes),)).fetchone()
+            if descargaAcademica[0] == 'Si':
+                self.docenteId = self.selecionarFilaReporteDocente()
+                self.lapsoId = self.selecionarFilaReporteLapso()
+                self.docente = self.ReporteDocente()
+                self.lapso = self.ReporteLapso()
+                
+                self.parametrosReportes = (self.docenteId, self.lapsoId)
+                
+                self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+                self.archivo = open(self.guardar,'w')
+                
+                self.pdf = canvas.Canvas(self.guardar, pagesize = A3)
+                self.pdf.setFontSize(size=12)
+                self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
+                self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
+                self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
+                self.tablaInicio()
+                self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
+                self.tablaMaterias()
+                self.listadoMaterias()
+                if self.counter == 10: 
+                    self.pdf.drawString(375,490,'Horarios de clases')
+                    print('horario de clases---10')
+                elif self.counter == 9: 
+                    self.pdf.drawString(375,530,'Horarios de clases')
+                    print('horario de clases---9')
+                elif self.counter == 8: 
+                    self.pdf.drawString(375,570,'Horarios de clases')
+                    print('horario de clases---8')
+                elif self.counter == 7: 
+                    self.pdf.drawString(375,600,'Horarios de clases')
+                    print('horario de clases---7')
+                elif self.counter == 6: 
+                    self.pdf.drawString(375,640,'Horarios de clases')
+                    print('horario de clases---6')
+                elif self.counter == 5: 
+                    self.pdf.drawString(375,690,'Horarios de clases')
+                    print('horario de clases---5')
+                elif self.counter == 4: 
+                    self.pdf.drawString(375,730,'Horarios de clases')
+                    print('horario de clases---4')
+                elif self.counter == 3: 
+                    self.pdf.drawString(375,770,'Horarios de clases')
+                    print('horario de clases---3')
+                elif self.counter == 2: 
+                    self.pdf.drawString(375,810,'Horarios de clases')
+                    print('horario de clases---2')
+                elif self.counter == 1: 
+                    self.pdf.drawString(375,850,'Horarios de clases')
+                    print('horario de clases---1')
+                else:
+                    self.pdf.drawString(375,850,'Horarios de clases')
+                    print('horario de clases---0')
+                self.tablaHorarioMorning()
+                self.tablaHorarioAfternon()
+                self.tablaHorarioNinght()
+                if self.counter == 10: 
+                    self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
+                    print('adscripcion---10')
+                elif self.counter == 9: 
+                    self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
+                    print('adscripcion---9')
+                elif self.counter == 8: 
+                    self.pdf.showPage()
+                    self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+                    print('adscripcion---8')
+                elif self.counter == 7:
+                    self.pdf.showPage()
+                    self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+                    print('adscripcion---7')
+                elif self.counter == 6:
+                    self.pdf.showPage()
+                    self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+                    print('adscripcion---6')
+                elif self.counter == 5: 
+                    self.pdf.showPage()
+                    self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
+                    print('adscripcion---5')
+                elif self.counter == 4: 
+                    self.pdf.drawString(330,150,'Adscripción Académico-administrativa')
+                    print('adscripcion---4')
+                elif self.counter == 3: 
+                    self.pdf.drawString(330,190,'Adscripción Académico-administrativa')
+                    print('adscripcion---3')
+                elif self.counter == 2: 
+                    self.pdf.drawString(330,230,'Adscripción Académico-administrativa')
+                    print('adscripcion---2')
+                elif self.counter == 1: 
+                    self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+                    print('adscripcion---1')
+                else:
+                    self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
+                    print('adscripcion---0')
+                self.tablaHorarioAdcrispcion()
+                self.tablaHorarioObservacion()
             
-            self.docenteId = self.selecionarFilaReporteDocente()
-            self.lapsoId = self.selecionarFilaReporteLapso()
-            self.docente = self.ReporteDocente()
-            self.lapso = self.ReporteLapso()
-            
-            self.parametrosReportes = (self.docenteId, self.lapsoId)
-            
-            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
-            self.archivo = open(self.guardar,'w')
-            
-            self.pdf = canvas.Canvas(self.guardar, pagesize = A3)
-            self.pdf.setFontSize(size=12)
-            self.pdf.drawString(375,1150,'CARGA ACADÉMICA')
-            self.pdf.drawString(368,1135,'Lapso Académico ' + self.lapso)
-            self.pdf.drawImage(logoPDF,690,1100,width=80,height=80)
-            self.tablaInicio()
-            self.pdf.drawString(10,980,'Por medio de la presente se le notifica que Usted, ha sido designado(a) para dictar la(s) unidad(es) curricular(es) que a continuación se especifica(n):')
-            self.tablaMaterias()
-            self.listadoMaterias()
-            if self.counter == 10: 
-                self.pdf.drawString(375,490,'Horarios de clases')
-                print('horario de clases---10')
-            elif self.counter == 9: 
-                self.pdf.drawString(375,530,'Horarios de clases')
-                print('horario de clases---9')
-            elif self.counter == 8: 
-                self.pdf.drawString(375,570,'Horarios de clases')
-                print('horario de clases---8')
-            elif self.counter == 7: 
-                self.pdf.drawString(375,600,'Horarios de clases')
-                print('horario de clases---7')
-            elif self.counter == 6: 
-                self.pdf.drawString(375,640,'Horarios de clases')
-                print('horario de clases---6')
-            elif self.counter == 5: 
-                self.pdf.drawString(375,690,'Horarios de clases')
-                print('horario de clases---5')
-            elif self.counter == 4: 
-                self.pdf.drawString(375,730,'Horarios de clases')
-                print('horario de clases---4')
-            elif self.counter == 3: 
-                self.pdf.drawString(375,770,'Horarios de clases')
-                print('horario de clases---3')
-            elif self.counter == 2: 
-                self.pdf.drawString(375,810,'Horarios de clases')
-                print('horario de clases---2')
-            elif self.counter == 1: 
-                self.pdf.drawString(375,850,'Horarios de clases')
-                print('horario de clases---1')
+                self.pdf.save()
+                self.archivo.close()
+                self.setStyles.clear()
+                self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles2.clear()
+                self.setStyles2.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles3.clear()
+                self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles4.clear()
+                self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles5.clear()
+                self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles6.clear()
+                self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles7.clear()
+                self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+
+                self.setStyles8.clear()
+                self.setStyles8.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles8.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
+                self.setStyles8.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
+                self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+                
+                self.counter = 0
+                messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente')
+            elif descargaAcademica[0] == 'No':
+                messagebox.showwarning(title='Error', message='Descarga Academica no permitada')
             else:
-                self.pdf.drawString(375,850,'Horarios de clases')
-                print('horario de clases---0')
-            self.tablaHorarioMorning()
-            self.tablaHorarioAfternon()
-            self.tablaHorarioNinght()
-            if self.counter == 10: 
-                self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
-                print('adscripcion---10')
-            elif self.counter == 9: 
-                self.pdf.drawString(330,970,'Adscripción Académico-administrativa')
-                print('adscripcion---9')
-            elif self.counter == 8: 
-                self.pdf.showPage()
-                self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-                print('adscripcion---8')
-            elif self.counter == 7:
-                self.pdf.showPage()
-                self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-                print('adscripcion---7')
-            elif self.counter == 6:
-                self.pdf.showPage()
-                self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-                print('adscripcion---6')
-            elif self.counter == 5: 
-                self.pdf.showPage()
-                self.pdf.drawString(330,1150,'Adscripción Académico-administrativa')
-                print('adscripcion---5')
-            elif self.counter == 4: 
-                self.pdf.drawString(330,150,'Adscripción Académico-administrativa')
-                print('adscripcion---4')
-            elif self.counter == 3: 
-                self.pdf.drawString(330,190,'Adscripción Académico-administrativa')
-                print('adscripcion---3')
-            elif self.counter == 2: 
-                self.pdf.drawString(330,230,'Adscripción Académico-administrativa')
-                print('adscripcion---2')
-            elif self.counter == 1: 
-                self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
-                print('adscripcion---1')
-            else:
-                self.pdf.drawString(330,270,'Adscripción Académico-administrativa')
-                print('adscripcion---0')
-            self.tablaHorarioAdcrispcion()
-            self.tablaHorarioObservacion()
-		
-            self.pdf.save()
-            self.archivo.close()
-            self.setStyles.clear()
-            self.setStyles.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles2.clear()
-            self.setStyles2.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles2.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles2.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles2.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles3.clear()
-            self.setStyles3.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles3.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles3.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles3.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles4.clear()
-            self.setStyles4.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles4.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles4.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles4.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles5.clear()
-            self.setStyles5.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles5.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles5.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles5.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles6.clear()
-            self.setStyles6.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles6.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles6.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles6.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles7.clear()
-            self.setStyles7.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles7.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles7.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles7.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-
-            self.setStyles8.clear()
-            self.setStyles8.append(('GRID',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles8.append(('BBOX',(0,0),(-1,-1),0.5,colors.black))
-            self.setStyles8.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
-            self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
-            
-            self.counter = 0
-            messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente')
+                messagebox.showwarning(title='Error', message='Algo ocurrio mal, consulte con el desarrollador')
         else:
             messagebox.showwarning(title='Error', message='Debe seleccionar todas las casillas y rellenar todas las celdas')
 
@@ -337,6 +342,12 @@ class ReporteCargaAcademica(tk.Toplevel):
         self.data = self.treeReportesLapso.item(self.item)
         self.id = self.data['values'][0]
         return self.id
+
+    def selecionarFila(self,tree):
+        item = tree.focus()
+        data = tree.item(item)
+        id = data['values'][0]
+        return id
         
     def ReporteDocente(self):
         self.item = self.treeReportes.focus()
