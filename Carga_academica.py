@@ -165,12 +165,12 @@ class CargaAcademica(tk.Toplevel):
 	def editar(self):
 		if self.tree.selection():
 			self.seleccion = self.selecionarFila(self.tree)
-			self.new = tk.Toplevel()
-			self.new.title('Carga Académica Docente')
-			self.new.geometry('410x440')
-			self.new.resizable(width=0,height=0)
-			self.new.iconbitmap(uptpc)
-			self.frame = ttk.Labelframe(self.new)
+			self.newEditar = tk.Toplevel()
+			self.newEditar.title('Carga Académica Docente')
+			self.newEditar.geometry('410x460')
+			self.newEditar.resizable(width=0,height=0)
+			self.newEditar.iconbitmap(uptpc)
+			self.frame = ttk.Labelframe(self.newEditar)
 			self.frame.grid(column=0,row=0,pady=5,padx=5,ipadx=0,ipady=5)
 			ttk.Label(self.frame,text='Nombre y Apellido:').grid(row=0,column=0,padx=5,pady=5)
 			self.entryEditarNombre = ttk.Entry(self.frame,width=40)
@@ -210,9 +210,12 @@ class CargaAcademica(tk.Toplevel):
 			self.entryEditarEspecifique = ttk.Entry(self.frame,width=40)
 			self.entryEditarEspecifique.grid(row=13,column=1,padx=5,pady=5)
 			self.entryEditarEspecifique.config(state=tk.DISABLED)
-			ttk.Button(self.new,text='ACTUALIZAR', command=self.editar2).grid(row=1,column=0)
+			frameNewButton = ttk.Labelframe(self.newEditar)
+			frameNewButton.grid(row=1,column=0)
+			ttk.Button(frameNewButton,text='ACTUALIZAR', command=self.editar2).grid(row=0,column=0)
+			ttk.Button(frameNewButton,text='CANCELAR', command=self.cancelarNewEditar).grid(row=0,column=1)
 			self.dataDocente(self.seleccion)
-			self.new.mainloop()	
+			self.newEditar.mainloop()	
 		else: 
 			messagebox.showwarning(title='Wanning', message='Seleccione un docente a editar.')
 	
@@ -312,7 +315,7 @@ class CargaAcademica(tk.Toplevel):
 
 			ttk.Label(self.new, text='AÑADIR MATERIAS',font=('Helvetica',14)).place(x=550,y=5)
 			self.container = ttk.Labelframe(self.new)
-			self.container.grid(column=0,row=0,ipady=5,ipadx=0,pady=30)
+			self.container.grid(column=0,row=0,pady=25)
 
 			self.frameLapsoAcademico = ttk.Labelframe(self.container)
 			self.frameLapsoAcademico.grid(column=0,row=0,pady=0,padx=5)
@@ -455,7 +458,10 @@ class CargaAcademica(tk.Toplevel):
 			ttk.Radiobutton(self.frameCheckButton, text='Si', value='Si',variable=self.laboratorio, command=self.laboratorioSi).grid(column=0,row=1)
 			ttk.Radiobutton(self.frameCheckButton, text='No', value='No',variable=self.laboratorio, command=self.laboratorioNo).grid(column=1,row=1)
 
-			ttk.Button(self.new, text='REGISTRAR MATERIA', command=self.registrarMateria).grid(row=1,column=0)
+			frameNewButton = ttk.Labelframe(self.new)
+			frameNewButton.grid(row=1,column=0)
+			ttk.Button(frameNewButton, text='REGISTRAR MATERIA', command=self.registrarMateria).grid(row=0,column=0)
+			ttk.Button(frameNewButton, text='CANCELAR', command=self.cancelarNew).grid(row=0,column=1)
 
 			self.frameGestionar = ttk.Labelframe(self.new)
 			self.frameGestionar.grid(column=0,row=2,pady=0,padx=10)
@@ -508,6 +514,12 @@ class CargaAcademica(tk.Toplevel):
 			self.new.mainloop()
 		else:
 			messagebox.showinfo(title='Info', message='Selecione un docente')
+
+	def cancelarNew(self):
+		self.new.destroy()
+
+	def cancelarNewEditar(self):
+		self.newEditar.destroy()
 
 	def laboratorioSi(self):
 		self.treeLaboratorio.state(('!disabled',))

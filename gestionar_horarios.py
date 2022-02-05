@@ -4553,7 +4553,7 @@ class Horarios(tk.Toplevel):
         self.new = tk.Toplevel()
         self.new.title('Configuracion Horarios')
         self.new.resizable(width=0, height=0)
-        self.new.geometry('300x220')
+        self.new.geometry('300x240')
         self.new.iconbitmap(uptpc)
 
         self.container2 = ttk.Labelframe(self.new)
@@ -4570,11 +4570,13 @@ class Horarios(tk.Toplevel):
         self.titulo.focus()
 
         ttk.Button(self.container2,width=40,text='ACTUALIZAR', command=self.editarTitulo).grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self.container2,width=40,text='CANCELAR', command=self.cancelar).grid(row=4,column=0,padx=5,pady=5)
 
         self.MostrarTitulo()
-        print(self.obtenerTitulo())
-
         self.new.mainloop()
+
+    def cancelar(self):
+        self.new.destroy()
 
     def editarTitulo(self):
         if len(self.titulo.get()) != 0:

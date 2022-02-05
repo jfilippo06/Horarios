@@ -85,7 +85,7 @@ class Usuarios(tk.Toplevel):
     def crear(self):
         self.newCrear = tk.Toplevel()
         self.newCrear.title('Crear usuarios')
-        self.newCrear.geometry('390x125')
+        self.newCrear.geometry('390x145')
         self.newCrear.resizable(width=0,height=0)
         self.newCrear.iconbitmap(uptpc)
         ttk.Label(self.newCrear, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
@@ -101,14 +101,18 @@ class Usuarios(tk.Toplevel):
         self.newPassword2.grid(row=2,column=1,padx=5,pady=5)
         self.newPassword2.config(show='*')
         ttk.Button(self.newCrear,text='CREAR USUARIO', command=self.encriptar,width=40).grid(row=3,column=1)
+        ttk.Button(self.newCrear,text='CANCELAR', command=self.cancelarUser,width=40).grid(row=4,column=1)
         self.newCrear.mainloop()
+
+    def cancelarUser(self):
+        self.newCrear.destroy()
 
     def editar(self):
         if self.treeUsuarios.selection():
             self.id = self.selecionarFila()
             self.newEditar = tk.Toplevel()
             self.newEditar.title('Editar usuario')
-            self.newEditar.geometry('390x125')
+            self.newEditar.geometry('390x145')
             self.newEditar.resizable(width=0,height=0)
             self.newEditar.iconbitmap(uptpc)
             ttk.Label(self.newEditar, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
@@ -123,10 +127,13 @@ class Usuarios(tk.Toplevel):
             self.newPasswordEditar2.grid(row=2,column=1,padx=5,pady=5)
             self.newPasswordEditar2.config(show='*')
             ttk.Button(self.newEditar,text='EDITAR USUARIO', command=self.editarUsuario,width=40).grid(row=3,column=1)
+            ttk.Button(self.newEditar,text='CANCELAR', command=self.cancelarEdit,width=40).grid(row=4,column=1)
             self.newEditar.mainloop()
-
         else:
             messagebox.showwarning(title='Warning', message='Seleccione un usuario')
+
+    def cancelarEdit(self):
+        self.newEditar.destroy()
 
     def deshabilitar(self):
         if self.treeUsuarios.selection():
