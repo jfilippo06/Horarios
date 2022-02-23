@@ -10,7 +10,7 @@ class CargaAcademica(tk.Toplevel):
 	def __init__(self,master = None):
 		super().__init__(master)
 		# Config:
-		self.title('Carga Académica')
+		self.title('Carga académica')
 		self.geometry('485x400')
 		self.resizable(width=0,height=0)
 		self.iconbitmap(uptpc)
@@ -139,9 +139,9 @@ class CargaAcademica(tk.Toplevel):
 		if len(self.entryNombreApellido.get()) != 0:
 			if messagebox.askyesno('Registrar','¿Desea registrar al docente?'):
 				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","Si","","","","No","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
+				self.docenteCancelar()
 				self.MostrarDatos()
 				messagebox.showinfo(title='Info', message='Docente Registrado.')
-				self.docenteCancelar()
 			else:
 				self.entryNombreApellido.delete(0, tk.END)
 				self.entryNombreApellido.focus()
