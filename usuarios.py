@@ -76,11 +76,11 @@ class Usuarios(tk.Toplevel):
         for row in self.rows:
             self.treeUsuarios.insert('',tk.END,values=row)
 
-    def selecionarFila(self):
-        self.item = self.treeUsuarios.focus()
-        self.data = self.treeUsuarios.item(self.item)
-        self.id = self.data['values'][0]
-        return self.id
+    def selecionarFila(self,tree,value):
+        item = tree.focus()
+        data = tree.item(item)
+        id = data['values'][value]
+        return id
 
     def crear(self):
         self.newCrear = tk.Toplevel()
@@ -109,7 +109,8 @@ class Usuarios(tk.Toplevel):
 
     def editar(self):
         if self.treeUsuarios.selection():
-            self.id = self.selecionarFila()
+            self.id = self.selecionarFila(self.treeUsuarios,0)
+            self.nombre = self.selecionarFila(self.treeUsuarios,1)
             self.newEditar = tk.Toplevel()
             self.newEditar.title('Editar usuario')
             self.newEditar.geometry('390x145')
@@ -118,10 +119,12 @@ class Usuarios(tk.Toplevel):
             ttk.Label(self.newEditar, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
             self.newUserEditar = ttk.Entry(self.newEditar,width=40)
             self.newUserEditar.grid(row=0,column=1,padx=5,pady=5)
+            self.newUserEditar.insert(0,self.nombre)
             ttk.Label(self.newEditar, text='Contraseña:').grid(row=1,column=0,padx=5,pady=5)
             self.newPasswordEditar = ttk.Entry(self.newEditar,width=40)
             self.newPasswordEditar.grid(row=1,column=1,padx=5,pady=5)
             self.newPasswordEditar.config(show='*')
+            self.newPasswordEditar.focus()
             ttk.Label(self.newEditar, text='Repiter contraseña:').grid(row=2,column=0,padx=5,pady=5)
             self.newPasswordEditar2 = ttk.Entry(self.newEditar,width=40)
             self.newPasswordEditar2.grid(row=2,column=1,padx=5,pady=5)
@@ -138,7 +141,7 @@ class Usuarios(tk.Toplevel):
     def deshabilitar(self):
         if self.treeUsuarios.selection():
             if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el usuario seleccionado?'):
-                self.id = self.selecionarFila()
+                self.id = self.selecionarFila(self.treeUsuarios,0)
                 self.conexion('UPDATE usuario_admin SET Estado = "Inactivo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.id,))
                 self.mostrarDatosUsuarios()
                 messagebox.showinfo(title='Info', message='Usuario deshabilitado')
@@ -150,27 +153,45 @@ class Usuarios(tk.Toplevel):
     def encriptar(self):
         if len(self.newUser.get()) != 0 and len(self.newPassword.get()) != 0 and len(self.newPassword2.get()) != 0:
             if self.newPassword.get() == self.newPassword2.get():   
-                blake2b = hashlib.blake2b(self.newPassword.get().encode()).hexdigest()
-                self.conexion('INSERT INTO usuario_admin VALUES (NULL,?,?,"Activo")', (self.newUser.get(),blake2b))
-                self.mostrarDatosUsuarios()
-                self.newCrear.destroy()
-                messagebox.showinfo(title='Info', message='Usuario creado')
+                if messagebox.askyesno('Crear','¿Desea crear el usuario?'):
+                    blake2b = hashlib.blake2b(self.newPassword.get().encode()).hexdigest()
+                    self.conexion('INSERT INTO usuario_admin VALUES (NULL,?,?,"Activo")', (self.newUser.get(),blake2b))
+                    self.mostrarDatosUsuarios()
+                    self.newCrear.destroy()
+                    messagebox.showinfo(title='Info', message='Usuario creado')
+                else:
+                    self.newUser.delete(0,tk.END)
+                    self.newPassword.delete(0,tk.END)
+                    self.newPassword2.delete(0,tk.END)
+                    self.newUser.focus()
             else:
                 messagebox.showwarning(title='Warning', message='Contraseña no coinciden')
                 self.newPassword.delete(0,tk.END)
                 self.newPassword2.delete(0,tk.END)
+                self.newPassword.focus()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor')
+            self.newUser.focus()
 
     def editarUsuario(self):
         if len(self.newUserEditar.get()) != 0 and len(self.newPasswordEditar.get()) != 0 and len(self.newPasswordEditar2.get()) != 0:
             if self.newPasswordEditar.get() == self.newPasswordEditar2.get(): 
-                blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
-                self.conexion('UPDATE usuario_admin SET Usuario = ?, Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.newUserEditar.get(),blake2b, self.id))
-                self.mostrarDatosUsuarios()
-                self.newEditar.destroy()
-                messagebox.showinfo(title='Info', message='Usuario Editado')
+                if messagebox.askyesno('Editar','¿Desea editar el usuario?'):
+                    blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
+                    self.conexion('UPDATE usuario_admin SET Usuario = ?, Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.newUserEditar.get(),blake2b, self.id))
+                    self.mostrarDatosUsuarios()
+                    self.newEditar.destroy()
+                    messagebox.showinfo(title='Info', message='Usuario Editado')
+                else:
+                    self.newUserEditar.delete(0,tk.END)
+                    self.newPasswordEditar.delete(0,tk.END)
+                    self.newPasswordEditar2.delete(0,tk.END)
+                    self.newUserEditar.focus()
             else:
                 messagebox.showwarning(title='Warning', message='Contraseña no coiciden')
+                self.newPasswordEditar.delete(0,tk.END)
+                self.newPasswordEditar2.delete(0,tk.END)
+                self.newPasswordEditar.focus()
         else:
             messagebox.showwarning(title='Warning', message='Introduzca un valor')
+            self.newUserEditar.focus()

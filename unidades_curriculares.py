@@ -10,7 +10,7 @@ class Unidades_curriculares(tk.Toplevel):
     def __init__(self,master):
         super().__init__(master)
         # Config:
-        self.title('Unidades Curriculares')
+        self.title('Unidades curriculares')
         self.geometry('615x580')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
@@ -21,7 +21,7 @@ class Unidades_curriculares(tk.Toplevel):
 
         self.frame = ttk.Labelframe(self)
         self.frame.grid(column=0,row=0,padx=5,pady=5)
-        ttk.Label(self.frame,text='Unidad Curricular:').grid(row=0,column=0,padx=5,pady=5)
+        ttk.Label(self.frame,text='Unidad curricular:').grid(row=0,column=0,padx=5,pady=5)
         self.entryUnidadCurricular = ttk.Entry(self.frame,width=40)
         self.entryUnidadCurricular.grid(row=0,column=1,padx=5,pady=5)
         self.entryUnidadCurricular.focus()
@@ -56,10 +56,10 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares = ttk.Treeview(self.frameUnidadesCurriculares, columns=['#1',"#2",'#3','#4','#5'],show='headings',height=10)
         self.treeUnidadesCurriculares.grid(row=0,column=0)
         self.treeUnidadesCurriculares.heading('#1', text = 'Id',)
-        self.treeUnidadesCurriculares.heading('#2', text = 'Unidad Curricular')
+        self.treeUnidadesCurriculares.heading('#2', text = 'Unidad curricular')
         self.treeUnidadesCurriculares.heading('#3', text = 'Hora')
         self.treeUnidadesCurriculares.heading('#4', text = 'Departamento')
-        self.treeUnidadesCurriculares.heading('#5', text = 'Programa Tradiciónal')
+        self.treeUnidadesCurriculares.heading('#5', text = 'Programa tradiciónal')
         self.treeUnidadesCurriculares.column('#1', width=50)
         self.treeUnidadesCurriculares.column('#2', width=240)
         self.treeUnidadesCurriculares.column('#3', width=40)

@@ -14,11 +14,6 @@ class Materias_asignadas(tk.Toplevel):
         self.geometry('1280x290')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
-        # Menu:
-        self.menubar = tk.Menu(self)
-        self.menubar.add_cascade(label="Volver", command=self.volver)
-        self.config(menu=self.menubar)
-
         self.frame = ttk.Labelframe(self)
         self.frame.grid(column=0,row=1,pady=5,padx=5)
         self.tree = ttk.Treeview(self.frame, columns = ['#1','#2','#3','#4','#5','#6','#7','#8','#9','#10','#11','#12'], show='headings',height=9)
@@ -51,6 +46,7 @@ class Materias_asignadas(tk.Toplevel):
         self.tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(column=1,row=0, sticky='ns')
         ttk.Button(self,text='HABILITAR MATERIA',command=self.habilitarMateria, width=205).grid(row=2,column=0)
+        ttk.Button(self,text='CANCELAR',command=self.volver, width=205).grid(row=3,column=0)
 
         self.mostrarMateriasAsignadas()
 

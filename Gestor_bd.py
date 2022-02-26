@@ -10,7 +10,7 @@ class Gestor(tk.Toplevel):
     def __init__(self,master):
         super().__init__(master)
         # Config:
-        self.title('Gestionar Tablas')
+        self.title('Gestionar tablas')
         self.geometry('470x400')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
@@ -42,10 +42,10 @@ class Gestor(tk.Toplevel):
 
         # add frames to notebook
         self.notebook.add(self.noteCohorte, text='Cohorte')
-        self.notebook.add(self.noteLapsoAcademico, text='Lapso Académico')
+        self.notebook.add(self.noteLapsoAcademico, text='Lapso académico')
         self.notebook.add(self.noteTrayecto, text='Trayecto')
         self.notebook.add(self.noteTrimestre, text='Trimestre')
-        self.notebook.add(self.noteSeccion, text='sección')
+        self.notebook.add(self.noteSeccion, text='Sección')
         self.notebook.add(self.noteLaboratorio, text='Laboratorio')
             
         # Pantalla Cohorte 0/3
@@ -77,7 +77,7 @@ class Gestor(tk.Toplevel):
         self.frameLapsoAcademico.grid(column=0,row=0,pady=10, padx=3)
 
         # LapsoAcademico frame 1/3
-        ttk.Label(self.frameLapsoAcademico,text='Lapso Académico').grid(column=0,row=0)
+        ttk.Label(self.frameLapsoAcademico,text='Lapso académico').grid(column=0,row=0)
         self.entryLapsoAcademico = ttk.Entry(self.frameLapsoAcademico,width=40)
         self.entryLapsoAcademico.grid(column=1,row=0,padx=0,pady=5)
         ttk.Button(self.frameLapsoAcademico, text='REGISTRAR LAPSO ACADÉMICO', command=self.RegistrarLapsoAcademico).grid(row=1,column=0, sticky = tk.W + tk.E)
@@ -87,7 +87,7 @@ class Gestor(tk.Toplevel):
         self.treeLapsoAcademico = ttk.Treeview(self.noteLapsoAcademico,columns = ['#1','#2'], show='headings')
         self.treeLapsoAcademico.grid(column=0,row=1, sticky='nsew')
         self.treeLapsoAcademico.heading('#1', text = 'Id')
-        self.treeLapsoAcademico.heading('#2', text = 'Lapso Académico')
+        self.treeLapsoAcademico.heading('#2', text = 'Lapso académico')
         self.treeLapsoAcademico.bind('<Double-1>',lambda e, tree = self.treeLapsoAcademico: self.doubleClick(tree,self.entryLapsoAcademico))
         self.scrollbarLapsoAcademico = ttk.Scrollbar(self.noteLapsoAcademico, orient=tk.VERTICAL, command=self.treeLapsoAcademico.yview)
         self.treeLapsoAcademico.configure(yscroll=self.scrollbarLapsoAcademico.set)
