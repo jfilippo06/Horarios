@@ -93,11 +93,11 @@ class Materias_asignadas(tk.Toplevel):
 
     def habilitarMateria(self):
         if self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?',parent=self):
                 self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_materias_asignadas = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.mostrarMateriasAsignadas()
-                messagebox.showinfo(title='Info', message='Materia habilitada')
+                messagebox.showinfo(title='Info', message='Materia habilitada',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)

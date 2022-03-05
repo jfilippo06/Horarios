@@ -45,18 +45,18 @@ class BD(tk.Toplevel):
         self.destroy()
 
     def compactar(self):
-        if messagebox.askyesno('Compactar','¿Desea compactar la base de datos?'):    
+        if messagebox.askyesno('Compactar','¿Desea compactar la base de datos?',parent=self):    
             self.conexion('VACUUM')
-            messagebox.showinfo(title='Info', message='Base de datos compactada')
+            messagebox.showinfo(title='Info', message='Base de datos compactada',parent=self)
 
     def respaldar(self):
-        if messagebox.askyesno('Respaldar','¿Desea respaldar la base de datos?'):    
-            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
+        if messagebox.askyesno('Respaldar','¿Desea respaldar la base de datos?',parent=self):    
+            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")),parent=self)
             shutil.copyfile(baseDeDatos, guardar)
-            messagebox.showinfo(title='Info', message='Base de datos respaldada')
+            messagebox.showinfo(title='Info', message='Base de datos respaldada',parent=self)
 
     def restaurar(self):
-        if messagebox.askyesno('Restaurar','¿Desea restaurar la base de datos?'):    
-            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")))
+        if messagebox.askyesno('Restaurar','¿Desea restaurar la base de datos?',parent=self):    
+            guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("DB files","*.db"),("all files","*.*")),parent=self)
             shutil.copyfile(guardar, baseDeDatos)
-            messagebox.showinfo(title='Info', message='Base de datos restaurada')     
+            messagebox.showinfo(title='Info', message='Base de datos restaurada',parent=self)     

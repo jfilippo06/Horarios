@@ -83,26 +83,27 @@ class Usuarios(tk.Toplevel):
         return id
 
     def crear(self):
-        self.newCrear = tk.Toplevel()
-        self.newCrear.title('Crear usuarios')
-        self.newCrear.geometry('390x145')
-        self.newCrear.resizable(width=0,height=0)
-        self.newCrear.iconbitmap(uptpc)
-        ttk.Label(self.newCrear, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
-        self.newUser = ttk.Entry(self.newCrear,width=40)
-        self.newUser.grid(row=0,column=1,padx=5,pady=5)
-        self.newUser.focus()
-        ttk.Label(self.newCrear, text='Contraseña:').grid(row=1,column=0,padx=5,pady=5)
-        self.newPassword = ttk.Entry(self.newCrear,width=40)
-        self.newPassword.grid(row=1,column=1,padx=5,pady=5)
-        self.newPassword.config(show='*')
-        ttk.Label(self.newCrear, text='Repetir contraseña:').grid(row=2,column=0,padx=5,pady=5)
-        self.newPassword2 = ttk.Entry(self.newCrear,width=40)
-        self.newPassword2.grid(row=2,column=1,padx=5,pady=5)
-        self.newPassword2.config(show='*')
-        ttk.Button(self.newCrear,text='CREAR USUARIO', command=self.encriptar,width=40).grid(row=3,column=1)
-        ttk.Button(self.newCrear,text='CANCELAR', command=self.cancelarUser,width=40).grid(row=4,column=1)
-        self.newCrear.mainloop()
+        if messagebox.askyesno('Crear','¿Desea crear un nuevo usuario?',parent=self):
+            self.newCrear = tk.Toplevel()
+            self.newCrear.title('Crear usuarios')
+            self.newCrear.geometry('390x145')
+            self.newCrear.resizable(width=0,height=0)
+            self.newCrear.iconbitmap(uptpc)
+            ttk.Label(self.newCrear, text='Usuario:').grid(row=0,column=0,padx=5,pady=5)
+            self.newUser = ttk.Entry(self.newCrear,width=40)
+            self.newUser.grid(row=0,column=1,padx=5,pady=5)
+            self.newUser.focus()
+            ttk.Label(self.newCrear, text='Contraseña:').grid(row=1,column=0,padx=5,pady=5)
+            self.newPassword = ttk.Entry(self.newCrear,width=40)
+            self.newPassword.grid(row=1,column=1,padx=5,pady=5)
+            self.newPassword.config(show='*')
+            ttk.Label(self.newCrear, text='Repetir contraseña:').grid(row=2,column=0,padx=5,pady=5)
+            self.newPassword2 = ttk.Entry(self.newCrear,width=40)
+            self.newPassword2.grid(row=2,column=1,padx=5,pady=5)
+            self.newPassword2.config(show='*')
+            ttk.Button(self.newCrear,text='CREAR USUARIO', command=self.encriptar,width=40).grid(row=3,column=1)
+            ttk.Button(self.newCrear,text='CANCELAR', command=self.cancelarUser,width=40).grid(row=4,column=1)
+            self.newCrear.mainloop()
 
     def cancelarUser(self):
         self.newCrear.destroy()
@@ -133,65 +134,65 @@ class Usuarios(tk.Toplevel):
             ttk.Button(self.newEditar,text='CANCELAR', command=self.cancelarEdit,width=40).grid(row=4,column=1)
             self.newEditar.mainloop()
         else:
-            messagebox.showwarning(title='Warning', message='Seleccione un usuario')
+            messagebox.showwarning(title='Warning', message='Seleccione un usuario',parent=self)
 
     def cancelarEdit(self):
         self.newEditar.destroy()
 
     def deshabilitar(self):
         if self.treeUsuarios.selection():
-            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el usuario seleccionado?'):
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar el usuario seleccionado?',parent=self):
                 self.id = self.selecionarFila(self.treeUsuarios,0)
                 self.conexion('UPDATE usuario_admin SET Estado = "Inactivo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.id,))
                 self.mostrarDatosUsuarios()
-                messagebox.showinfo(title='Info', message='Usuario deshabilitado')
+                messagebox.showinfo(title='Info', message='Usuario deshabilitado',parent=self)
             else:
                 self.mostrarDatosUsuarios()
         else:
-            messagebox.showwarning(title='Warning', message='Seleccione un usuario')
+            messagebox.showwarning(title='Warning', message='Seleccione un usuario',parent=self)
 
     def encriptar(self):
         if len(self.newUser.get()) != 0 and len(self.newPassword.get()) != 0 and len(self.newPassword2.get()) != 0:
             if self.newPassword.get() == self.newPassword2.get():   
-                if messagebox.askyesno('Crear','¿Desea crear el usuario?'):
+                if messagebox.askyesno('Crear','¿Desea crear el usuario?',parent=self.newCrear):
                     blake2b = hashlib.blake2b(self.newPassword.get().encode()).hexdigest()
                     self.conexion('INSERT INTO usuario_admin VALUES (NULL,?,?,"Activo")', (self.newUser.get(),blake2b))
                     self.mostrarDatosUsuarios()
                     self.newCrear.destroy()
-                    messagebox.showinfo(title='Info', message='Usuario creado')
+                    messagebox.showinfo(title='Info', message='Usuario creado',parent=self.newCrear)
                 else:
                     self.newUser.delete(0,tk.END)
                     self.newPassword.delete(0,tk.END)
                     self.newPassword2.delete(0,tk.END)
                     self.newUser.focus()
             else:
-                messagebox.showwarning(title='Warning', message='Contraseña no coinciden')
+                messagebox.showwarning(title='Warning', message='Contraseña no coinciden',parent=self.newCrear)
                 self.newPassword.delete(0,tk.END)
                 self.newPassword2.delete(0,tk.END)
                 self.newPassword.focus()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor',parent=self.newCrear)
             self.newUser.focus()
 
     def editarUsuario(self):
         if len(self.newUserEditar.get()) != 0 and len(self.newPasswordEditar.get()) != 0 and len(self.newPasswordEditar2.get()) != 0:
             if self.newPasswordEditar.get() == self.newPasswordEditar2.get(): 
-                if messagebox.askyesno('Editar','¿Desea editar el usuario?'):
+                if messagebox.askyesno('Editar','¿Desea editar el usuario?',parent=self.newEditar):
                     blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
                     self.conexion('UPDATE usuario_admin SET Usuario = ?, Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.newUserEditar.get(),blake2b, self.id))
                     self.mostrarDatosUsuarios()
                     self.newEditar.destroy()
-                    messagebox.showinfo(title='Info', message='Usuario Editado')
+                    messagebox.showinfo(title='Info', message='Usuario Editado',parent=self.newEditar)
                 else:
                     self.newUserEditar.delete(0,tk.END)
                     self.newPasswordEditar.delete(0,tk.END)
                     self.newPasswordEditar2.delete(0,tk.END)
                     self.newUserEditar.focus()
             else:
-                messagebox.showwarning(title='Warning', message='Contraseña no coiciden')
+                messagebox.showwarning(title='Warning', message='Contraseña no coiciden',parent=self.newEditar)
                 self.newPasswordEditar.delete(0,tk.END)
                 self.newPasswordEditar2.delete(0,tk.END)
                 self.newPasswordEditar.focus()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor',parent=self.newEditar)
             self.newUserEditar.focus()

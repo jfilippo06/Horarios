@@ -98,11 +98,11 @@ class CargaAcademica(tk.Toplevel):
 		if len(self.cedula.get()) != 0:
 			cedula = self.conexion('SELECT * FROM docente WHERE docente.Cedula = ? and docente.Estado = "Activo"',(self.cedula.get(),)).fetchall()
 			if cedula:
-				messagebox.showwarning(title='Warning', message='Cedula ya esta registrada')
+				messagebox.showwarning(title='Warning', message='Cedula ya esta registrada',parent=self)
 				self.cedula.delete(0, tk.END)
 				self.cedula.focus()
 			else:
-				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrala?'):
+				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrala?',parent=self):
 					valor = self.cedula.get()
 					self.cedula.delete(0, tk.END)
 					self.docente(valor)
@@ -110,57 +110,57 @@ class CargaAcademica(tk.Toplevel):
 					self.cedula.delete(0, tk.END)
 					self.cedula.focus()
 		else:
-			messagebox.showwarning(title='Warning', message='Introduzca una cedula')
+			messagebox.showwarning(title='Warning', message='Introduzca una cedula',parent=self)
 			self.cedula.delete(0, tk.END)
 			self.cedula.focus()
 
 	def docente(self,valor):
-		self.new = tk.Toplevel()
-		self.new.title('Registrar docente')
-		self.new.resizable(width=0,height=0)
-		self.new.iconbitmap(uptpc)
-		ttk.Label(self.new,text='Cédula de Identidad N°:').grid(column=0,row=0,padx=5)
-		self.entryCedula = ttk.Entry(self.new,width=45)
+		self.windowTeacher = tk.Toplevel()
+		self.windowTeacher.title('Registrar docente')
+		self.windowTeacher.resizable(width=0,height=0)
+		self.windowTeacher.iconbitmap(uptpc)
+		ttk.Label(self.windowTeacher,text='Cédula de Identidad N°:').grid(column=0,row=0,padx=5)
+		self.entryCedula = ttk.Entry(self.windowTeacher,width=45)
 		self.entryCedula.grid(column=1,row=0,padx=5,pady=5)
 		self.entryCedula.insert(0,valor)
 		self.entryCedula.config(state=tk.DISABLED)
-		ttk.Label(self.new, text='Nombre y Apellido:').grid(column=0,row=1 ,padx=5,pady=5)
-		self.entryNombreApellido = ttk.Entry(self.new,width=45)
+		ttk.Label(self.windowTeacher, text='Nombre y Apellido:').grid(column=0,row=1 ,padx=5,pady=5)
+		self.entryNombreApellido = ttk.Entry(self.windowTeacher,width=45)
 		self.entryNombreApellido.grid(column=1,row=1,padx=5,pady=5)
 		self.entryNombreApellido.focus()
-		ttk.Button(self.new, text='REGISTRAR DOCENTE', command=self.registrarDocente).grid(column=0,row=3,padx=5,pady=5)		
-		ttk.Button(self.new, text='CANCELAR', command=self.docenteCancelar).grid(column=1,row=3,padx=5,pady=5)	
-		self.new.mainloop()
+		ttk.Button(self.windowTeacher, text='REGISTRAR DOCENTE', command=self.registrarDocente).grid(column=0,row=3,padx=5,pady=5)		
+		ttk.Button(self.windowTeacher, text='CANCELAR', command=self.docenteCancelar).grid(column=1,row=3,padx=5,pady=5)	
+		self.windowTeacher.mainloop()
 
 	def docenteCancelar(self):
-		self.new.destroy()
+		self.windowTeacher.destroy()
 
 	def registrarDocente(self):
 		if len(self.entryNombreApellido.get()) != 0:
-			if messagebox.askyesno('Registrar','¿Desea registrar al docente?'):
+			if messagebox.askyesno('Registrar','¿Desea registrar al docente?',parent=self.windowTeacher):
 				self.conexion('INSERT INTO docente VALUES (NULL,?,?,"","","","","Si","","","","No","","Activo")',(self.entryNombreApellido.get(),self.entryCedula.get()))
 				self.docenteCancelar()
 				self.MostrarDatos()
-				messagebox.showinfo(title='Info', message='Docente Registrado.')
+				messagebox.showinfo(title='Info', message='Docente Registrado.',parent=self)
 			else:
 				self.entryNombreApellido.delete(0, tk.END)
 				self.entryNombreApellido.focus()
 		else:
-			messagebox.showwarning(title='Warning', message='Introduzca un valor.')
+			messagebox.showwarning(title='Warning', message='Introduzca un valor.',parent=self.windowTeacher)
 	
 	def eliminar(self):
 		if self.tree.selection():
-			if messagebox.askyesno('Deshabilitado','¿Desea deshabilitar al docente selecionado?'):
+			if messagebox.askyesno('Deshabilitado','¿Desea deshabilitar al docente selecionado?',parent=self):
 				self.conexion( 'UPDATE docente SET Estado = "Inactivo" WHERE docente.Id = ? AND docente.Estado = "Activo"', (self.selecionarFila(self.tree),))
 				self.conexion('UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Activo"', (self.selecionarFila(self.tree),))
 				self.conexion('UPDATE materias_docentes SET Estado = "Inactivo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Activo"', (self.selecionarFila(self.tree),))
 				self.conexion('UPDATE materias_laboratorios SET Estado = "Inactivo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Activo"', (self.selecionarFila(self.tree),))
 				self.MostrarDatos()
-				messagebox.showinfo(title='Info', message='Docente y todos sus registros deshabilitados correctamente.')
+				messagebox.showinfo(title='Info', message='Docente y todos sus registros deshabilitados correctamente.',parent=self)
 			else:
 				self.MostrarDatos()
 		else:
-			messagebox.showwarning(title='Wanning', message='Seleccione un docente a deshabilitar.')
+			messagebox.showwarning(title='Warning', message='Seleccione un docente a deshabilitar.',parent=self)
 
 	def editar(self):
 		if self.tree.selection():
@@ -217,7 +217,7 @@ class CargaAcademica(tk.Toplevel):
 			self.dataDocente(self.seleccion)
 			self.newEditar.mainloop()	
 		else: 
-			messagebox.showwarning(title='Wanning', message='Seleccione un docente a editar.')
+			messagebox.showwarning(title='Warning', message='Seleccione un docente a editar.',parent=self)
 	
 	def especifiqueSi(self):
 		self.entryEditarEspecifique.config(state=tk.NORMAL)
@@ -296,10 +296,10 @@ class CargaAcademica(tk.Toplevel):
 			return ''
 
 	def editar2(self):
-		if messagebox.askyesno('actualizar','¿Desea actualizar la data?'):
+		if messagebox.askyesno('actualizar','¿Desea actualizar la data?',parent=self.newEditar):
 			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Postgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
-			messagebox.showinfo(title='Info', message='Data actualizada.')
-			self.new.destroy()
+			messagebox.showinfo(title='Info', message='Data actualizada.',parent=self.newEditar)
+			self.newEditar.destroy()
 
 	def gestionarMaterias(self):
 		if self.tree.selection():
@@ -513,7 +513,7 @@ class CargaAcademica(tk.Toplevel):
 			
 			self.new.mainloop()
 		else:
-			messagebox.showinfo(title='Info', message='Selecione un docente')
+			messagebox.showwarning(title='Warning', message='Selecione un docente',parent=self)
 
 	def cancelarNew(self):
 		self.new.destroy()
@@ -650,27 +650,27 @@ class CargaAcademica(tk.Toplevel):
 
 	def registrarMateria(self):
 		if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
-			if messagebox.askyesno('Registrar','¿Añadir selección?'):
+			if messagebox.askyesno('Registrar','¿Añadir selección?',parent=self.new):
 				mostrar =  self.conexion("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ? AND materias_asignadas.Estado = 'Activo'",(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular))).fetchall()
 				if mostrar:
-					messagebox.showwarning(title='warning', message="Registro ya exixte")	
+					messagebox.showwarning(title='Warning', message="Registro ya exixte",parent=self.new)	
 				else:
 					same = self.conexion('SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular))).fetchall()
 					if same:
-						messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")	
+						messagebox.showwarning(title='Warning', message="Este registro ya le pertenece a otro docente",parent=self.new)	
 					else:
 						validarMateria = self.conexion('SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ? AND materias_asignadas.Estado = "Activo"',(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal))).fetchall()
 						if validarMateria:
-							messagebox.showwarning(title='warning', message="No puede inscribir otra materia en este registro")	
+							messagebox.showwarning(title='Warning', message="No puede inscribir otra materia en este registro",parent=self.new)	
 						else:
 							validarMateriaOtroDocente = self.conexion('SELECT materias_asignadas.Id ,lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal))).fetchall()
 							if validarMateriaOtroDocente:
-								messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")
+								messagebox.showwarning(title='Warning', message="Este registro ya le pertenece a otro docente",parent=self.new)
 							else:	
 								if self.laboratorio.get() == 'Si':
 									if self.treeLaboratorio.selection():
 										if self.maximo() == 10:
-											messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+											messagebox.showinfo(title='Info', message='Limite de materias asignadas por lapso academico excedido',parent=self.new)
 										else:	
 											if self.obtenerHoraMateria() == '6':
 												# BLOQUE 6
@@ -759,7 +759,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
 													self.registrarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '5':
 												# BLOQUE 2
 												# Horario Mañana
@@ -835,7 +835,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
 													self.registrarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '4':
 												# BLOQUE 2
 												# Horario Mañana
@@ -891,7 +891,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
 													self.registrarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '3':
 												# Horario Mañana
 												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
@@ -919,7 +919,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
 													self.registrarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '2':
 												# Horario Mañana
 												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
@@ -955,14 +955,14 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
 													self.registrarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == ' ':
-												messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+												messagebox.showinfo(title='Info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente',parent=self.new)
 									else:
-										messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
+										messagebox.showwarning(title='Warning', message='Seleccione un laboratorio',parent=self.new)
 								elif self.laboratorio.get() == 'No':
 									if self.maximo() == 10:
-										messagebox.showinfo(title='info', message='Limite de materias asignadas por lapso academico excedido')
+										messagebox.showinfo(title='Info', message='Limite de materias asignadas por lapso academico excedido',parent=self.new)
 									else:
 										if self.obtenerHoraMateria() == '6':
 											# BLOQUE 6
@@ -1051,7 +1051,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
 												self.registrarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '5':
 											# BLOQUE 2
 											# Horario Mañana
@@ -1127,7 +1127,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
 												self.registrarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '4':
 											# BLOQUE 2
 											# Horario Mañana
@@ -1183,7 +1183,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
 												self.registrarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '3':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
@@ -1211,7 +1211,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
 												self.registrarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '2':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
@@ -1247,35 +1247,35 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
 												self.registrarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == ' ':
-											messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+											messagebox.showinfo(title='Info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente',parent=self.new)
 								else:
-									messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"')
+									messagebox.showwarning(title='Warning', message='Debe seleccionar una opción entre las casillas de "Laboratorio"',parent=self.new)
 			else:
 				self.MostrarDatosGestionar()
 		else:
-			messagebox.showwarning(title='Warning', message='Seleccione todas las celdas')	
+			messagebox.showwarning(title='Warning', message='Seleccione todas las celdas',parent=self.new)	
 
 	def editarMateria(self):
 		if self.treeGestionar.selection():
 			if self.treeLapsoAcademico.selection() and self.treeCohorte.selection() and self.treeTrayecto.selection() and self.treeTrimestre.selection() and self.treeSeccion.selection() and self.treeTurno.selection() and self.treeDia.selection and self.treeHoraInicial.selection() and self.treeHoraFinal.selection() and self.treeUnidadCurricular.selection():
-				if messagebox.askyesno('Editar','¿Desea editar el registro seleccionado?'):
+				if messagebox.askyesno('Editar','¿Desea editar el registro seleccionado?',parent=self.new):
 					mostrar =  self.conexion("SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente  INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ? AND materias_asignadas.Estado = 'Activo'",(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular))).fetchall()
 					if mostrar:
-						messagebox.showwarning(title='warning', message="Registro ya exixte")	
+						messagebox.showwarning(title='Warning', message="Registro ya exixte",parent=self.new)	
 					else:
 						same = self.conexion('SELECT lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora, unidad_curricular.UnidadCurricular FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final INNER JOIN unidad_curricular ON unidad_curricular.Id = materias_asignadas.Id_unidad_curricular WHERE materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND materias_asignadas.Id_trayecto = ? AND materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND materias_asignadas.Id_hora_inicial = ? AND materias_asignadas.Id_hora_final = ? AND materias_asignadas.Id_unidad_curricular = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular))).fetchall()
 						if same:
-							messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente")	
+							messagebox.showwarning(title='Warning', message="Este registro ya le pertenece a otro docente",parent=self.new)	
 						else:
 							validarMateria = self.conexion('SELECT materias_asignadas.Id ,docente.NombreApellido, lapso_academico.LapsoAcademico,cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN docente ON  docente.Id = materias_asignadas.Id_docente INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_docente = ? AND materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ? AND materias_asignadas.Estado = "Activo"',(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal))).fetchall()
 							if validarMateria:
-								messagebox.showwarning(title='warning', message="No puede inscribir otra materia en este registro")	
+								messagebox.showwarning(title='Warning', message="No puede inscribir otra materia en este registro",parent=self.new)	
 							else:
 								validarMateriaOtroDocente = self.conexion('SELECT materias_asignadas.Id ,lapso_academico.LapsoAcademico, cohorte.Cohorte, trayecto.Trayecto, trimestre.Trimestre, seccion.Seccion, modalidad.Turno, semana.Dia, hora_inicial.Hora, hora_final.Hora FROM materias_asignadas INNER JOIN lapso_academico ON  lapso_academico.Id = materias_asignadas.Id_lapso_academico INNER JOIN cohorte ON  cohorte.Id = materias_asignadas.Id_cohorte INNER JOIN trayecto ON trayecto.Id = materias_asignadas.Id_trayecto INNER JOIN trimestre ON trimestre.Id = materias_asignadas.Id_trimestre INNER JOIN seccion ON seccion.Id = materias_asignadas.Id_seccion  INNER JOIN modalidad ON modalidad.Id = materias_asignadas.Id_modalidad INNER JOIN semana ON semana.Id = materias_asignadas.Id_semana  INNER JOIN hora_inicial ON hora_inicial.Id = materias_asignadas.Id_hora_inicial  INNER JOIN hora_final ON hora_final.Id = materias_asignadas.Id_hora_final  WHERE  materias_asignadas.Id_lapso_academico = ? AND materias_asignadas.Id_cohorte = ? AND  materias_asignadas.Id_trayecto = ? AND  materias_asignadas.Id_trimestre = ? AND materias_asignadas.Id_seccion = ? AND  materias_asignadas.Id_modalidad = ? AND materias_asignadas.Id_semana = ? AND  materias_asignadas.Id_hora_inicial = ? AND  materias_asignadas.Id_hora_final = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal))).fetchall()
 								if validarMateriaOtroDocente:
-									messagebox.showwarning(title='warning', message="Este registro ya le pertenece a otro docente2")
+									messagebox.showwarning(title='Warning', message="Este registro ya le pertenece a otro docente",parent=self.new)
 								else:
 									if self.laboratorio.get() == 'Si':
 										if self.treeLaboratorio.selection():
@@ -1366,7 +1366,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
 													self.editarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '5':
 												# BLOQUE 2
 												# Horario Mañana
@@ -1442,7 +1442,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
 													self.editarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '4':
 												# BLOQUE 2
 												# Horario Mañana
@@ -1498,7 +1498,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
 													self.editarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '3':
 												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
 													self.editarSi()
@@ -1525,7 +1525,7 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
 													self.editarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == '2':
 												# Horario Mañana
 												if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
@@ -1561,11 +1561,11 @@ class CargaAcademica(tk.Toplevel):
 												elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
 													self.editarSi()
 												else:
-													messagebox.showinfo(title='info', message='Hora no permitida')
+													messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 											elif self.obtenerHoraMateria() == ' ':
-												messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+												messagebox.showinfo(title='Info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente',parent=self.new)
 										else:
-											messagebox.showwarning(title='Warning', message='Seleccione un laboratorio')
+											messagebox.showwarning(title='Warning', message='Seleccione un laboratorio',parent=self.new)
 									elif self.laboratorio.get() == 'No':
 										if self.obtenerHoraMateria() == '6':
 											# BLOQUE 6
@@ -1654,7 +1654,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 13 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '5':
 											# BLOQUE 2
 											# Horario Mañana
@@ -1730,7 +1730,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 14 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '4':
 											# BLOQUE 2
 											# Horario Mañana
@@ -1786,7 +1786,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 15 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '3':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 3:
@@ -1814,7 +1814,7 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 16 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == '2':
 											# Horario Mañana
 											if self.obtenerHoraInicial() == 1 and self.obtenerHoraFinal() == 2:
@@ -1850,22 +1850,22 @@ class CargaAcademica(tk.Toplevel):
 											elif self.obtenerHoraInicial() == 17 and self.obtenerHoraFinal() == 18:
 												self.editarNo()
 											else:
-												messagebox.showinfo(title='info', message='Hora no permitida')
+												messagebox.showinfo(title='Info', message='Hora no permitida',parent=self.new)
 										elif self.obtenerHoraMateria() == ' ':
-											messagebox.showinfo(title='info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente')
+											messagebox.showinfo(title='Info', message='Debe de asignarle una hora académica a esta materia, antes de añadir la materia a un docente',parent=self.new)
 						
 									else:
-										messagebox.showwarning(title='Warning', message='Seleccione la casilla')
+										messagebox.showwarning(title='Warning', message='Seleccione la casilla',parent=self.new)
 				else:
 					self.MostrarDatosGestionar()
 			else:
-				messagebox.showwarning(title='Wanning', message='Seleccione datos a editar.')
+				messagebox.showwarning(title='Wanning', message='Seleccione datos a editar.',parent=self.new)
 		else:
-			messagebox.showwarning(title='Wanning', message='Seleccione una registro a editar.')
+			messagebox.showwarning(title='Wanning', message='Seleccione una registro a editar.',parent=self.new)
 
 	def eliminarMateria(self):
 		if self.treeGestionar.selection():
-			if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la materia selecionada?'):
+			if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la materia selecionada?',parent=self.new):
 				self.query = 'UPDATE materias_asignadas SET Estado = "Inactivo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Activo"'
 				self.parametros = self.selecionarFila(self.treeGestionar)
 				self.conexion(self.query, (self.parametros,))
@@ -1874,11 +1874,11 @@ class CargaAcademica(tk.Toplevel):
 				self.query2 = 'UPDATE materias_laboratorios SET Estado = "Inactivo" WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Activo"'
 				self.conexion(self.query2, (self.parametros,))
 				self.MostrarDatosGestionar()
-				messagebox.showinfo(title='Info', message='Materia deshabilitada correctamente.')
+				messagebox.showinfo(title='Info', message='Materia deshabilitada correctamente.',parent=self.new)
 			else:
 				self.MostrarDatosGestionar()
 		else:
-			messagebox.showwarning(title='Wanning', message='Seleccione una materia a deshabilitar.')
+			messagebox.showwarning(title='Wanning', message='Seleccione una materia a deshabilitar.',parent=self.new)
 
 	def registrarNo(self):
 		self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,'Activo')",(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular)))
@@ -1887,7 +1887,7 @@ class CargaAcademica(tk.Toplevel):
 		self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
 		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?,'Activo')",(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='info', message='Materia registrada correctamente')
+		messagebox.showinfo(title='Info', message='Materia registrada correctamente',parent=self.new)
 
 	def registrarSi(self):
 		self.conexion("INSERT INTO materias_asignadas VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,'Activo')",(self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular)))
@@ -1897,7 +1897,7 @@ class CargaAcademica(tk.Toplevel):
 		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?,'Activo')",(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='info', message='Materia registrada')
+		messagebox.showinfo(title='Info', message='Materia registrada',parent=self.new)
 
 	def editarNo(self):
 		self.conexion('UPDATE materias_asignadas SET Id_lapso_academico = ?, Id_cohorte = ?,Id_trayecto = ?,Id_trimestre = ?,Id_seccion = ?,Id_modalidad = ?,Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ?,Id_unidad_curricular = ? WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeGestionar)))
@@ -1907,7 +1907,7 @@ class CargaAcademica(tk.Toplevel):
 		if same:
 			self.conexion('DELETE FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ?', (self.selecionarFila(self.treeGestionar),))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+		messagebox.showinfo(title='Info', message='Registro editado correctamente.',parent=self.new)
 
 	def editarSi(self):
 		self.conexion('UPDATE materias_asignadas SET Id_lapso_academico = ?, Id_cohorte = ?,Id_trayecto = ?,Id_trimestre = ?,Id_seccion = ?,Id_modalidad = ?,Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ?,Id_unidad_curricular = ? WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeCohorte),self.selecionarFila(self.treeTrayecto),self.selecionarFila(self.treeTrimestre),self.selecionarFila(self.treeSeccion),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeGestionar)))
@@ -1921,4 +1921,4 @@ class CargaAcademica(tk.Toplevel):
 			materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
 			self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.selecionarFila(self.treeGestionar),self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
-		messagebox.showinfo(title='Info', message='Registro editado correctamente.')
+		messagebox.showinfo(title='Info', message='Registro editado correctamente.',parent=self.new)
