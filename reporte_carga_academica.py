@@ -174,7 +174,7 @@ class ReporteCargaAcademica(tk.Toplevel):
                 
                 self.parametrosReportes = (self.docenteId, self.lapsoId)
                 
-                self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+                self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")),parent=self)
                 self.archivo = open(self.guardar,'w')
                 
                 self.pdf = canvas.Canvas(self.guardar, pagesize = A3)
@@ -313,13 +313,13 @@ class ReporteCargaAcademica(tk.Toplevel):
                 self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
                 
                 self.counter = 0
-                messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente')
+                messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente',parent=self)
             elif descargaAcademica[0] == 'No':
-                messagebox.showwarning(title='Error', message='Descarga Academica no permitada')
+                messagebox.showwarning(title='Warning', message='Descarga Academica no permitada',parent=self)
             else:
-                messagebox.showwarning(title='Error', message='Algo ocurrio mal, consulte con el desarrollador')
+                messagebox.showwarning(title='Warning', message='Algo ocurrio mal, consulte con el desarrollador',parent=self)
         else:
-            messagebox.showwarning(title='Error', message='Debe seleccionar todas las casillas y rellenar todas las celdas')
+            messagebox.showwarning(title='Warning', message='Debe seleccionar todas las casillas y rellenar todas las celdas',parent=self)
 
     def MostrarReporteDocente(self):
         self.rows = self.TraerDatos("SELECT Id, NombreApellido FROM docente WHERE docente.Estado = 'Activo'")

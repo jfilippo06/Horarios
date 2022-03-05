@@ -46,6 +46,7 @@ class Registro(tk.Toplevel):
         ttk.Radiobutton(self.frameChoose, text='Trimestre', value='Trimestre',variable=self.chosee, command=self.mostrarTrimestre).grid(row=0,column=3)
         ttk.Radiobutton(self.frameChoose, text='Sección', value='Sección',variable=self.chosee, command=self.mostrarSeccion).grid(row=0,column=4)
         ttk.Radiobutton(self.frameChoose, text='Laboratorio', value='Laboratorio',variable=self.chosee, command=self.mostrarLaboratorio).grid(row=0,column=5)
+        self.chosee.set('Cohorte')
         
         self.tree = ttk.Treeview(self.noteDatos,columns = ['#1','#2'], show='headings')
         self.tree.grid(column=0,row=1, sticky='nsew',padx=5,pady=5)
@@ -75,6 +76,7 @@ class Registro(tk.Toplevel):
         self.scrollbar4.grid(column=1,row=1, sticky='ns')
         ttk.Button(self.noteUsuarios,text='HABILITAR',command=self.habilitarUsuarios, width=75).grid(row=2,column=0)
 
+        self.mostrarCohorte()
         self.mostrarDocentes()
         self.mostrarMaterias()
         self.mostrarUsuarios()
@@ -189,64 +191,64 @@ class Registro(tk.Toplevel):
 
     def habilitarDatosBasicos(self):
         if self.chosee.get() == 'Cohorte' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el cohorte?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el cohorte?',parent=self):
                 self.conexion('UPDATE cohorte SET Estado = "Activo" WHERE cohorte.id = ? and cohorte.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarCohorte()
-                messagebox.showinfo(title='Info', message='Cohorte habilitado.')
+                messagebox.showinfo(title='Info', message='Cohorte habilitado.',parent=self)
         elif self.chosee.get() == 'Lapso académico' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el lapso académico?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el lapso académico?',parent=self):
                 self.conexion('UPDATE lapso_academico SET Estado = "Activo" WHERE lapso_academico.id = ? and lapso_academico.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarLapsoAcademico()
-                messagebox.showinfo(title='Info', message='Lapso académico habilitado.')
+                messagebox.showinfo(title='Info', message='Lapso académico habilitado.',parent=self)
         elif self.chosee.get() == 'Trayecto' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el trayecto?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el trayecto?',parent=self):
                 self.conexion('UPDATE trayecto SET Estado = "Activo" WHERE trayecto.id = ? and trayecto.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarTrayecto()
-                messagebox.showinfo(title='Info', message='Trayecto habilitado.')
+                messagebox.showinfo(title='Info', message='Trayecto habilitado.',parent=self)
         elif self.chosee.get() == 'Trimestre' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el trimestre?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el trimestre?',parent=self):
                 self.conexion('UPDATE trimestre SET Estado = "Activo" WHERE trimestre.id = ? and trimestre.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarTrimestre()
-                messagebox.showinfo(title='Info', message='Trimestre habilitado.')
+                messagebox.showinfo(title='Info', message='Trimestre habilitado.',parent=self)
         elif self.chosee.get() == 'Sección' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar la sección?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la sección?',parent=self):
                 self.conexion('UPDATE seccion SET Estado = "Activo" WHERE seccion.id = ? and seccion.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarSeccion()
-                messagebox.showinfo(title='Info', message='Sección habilitada.')
+                messagebox.showinfo(title='Info', message='Sección habilitada.',parent=self)
         elif self.chosee.get() == 'Laboratorio' and self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el laboratorio?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el laboratorio?',parent=self):
                 self.conexion('UPDATE laboratorio SET Estado = "Activo" WHERE laboratorio.id = ? and laboratorio.Estado = "Inactivo"',(self.selecionarFila(self.tree),))
                 self.mostrarLaboratorio()
-                messagebox.showinfo(title='Info', message='Laboratorio habilitado.')
+                messagebox.showinfo(title='Info', message='Laboratorio habilitado.',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)
 
     def habilitarCarga(self):
         if self.tree2.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar al docente?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar al docente?',parent=self):
                 self.conexion('UPDATE docente SET Estado = "Activo" WHERE docente.Id = ? AND docente.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
                 self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id_docente = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
                 self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_docente = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
                 self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_docente = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila(self.tree2),))
                 self.mostrarDocentes()
-                messagebox.showinfo(title='Info', message='Docente y todos sus registros habilitados')
+                messagebox.showinfo(title='Info', message='Docente y todos sus registros habilitados',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)
 
     def habilitarUnidades(self):
         if self.tree3.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar la unidad curricular?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la unidad curricular?',parent=self):
                 self.conexion('UPDATE unidad_curricular SET Estado = "Activo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Inactivo"',(self.selecionarFila(self.tree3),))
                 self.mostrarMaterias()
-                messagebox.showinfo(title='Info', message='Unidad curricular habilitada')
+                messagebox.showinfo(title='Info', message='Unidad curricular habilitada',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)
         
     def habilitarUsuarios(self):
         if self.tree4.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar el usuario?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar el usuario?',parent=self):
                 self.conexion('UPDATE usuario_admin SET Estado = "Activo" WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Inactivo"',(self.selecionarFila(self.tree4),))
                 self.mostrarUsuarios()
-                messagebox.showinfo(title='Info', message='Usuarios habilitado')
+                messagebox.showinfo(title='Info', message='Usuarios habilitado',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)

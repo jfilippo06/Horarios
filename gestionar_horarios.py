@@ -969,7 +969,7 @@ class Horarios(tk.Toplevel):
             self.trimestre = str(self.Trimestre())
             self.seccion = str(self.Seccion())
 
-            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")),parent=self)
             self.archivo = open(self.guardar,'w')
             self.pdf = canvas.Canvas(self.guardar, pagesize = landscape(A4))
             self.pdf.setFontSize(10)
@@ -993,9 +993,9 @@ class Horarios(tk.Toplevel):
             self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
             self.counter = 0
             
-            messagebox.showinfo(title='Horario', message='Horario generado correctamente')
+            messagebox.showinfo(title='Horario', message='Horario generado correctamente',parent=self)
         else:
-            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas',parent=self)
             
     def generarHorariosDocentes(self):
         if self.treeDocente.selection() and self.treeDocenteLapsoAcademico.selection() and self.treeDocenteModalidad.selection():
@@ -1007,7 +1007,7 @@ class Horarios(tk.Toplevel):
             self.dataLapso = self.DocenteLapsoAcademico()
             self.dataModalidad = self.DocenteModalidad()
             
-            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")),parent=self)
             self.archivo = open(self.guardar,'w')
             
             self.pdfDocente = canvas.Canvas(self.guardar, pagesize = landscape(A4))
@@ -1029,9 +1029,9 @@ class Horarios(tk.Toplevel):
             self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
             self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
         
-            messagebox.showinfo(title='Horario', message='Horario docente generado correctamente')
+            messagebox.showinfo(title='Horario', message='Horario docente generado correctamente',parent=self)
         else:
-            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas',parent=self)
 
     def generarHorariosLaboratorio(self):
         if self.treeLaboratorio.selection()  and self.treeLaboratorioLapso.selection() and self.treeLaboratorioModalidad.selection():
@@ -1043,7 +1043,7 @@ class Horarios(tk.Toplevel):
             self.dataLaboratorioLapso = self.LaboratorioLapso()
             self.dataLaboratorioModalidad = self.LaboratorioModalidad()
 
-            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")))
+            self.guardar = filedialog.asksaveasfilename(initialdir= "/", title="Select file", defaultextension=".*",filetypes=(("PDF files","*.pdf"),("all files","*.*")),parent=self)
             self.archivo = open(self.guardar,'w')
 
             self.pdfLaboratorio = canvas.Canvas(self.guardar, pagesize = landscape(A4))
@@ -1065,9 +1065,9 @@ class Horarios(tk.Toplevel):
             self.setStyles.append(('VALIGN',(0,0),(-1,-1),'MIDDLE'))
             self.setStyles.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
 
-            messagebox.showinfo(title='Horario', message='Horario Laboratorio generado correctamente')
+            messagebox.showinfo(title='Horario', message='Horario Laboratorio generado correctamente',parent=self)
         else:
-            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas')     
+            messagebox.showwarning(title='Error', message='Debe seleccionar todas las celdas',parent=self)     
 
     def verificarLinea(self):
         if self.trayecto == 'Inicial' and self.trimestre == 'Inicial':
@@ -4553,7 +4553,7 @@ class Horarios(tk.Toplevel):
         self.new = tk.Toplevel()
         self.new.title('Configuracion Horarios')
         self.new.resizable(width=0, height=0)
-        self.new.geometry('300x220')
+        self.new.geometry('300x240')
         self.new.iconbitmap(uptpc)
 
         self.container2 = ttk.Labelframe(self.new)
@@ -4570,25 +4570,27 @@ class Horarios(tk.Toplevel):
         self.titulo.focus()
 
         ttk.Button(self.container2,width=40,text='ACTUALIZAR', command=self.editarTitulo).grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self.container2,width=40,text='CANCELAR', command=self.cancelar).grid(row=4,column=0,padx=5,pady=5)
 
         self.MostrarTitulo()
-        print(self.obtenerTitulo())
-
         self.new.mainloop()
+
+    def cancelar(self):
+        self.new.destroy()
 
     def editarTitulo(self):
         if len(self.titulo.get()) != 0:
-            if messagebox.askyesno('Edit','¿Realmente desea cambiar el nombre?'):
+            if messagebox.askyesno('Edit','¿Realmente desea cambiar el nombre?',parent=self.new):
                 self.query = 'UPDATE titulo SET Titulo = ?'
                 self.parametros = (self.titulo.get())
                 self.conexion(self.query,(self.parametros,))
                 self.MostrarTitulo()
                 self.titulo.delete(0, tk.END)
-                messagebox.showinfo(title='Info', message='Titulo actualizado.')
+                messagebox.showinfo(title='Info', message='Titulo actualizado.',parent=self.new)
             else:
                 self.MostrarTitulo()
         else:
-            messagebox.showwarning(title='Warning', message='Introdusca un valor.')
+            messagebox.showwarning(title='Warning', message='Introdusca un valor.',parent=self.new)
 
     def obtenerTitulo(self):
         self.obtener = self.conexion('SELECT * FROM titulo').fetchone()

@@ -10,7 +10,7 @@ class Unidades_curriculares(tk.Toplevel):
     def __init__(self,master):
         super().__init__(master)
         # Config:
-        self.title('Unidades Curriculares')
+        self.title('Unidades curriculares')
         self.geometry('615x580')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
@@ -21,7 +21,7 @@ class Unidades_curriculares(tk.Toplevel):
 
         self.frame = ttk.Labelframe(self)
         self.frame.grid(column=0,row=0,padx=5,pady=5)
-        ttk.Label(self.frame,text='Unidad Curricular:').grid(row=0,column=0,padx=5,pady=5)
+        ttk.Label(self.frame,text='Unidad curricular:').grid(row=0,column=0,padx=5,pady=5)
         self.entryUnidadCurricular = ttk.Entry(self.frame,width=40)
         self.entryUnidadCurricular.grid(row=0,column=1,padx=5,pady=5)
         self.entryUnidadCurricular.focus()
@@ -56,10 +56,10 @@ class Unidades_curriculares(tk.Toplevel):
         self.treeUnidadesCurriculares = ttk.Treeview(self.frameUnidadesCurriculares, columns=['#1',"#2",'#3','#4','#5'],show='headings',height=10)
         self.treeUnidadesCurriculares.grid(row=0,column=0)
         self.treeUnidadesCurriculares.heading('#1', text = 'Id',)
-        self.treeUnidadesCurriculares.heading('#2', text = 'Unidad Curricular')
+        self.treeUnidadesCurriculares.heading('#2', text = 'Unidad curricular')
         self.treeUnidadesCurriculares.heading('#3', text = 'Hora')
         self.treeUnidadesCurriculares.heading('#4', text = 'Departamento')
-        self.treeUnidadesCurriculares.heading('#5', text = 'Programa Tradiciónal')
+        self.treeUnidadesCurriculares.heading('#5', text = 'Programa tradiciónal')
         self.treeUnidadesCurriculares.column('#1', width=50)
         self.treeUnidadesCurriculares.column('#2', width=240)
         self.treeUnidadesCurriculares.column('#3', width=40)
@@ -180,37 +180,37 @@ class Unidades_curriculares(tk.Toplevel):
 
     def RegistrarUnidadCurricular(self):
         if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
-            if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?'):
+            if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?',parent=self):
                 if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo")',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa())):
                     self.MostrarDatosUnidadesCurriculares()
                     self.entryUnidadCurricular.delete(0, tk.END)
                     self.entryDepartamento.delete(0, tk.END)
                     self.entryPrograma.delete(0, tk.END)
                     self.hora.set(value='')
-                    messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.')
+                    messagebox.showinfo(title='Info', message='Unidad Curricular Registrada.',parent=self)
                 else:
-                    messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada')
+                    messagebox.showwarning(title='Warning', message='Unidad curricilar ya esta registrada',parent=self)
             else:
                 self.entryUnidadCurricular.focus()
         else:
-            messagebox.showwarning(title='Warning', message='Introduzca un valor')
+            messagebox.showwarning(title='Warning', message='Introduzca un valor',parent=self)
 
     def eliminarUnidadCurricular(self):
         if self.treeUnidadesCurriculares.selection():
-            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?'):
+            if messagebox.askyesno('Deshabilitar','¿Desea deshabilitar la unidad curricular selecionada?',parent=self):
                 self.query = 'UPDATE unidad_curricular SET Estado = "Inactivo" WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"'
                 self.parametros = self.selecionarFilaUnidadesCurriculares()
                 self.conexion(self.query, (self.parametros,)) 
                 self.MostrarDatosUnidadesCurriculares()
-                messagebox.showinfo(title='Info', message='Unidad curricular deshabilitada correctamente.')
+                messagebox.showinfo(title='Info', message='Unidad curricular deshabilitada correctamente.',parent=self)
             else:
                 self.MostrarDatosUnidadesCurriculares()
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a deshabilitar.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una unidad curricular a deshabilitar.',parent=self)
 
     def modificarUnidadCurricular(self):
         if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
-            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?'):
+            if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?',parent=self):
                 self.conexion('UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.entryUnidadCurricular.get(), self.selecionarFilaUnidadesCurriculares()))
                 self.conexion('UPDATE unidad_curricular SET Hora = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.cantidad(), self.selecionarFilaUnidadesCurriculares()))
                 self.conexion('UPDATE unidad_curricular SET Departamento = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.departamento(), self.selecionarFilaUnidadesCurriculares()))
@@ -220,6 +220,6 @@ class Unidades_curriculares(tk.Toplevel):
                 self.entryDepartamento.delete(0, tk.END)
                 self.entryPrograma.delete(0, tk.END)
                 self.hora.set(value='')
-                messagebox.showinfo(title='Info', message='Unidad curricular Editada Correctamente.')
+                messagebox.showinfo(title='Info', message='Unidad curricular Editada Correctamente.',parent=self)
         else:
-            messagebox.showwarning(title='Warning', message='Seleccione una la unidad curricular a editar.')
+            messagebox.showwarning(title='Warning', message='Seleccione una la unidad curricular a editar.',parent=self)

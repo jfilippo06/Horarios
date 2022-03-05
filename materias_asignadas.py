@@ -14,11 +14,6 @@ class Materias_asignadas(tk.Toplevel):
         self.geometry('1280x290')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
-        # Menu:
-        self.menubar = tk.Menu(self)
-        self.menubar.add_cascade(label="Volver", command=self.volver)
-        self.config(menu=self.menubar)
-
         self.frame = ttk.Labelframe(self)
         self.frame.grid(column=0,row=1,pady=5,padx=5)
         self.tree = ttk.Treeview(self.frame, columns = ['#1','#2','#3','#4','#5','#6','#7','#8','#9','#10','#11','#12'], show='headings',height=9)
@@ -51,6 +46,7 @@ class Materias_asignadas(tk.Toplevel):
         self.tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(column=1,row=0, sticky='ns')
         ttk.Button(self,text='HABILITAR MATERIA',command=self.habilitarMateria, width=205).grid(row=2,column=0)
+        ttk.Button(self,text='CANCELAR',command=self.volver, width=205).grid(row=3,column=0)
 
         self.mostrarMateriasAsignadas()
 
@@ -97,11 +93,11 @@ class Materias_asignadas(tk.Toplevel):
 
     def habilitarMateria(self):
         if self.tree.selection():
-            if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?'):
+            if messagebox.askyesno('Habilitar','¿Desea habilitar la materia?',parent=self):
                 self.conexion('UPDATE materias_asignadas SET Estado = "Activo" WHERE materias_asignadas.Id = ? AND materias_asignadas.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.conexion('UPDATE materias_docentes SET Estado = "Activo" WHERE materias_docentes.Id_materias_asignadas = ? AND materias_docentes.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.conexion('UPDATE materias_laboratorios SET Estado = "Activo" WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Inactivo"',(self.selecionarFila(),))
                 self.mostrarMateriasAsignadas()
-                messagebox.showinfo(title='Info', message='Materia habilitada')
+                messagebox.showinfo(title='Info', message='Materia habilitada',parent=self)
         else:
-            messagebox.showwarning(title='Wanning', message='Seleccione una celda.')
+            messagebox.showwarning(title='Wanning', message='Seleccione una celda.',parent=self)

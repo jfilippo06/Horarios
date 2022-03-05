@@ -43,10 +43,10 @@ class App(tk.Tk):
         
         self.menubar = tk.Menu(self)
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu1.add_command(label="Carga Académica", command=self.cargaAcademica)
+        self.filemenu1.add_command(label="Carga académica", command=self.cargaAcademica)
         self.filemenu1.add_command(label="Datos basicos", command=self.gestor)
         self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
-        self.menubar.add_cascade(label="Adminitración del Sistema", menu=self.filemenu1)
+        self.menubar.add_cascade(label="Administración del sistema", menu=self.filemenu1)
         self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu2.add_command(label="Usuarios", command=self.usuarios)
         self.menubar.add_cascade(label="Configuración", menu=self.filemenu2)
