@@ -58,7 +58,7 @@ class App(tk.Tk):
         self.filemenu3.add_cascade(label="Registros", menu=self.filemenuRegistro)
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
+        self.filemenu4.add_command(label='Horarios', command=self.horarios)
         self.filemenu4.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
         self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
         self.menubar.add_cascade(label="Salir", command=self.salir)
