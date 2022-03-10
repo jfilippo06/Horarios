@@ -876,7 +876,7 @@ class ReporteCargaAcademica(tk.Toplevel):
 
     def obtenerTablaHorarioMorning(self):
             self.morning = [
-                [Paragraph('Horario de Clases Mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+                [Paragraph('Horario de Clases Mañana',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
                 [Paragraph('7:10 - 7:55',self.center)],
                 [Paragraph('8:00 - 8:45',self.center)],
                 [Paragraph('8:50 - 9:35',self.center)],
@@ -1236,7 +1236,7 @@ class ReporteCargaAcademica(tk.Toplevel):
 
     def obtenerTablaHorarioAfternon(self):
             self.afternon = [
-                [Paragraph('Horario de Clases Tarde',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+                [Paragraph('Horario de Clases Tarde',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
                 [Paragraph('1:05 - 1:55',self.center)],
                 [Paragraph('1:55 - 2:40',self.center)],
                 [Paragraph('2:45 - 3:30',self.center)],
@@ -1595,7 +1595,7 @@ class ReporteCargaAcademica(tk.Toplevel):
 
     def obtenerTablaHorarioNinght(self):
             self.ninght = [
-                [Paragraph('Horario de Clases Noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+                [Paragraph('Horario de Clases Noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
                 [Paragraph('6:00 - 6:45',self.center)],
                 [Paragraph('6:45 - 7:30',self.center)],
                 [Paragraph('7:35 - 8:20',self.center)],
