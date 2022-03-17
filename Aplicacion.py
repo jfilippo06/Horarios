@@ -42,26 +42,33 @@ class App(tk.Tk):
         self.button.place(x=250,y=285)
         
         self.menubar = tk.Menu(self)
+
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu1.add_command(label="Carga académica", command=self.cargaAcademica)
         self.filemenu1.add_command(label="Datos basicos", command=self.gestor)
         self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
         self.menubar.add_cascade(label="Administración del sistema", menu=self.filemenu1)
+
         self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu2.add_command(label="Usuarios", command=self.usuarios)
-        self.menubar.add_cascade(label="Configuración", menu=self.filemenu2)
+        self.filemenu2.add_command(label='Materias asignadas', command=self.materias)
+        self.filemenu2.add_command(label='Registros basicos', command=self.registro)
+        self.menubar.add_cascade(label="Registros", menu=self.filemenu2)
+        
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu3.add_command(label='Base de datos', command= self.bd)
-        self.filemenuRegistro = tk.Menu(self.filemenu3, tearoff=0)
-        self.filemenuRegistro.add_command(label='Registros basicos', command=self.registro)
-        self.filemenuRegistro.add_command(label='Materias asignadas', command=self.materias)
-        self.filemenu3.add_cascade(label="Registros", menu=self.filemenuRegistro)
-        self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu3)
+        self.filemenu3.add_command(label="Usuarios", command=self.usuarios)
+        self.menubar.add_cascade(label="Configuración", menu=self.filemenu3)
+
         self.filemenu4 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu4.add_command(label='Horarios de clase', command=self.horarios)
-        self.filemenu4.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
-        self.menubar.add_cascade(label="Reportes", menu=self.filemenu4)
+        self.filemenu4.add_command(label='Base de datos', command= self.bd)
+        self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu4)
+
+        self.filemenu5 = tk.Menu(self.menubar, tearoff=0)
+        self.filemenu5.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
+        self.filemenu5.add_command(label='Horarios', command=self.horarios)
+        self.menubar.add_cascade(label="Reportes", menu=self.filemenu5)
+
         self.menubar.add_cascade(label="Salir", command=self.salir)
+        
         self.config(menu='')
 
     def conexion(self,query,parametros = ()):

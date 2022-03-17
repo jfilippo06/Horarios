@@ -134,7 +134,7 @@ class Horarios(tk.Toplevel):
         self.activarInicio = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarInicio).grid(column=2,row=0)
         self.desactivarInicio = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarInicio).grid(column=3,row=0)
 
-        ttk.Label(self.frameContenedor, text='Inicio Pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Inicio pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
         self.entryPausa = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryPausa.grid(column=1,row=1,pady=5,padx=5)
         self.activarPausa = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarPausa).grid(column=2,row=1)
@@ -146,7 +146,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarReinicio).grid(column=2,row=2)
         self.desactivarReinicio = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarReinicio).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor, text='Culminacion clases').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryCulminacion.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarCuminacion).grid(column=2,row=3)
@@ -176,7 +176,7 @@ class Horarios(tk.Toplevel):
         self.activarMartes = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarMartes).grid(column=2,row=7)
         self.desactivarMartes = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarMartes).grid(column=3,row=7)
 
-        ttk.Label(self.frameContenedor, text='Miercoles').grid(column=0, row=8,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Miércoles').grid(column=0, row=8,pady=5,padx=5)
         self.entryMiercoles = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryMiercoles.grid(column=1,row=8,pady=5,padx=5)
         self.activarMiercoles = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarMiercoles).grid(column=2,row=8)
@@ -246,7 +246,7 @@ class Horarios(tk.Toplevel):
         self.activarInicio2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarInicio2).grid(column=2,row=0)
         self.desactivarInicio2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarInicio2).grid(column=3,row=0)
         
-        ttk.Label(self.frameContenedor2, text='Inicio Pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
+        ttk.Label(self.frameContenedor2, text='Inicio pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
         self.entryPausa2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
         self.entryPausa2.grid(column=1,row=1,pady=5,padx=5)
         self.activarPausa2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarPausa2).grid(column=2,row=1)
@@ -258,7 +258,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarReinicio2).grid(column=2,row=2)
         self.desactivarReinicio2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarReinicio2).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor2, text='Culminacion clases').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor2, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
         self.entryCulminacion2.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarCuminacion2).grid(column=2,row=3)
@@ -288,7 +288,7 @@ class Horarios(tk.Toplevel):
         self.activarMartes2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarMartes2).grid(column=2,row=7)
         self.desactivarMartes2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarMartes2).grid(column=3,row=7)
 
-        ttk.Label(self.frameContenedor2, text='Miercoles').grid(column=0, row=8,pady=5,padx=5)
+        ttk.Label(self.frameContenedor2, text='Miércoles').grid(column=0, row=8,pady=5,padx=5)
         self.entryMiercoles2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
         self.entryMiercoles2.grid(column=1,row=8,pady=5,padx=5)
         self.activarMiercoles2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarMiercoles2).grid(column=2,row=8)
@@ -358,7 +358,7 @@ class Horarios(tk.Toplevel):
         self.activarInicio3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarInicio3).grid(column=2,row=0)
         self.desactivarInicio3 = ttk.Button(self.frameContenedor3, text='DESACTIVAR', command=self.botonDesactivarInicio3).grid(column=3,row=0)
         
-        ttk.Label(self.frameContenedor3, text='Inicio Pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
+        ttk.Label(self.frameContenedor3, text='Inicio pausa vacacional').grid(column=0, row=1,pady=5,padx=5)
         self.entryPausa3 = ttk.Entry(self.frameContenedor3, state=DISABLED)
         self.entryPausa3.grid(column=1,row=1,pady=5,padx=5)
         self.activarPausa3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarPausa3).grid(column=2,row=1)
@@ -370,7 +370,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarReinicio3).grid(column=2,row=2)
         self.desactivarReinicio3 = ttk.Button(self.frameContenedor3, text='DESACTIVAR', command=self.botonDesactivarReinicio3).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor3, text='Culminacion clases').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor3, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion3 = ttk.Entry(self.frameContenedor3, state=DISABLED)
         self.entryCulminacion3.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarCuminacion3).grid(column=2,row=3)
@@ -400,7 +400,7 @@ class Horarios(tk.Toplevel):
         self.activarMartes3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarMartes3).grid(column=2,row=7)
         self.desactivarMartes3 = ttk.Button(self.frameContenedor3, text='DESACTIVAR', command=self.botonDesactivarMartes3).grid(column=3,row=7)
 
-        ttk.Label(self.frameContenedor3, text='Miercoles').grid(column=0, row=8,pady=5,padx=5)
+        ttk.Label(self.frameContenedor3, text='Miércoles').grid(column=0, row=8,pady=5,padx=5)
         self.entryMiercoles3 = ttk.Entry(self.frameContenedor3, state=DISABLED)
         self.entryMiercoles3.grid(column=1,row=8,pady=5,padx=5)
         self.activarMiercoles3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarMiercoles3).grid(column=2,row=8)
@@ -1477,7 +1477,7 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
         if self.modalidad == 'Nocturno':
@@ -1486,7 +1486,7 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
                 
@@ -1497,7 +1497,7 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes2.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles2.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles2.get() + ')',self.center))
         if self.dataModalidad == 'Nocturno':
@@ -1506,7 +1506,7 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes2.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles2.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles2.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles2.get() + ')',self.center))
 
@@ -1517,7 +1517,7 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles3.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
         if self.dataLaboratorioModalidad == 'Nocturno':
@@ -1526,13 +1526,13 @@ class Horarios(tk.Toplevel):
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
-                array[celda].append(Paragraph('Miercoles (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles3.get() + ')',self.center))
                 array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
                 array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
 
     def obtenerHorarioDiurno(self):
         self.diurno = [
-            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
             [Paragraph('8:50 - 9:35',self.center)],
@@ -2170,7 +2170,7 @@ class Horarios(tk.Toplevel):
 
     def obtenerHorarioNocturno(self):
         self.nocturno = [
-            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('6:00 - 6:45',self.center)],
             [Paragraph('6:45 - 7:30',self.center)],
             [Paragraph('7:35 - 8:20',self.center)],
@@ -2523,7 +2523,7 @@ class Horarios(tk.Toplevel):
     
     def obtenerHorarioDiurnoDocente(self):
         self.diurnoDocente = [
-            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
             [Paragraph('8:50 - 9:35',self.center)],
@@ -3183,7 +3183,7 @@ class Horarios(tk.Toplevel):
     
     def obtenerHorarioNocturnoDocente(self):
         self.nocturnoDocente = [
-            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('6:00 - 6:45',self.center)],
             [Paragraph('6:45 - 7:30',self.center)],
             [Paragraph('7:35 - 8:20',self.center)],
@@ -3526,7 +3526,7 @@ class Horarios(tk.Toplevel):
 
     def obtenerHorarioDiurnoLaboratorio(self):
         self.diurnoLaboratorio = [
-            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas diurno',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('7:10 - 7:55',self.center)],
             [Paragraph('8:00 - 8:45',self.center)],
             [Paragraph('8:50 - 9:35',self.center)],
@@ -4207,7 +4207,7 @@ class Horarios(tk.Toplevel):
     
     def obtenerHorarioNocturnoLaboratorio(self):
         self.nocturnoLabolatorio = [
-            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miercoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
+            [Paragraph('bloque de horas noche',self.center),Paragraph('Lunes',self.center),Paragraph('Martes',self.center),Paragraph('Miércoles',self.center),Paragraph('Jueves',self.center),Paragraph('Viernes',self.center)],
             [Paragraph('6:00 - 6:45',self.center)],
             [Paragraph('6:45 - 7:30',self.center)],
             [Paragraph('7:35 - 8:20',self.center)],

@@ -1,0 +1,4 @@
+db-sqlite3
+traceback2
+pytest-shutil
+reportlab
