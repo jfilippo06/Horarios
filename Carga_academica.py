@@ -184,7 +184,7 @@ class CargaAcademica(tk.Toplevel):
 			ttk.Label(self.frame,text='Titulo de Pre-grado:').grid(row=3,column=0,padx=5,pady=5)
 			self.entryEditarTpregado = ttk.Entry(self.frame, width=40)
 			self.entryEditarTpregado.grid(row=3,column=1,padx=5,pady=5)
-			ttk.Label(self.frame,text='Titulo de Post-grado:').grid(row=4,column=0,padx=5,pady=5)
+			ttk.Label(self.frame,text='Titulo de Pos-grado:').grid(row=4,column=0,padx=5,pady=5)
 			self.entryEditarTposgrado = ttk.Entry(self.frame, width=40)
 			self.entryEditarTposgrado.grid(row=4,column=1,padx=5,pady=5)
 			self.DescargaAcademicaEditar = tk.StringVar()
@@ -240,8 +240,8 @@ class CargaAcademica(tk.Toplevel):
 		self.entryEditarDedicación.insert(0,dedicacion[0])
 		pregrado = self.conexion('SELECT Pregrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		self.entryEditarTpregado.insert(0,pregrado[0])
-		postgrado = self.conexion('SELECT Postgrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
-		self.entryEditarTposgrado.insert(0,postgrado[0])
+		posgrado = self.conexion('SELECT Posgrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarTposgrado.insert(0,posgrado[0])
 		descargaAcademica = self.conexion('SELECT DescargaAcademica FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		if descargaAcademica[0] == 'Si':
 			self.DescargaAcademicaEditar.set(value='Si')
@@ -297,7 +297,7 @@ class CargaAcademica(tk.Toplevel):
 
 	def editar2(self):
 		if messagebox.askyesno('actualizar','¿Desea actualizar la data?',parent=self.newEditar):
-			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Postgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
+			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Posgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
 			messagebox.showinfo(title='Info', message='Data actualizada.',parent=self.newEditar)
 			self.newEditar.destroy()
 
