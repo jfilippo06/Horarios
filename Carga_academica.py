@@ -184,7 +184,7 @@ class CargaAcademica(tk.Toplevel):
 			ttk.Label(self.frame,text='Titulo de Pre-grado:').grid(row=3,column=0,padx=5,pady=5)
 			self.entryEditarTpregado = ttk.Entry(self.frame, width=40)
 			self.entryEditarTpregado.grid(row=3,column=1,padx=5,pady=5)
-			ttk.Label(self.frame,text='Titulo de Post-grado:').grid(row=4,column=0,padx=5,pady=5)
+			ttk.Label(self.frame,text='Titulo de Pos-grado:').grid(row=4,column=0,padx=5,pady=5)
 			self.entryEditarTposgrado = ttk.Entry(self.frame, width=40)
 			self.entryEditarTposgrado.grid(row=4,column=1,padx=5,pady=5)
 			self.DescargaAcademicaEditar = tk.StringVar()
@@ -240,8 +240,8 @@ class CargaAcademica(tk.Toplevel):
 		self.entryEditarDedicación.insert(0,dedicacion[0])
 		pregrado = self.conexion('SELECT Pregrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		self.entryEditarTpregado.insert(0,pregrado[0])
-		postgrado = self.conexion('SELECT Postgrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
-		self.entryEditarTposgrado.insert(0,postgrado[0])
+		posgrado = self.conexion('SELECT Posgrado FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
+		self.entryEditarTposgrado.insert(0,posgrado[0])
 		descargaAcademica = self.conexion('SELECT DescargaAcademica FROM docente WHERE docente.Id = ? and docente.Estado = "Activo"', (id,)).fetchone()
 		if descargaAcademica[0] == 'Si':
 			self.DescargaAcademicaEditar.set(value='Si')
@@ -297,7 +297,7 @@ class CargaAcademica(tk.Toplevel):
 
 	def editar2(self):
 		if messagebox.askyesno('actualizar','¿Desea actualizar la data?',parent=self.newEditar):
-			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Postgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
+			self.conexion('UPDATE docente SET NombreApellido = ?, Categoria = ?, Dedicacion = ?, Pregrado = ?, Posgrado = ?, DescargaAcademica = ?, CondicionLaboral = ?, RazonDescarga = ?, Telefono = ?, Labore = ?, Especifique = ? WHERE docente.Id = ? and docente.Estado = "Activo"',(self.entryEditarNombre.get(), self.entryEditarCategoria.get(),self.entryEditarDedicación.get(),self.entryEditarTpregado.get(),self.entryEditarTposgrado.get(),self.DescargaAcademicaEditar.get(),self.condicion(),self.razon(),self.entryEditarTelefono.get(),self.laboraEditar.get(),self.especifique(),self.seleccion))
 			messagebox.showinfo(title='Info', message='Data actualizada.',parent=self.newEditar)
 			self.newEditar.destroy()
 
@@ -1895,7 +1895,7 @@ class CargaAcademica(tk.Toplevel):
 		self.id_materias_asignadas = self.data[0]
 		self.materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
 		self.conexion("INSERT INTO materias_docentes VALUES (NULL,?,?,?,?,?,?,?,?,'Activo')",(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
-		self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
+		self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.id_materias_asignadas,self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
 		messagebox.showinfo(title='Info', message='Materia registrada',parent=self.new)
 
@@ -1915,10 +1915,8 @@ class CargaAcademica(tk.Toplevel):
 		self.conexion('UPDATE materias_docentes SET Id_lapso_academico = ?, Id_modalidad = ?, materia = ?, Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ? WHERE materias_docentes.Id_materias_asignadas = ? AND materias_docentes.Estado = "Activo"',(self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeGestionar)))
 		same = self.conexion('SELECT * FROM materias_laboratorios WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Activo"',(self.selecionarFila(self.treeGestionar),)).fetchall()
 		if same:
-			materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-			self.conexion('UPDATE materias_laboratorios SET Id_laboratorio = ?, Id_lapso_academico = ?, Id_modalidad = ?, materia = ?, Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ? WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Activo"',(self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeGestionar)))
+			self.conexion('UPDATE materias_laboratorios SET Id_laboratorio = ?, Id_lapso_academico = ?, Id_modalidad = ?, materia = ?, Id_semana = ?, Id_hora_inicial = ?, Id_hora_final = ? WHERE materias_laboratorios.Id_materias_asignadas = ? AND materias_laboratorios.Estado = "Activo"',(self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal),self.selecionarFila(self.treeGestionar)))
 		else:
-			materiaDocente = ('Cohorte ' + str(self.dataCohorte()) + ' Trayecto ' + str(self.dataTrayecto()) + ' Trimestre ' + str(self.dataTrimestre()) + ' Sección ' + str(self.dataSeccion()) + ' ' + str(self.dataUnidadCurricular()))
-			self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.selecionarFila(self.treeGestionar),self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),materiaDocente,self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
+			self.conexion('INSERT INTO materias_laboratorios VALUES (NULL,?,?,?,?,?,?,?,?,?,"Activo")',(self.selecionarFila(self.treeGestionar),self.seleccion,self.selecionarFila(self.treeLaboratorio),self.selecionarFila(self.treeLapsoAcademico),self.selecionarFila(self.treeTurno),self.selecionarFila(self.treeUnidadCurricular),self.selecionarFila(self.treeDia),self.selecionarFila(self.treeHoraInicial),self.selecionarFila(self.treeHoraFinal)))
 		self.MostrarDatosGestionar()
 		messagebox.showinfo(title='Info', message='Registro editado correctamente.',parent=self.new)

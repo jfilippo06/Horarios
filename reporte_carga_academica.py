@@ -523,7 +523,7 @@ class ReporteCargaAcademica(tk.Toplevel):
                 [Paragraph('Categoría:',self.center)],
                 [Paragraph('Dedicacíon:',self.center)],
                 [Paragraph('Título de Pre-Grado:',self.center)],
-                [Paragraph('Título de Post-grado',self.center)],
+                [Paragraph('Título de Pos-Grado',self.center)],
                 [Paragraph('Descarga Academica:',self.center)],
                 [Paragraph('Razon de la descarga:',self.center)]
             ]
@@ -542,8 +542,8 @@ class ReporteCargaAcademica(tk.Toplevel):
             self.pregrado = self.materia('SELECT docente.Pregrado from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[3].append(Paragraph(self.pregrado,self.left))
             self.setStyles.append(('SPAN',(1,3),(3,3)))
-            self.postgrado = self.materia('SELECT docente.Postgrado from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
-            self.tabla1[4].append(Paragraph(self.postgrado,self.left))
+            self.posgrado = self.materia('SELECT docente.Posgrado from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
+            self.tabla1[4].append(Paragraph(self.posgrado,self.left))
             self.setStyles.append(('SPAN',(1,4),(3,4)))
             self.descargaAcademica = self.materia('SELECT docente.DescargaAcademica from docente WHERE docente.Id = ? AND docente.Estado = "Activo"',(self.docenteId,))
             self.tabla1[5].append(Paragraph(self.descargaAcademica,self.left))
