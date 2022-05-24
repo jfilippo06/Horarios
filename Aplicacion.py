@@ -45,13 +45,13 @@ class App(tk.Tk):
 
         self.filemenu1 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu1.add_command(label="Carga académica", command=self.cargaAcademica)
-        self.filemenu1.add_command(label="Datos basicos", command=self.gestor)
+        self.filemenu1.add_command(label="Datos básicos", command=self.gestor)
         self.filemenu1.add_command(label="Unidades curriculares", command=self.unidades_curriculares)
         self.menubar.add_cascade(label="Administración del sistema", menu=self.filemenu1)
 
         self.filemenu2 = tk.Menu(self.menubar, tearoff=0)
         self.filemenu2.add_command(label='Materias asignadas', command=self.materias)
-        self.filemenu2.add_command(label='Registros basicos', command=self.registro)
+        self.filemenu2.add_command(label='Registros básicos', command=self.registro)
         self.menubar.add_cascade(label="Registros", menu=self.filemenu2)
         
         self.filemenu3 = tk.Menu(self.menubar, tearoff=0)
@@ -63,7 +63,7 @@ class App(tk.Tk):
         self.menubar.add_cascade(label="Mantenimiento", menu=self.filemenu4)
 
         self.filemenu5 = tk.Menu(self.menubar, tearoff=0)
-        self.filemenu5.add_command(label='Carga academica docente', command=self.reporteCargaAcademica)
+        self.filemenu5.add_command(label='Carga académica docente', command=self.reporteCargaAcademica)
         self.filemenu5.add_command(label='Horarios', command=self.horarios)
         self.menubar.add_cascade(label="Reportes", menu=self.filemenu5)
 
@@ -102,7 +102,7 @@ class App(tk.Tk):
                 self.userPassword.delete(0, tk.END)
                 self.userName.focus()
         else:
-            messagebox.showwarning(title='Warnig', message='Introdusca un valor en las casillas')
+            messagebox.showwarning(title='Warnig', message='Introduzca un valor en las casillas')
             self.userName.delete(0, tk.END)
             self.userPassword.delete(0, tk.END)
             self.userName.focus()

@@ -10,7 +10,7 @@ class Registro(tk.Toplevel):
     def __init__(self,master = None):
         super().__init__(master)
         # Config:
-        self.title('Registros basicos')
+        self.title('Registros básicos')
         self.geometry('505x330')
         self.resizable(width=0,height=0)
         self.iconbitmap(uptpc)
@@ -32,7 +32,7 @@ class Registro(tk.Toplevel):
         self.noteUnidades.pack(fill='both', expand=True)
         self.noteUsuarios.pack(fill='both', expand=True)
         # add frames to notebook
-        self.notebook.add(self.noteDatos, text='Datos basicos')
+        self.notebook.add(self.noteDatos, text='Datos básicos')
         self.notebook.add(self.noteCarga, text='Carga académica')
         self.notebook.add(self.noteUnidades, text='Unidades curriculares')
         self.notebook.add(self.noteUsuarios, text='Usuarios')

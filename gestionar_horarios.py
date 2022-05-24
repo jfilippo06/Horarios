@@ -146,7 +146,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarReinicio).grid(column=2,row=2)
         self.desactivarReinicio = ttk.Button(self.frameContenedor, text='DESACTIVAR', command=self.botonDesactivarReinicio).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor, text='Culminación clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion = ttk.Entry(self.frameContenedor, state=DISABLED)
         self.entryCulminacion.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion = ttk.Button(self.frameContenedor, text='ACTIVAR', command=self.botonActivarCuminacion).grid(column=2,row=3)
@@ -258,7 +258,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarReinicio2).grid(column=2,row=2)
         self.desactivarReinicio2 = ttk.Button(self.frameContenedor2, text='DESACTIVAR', command=self.botonDesactivarReinicio2).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor2, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor2, text='Culminación clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion2 = ttk.Entry(self.frameContenedor2, state=DISABLED)
         self.entryCulminacion2.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion2 = ttk.Button(self.frameContenedor2, text='ACTIVAR', command=self.botonActivarCuminacion2).grid(column=2,row=3)
@@ -370,7 +370,7 @@ class Horarios(tk.Toplevel):
         self.activarReinicio3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarReinicio3).grid(column=2,row=2)
         self.desactivarReinicio3 = ttk.Button(self.frameContenedor3, text='DESACTIVAR', command=self.botonDesactivarReinicio3).grid(column=3,row=2)
 
-        ttk.Label(self.frameContenedor3, text='Culminacion clase').grid(column=0, row=3,pady=5,padx=5)
+        ttk.Label(self.frameContenedor3, text='Culminación clase').grid(column=0, row=3,pady=5,padx=5)
         self.entryCulminacion3 = ttk.Entry(self.frameContenedor3, state=DISABLED)
         self.entryCulminacion3.grid(column=1,row=3,pady=5,padx=5)
         self.activarCulminacion3 = ttk.Button(self.frameContenedor3, text='ACTIVAR', command=self.botonActivarCuminacion3).grid(column=2,row=3)
