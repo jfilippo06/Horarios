@@ -102,7 +102,7 @@ class CargaAcademica(tk.Toplevel):
 				self.cedula.delete(0, tk.END)
 				self.cedula.focus()
 			else:
-				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrala?',parent=self):
+				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrarla?',parent=self):
 					valor = self.cedula.get()
 					self.cedula.delete(0, tk.END)
 					self.docente(valor)
