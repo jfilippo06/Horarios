@@ -157,9 +157,9 @@ class Usuarios(tk.Toplevel):
                 if messagebox.askyesno('Crear','¿Desea crear el usuario?',parent=self.newCrear):
                     blake2b = hashlib.blake2b(self.newPassword.get().encode()).hexdigest()
                     self.conexion('INSERT INTO usuario_admin VALUES (NULL,?,?,"Activo")', (self.newUser.get(),blake2b))
-                    self.mostrarDatosUsuarios()
-                    self.newCrear.destroy()
                     messagebox.showinfo(title='Info', message='Usuario creado',parent=self.newCrear)
+                    self.newCrear.destroy()
+                    self.mostrarDatosUsuarios()
                 else:
                     self.newUser.delete(0,tk.END)
                     self.newPassword.delete(0,tk.END)
@@ -180,9 +180,9 @@ class Usuarios(tk.Toplevel):
                 if messagebox.askyesno('Editar','¿Desea editar el usuario?',parent=self.newEditar):
                     blake2b = hashlib.blake2b(self.newPasswordEditar.get().encode()).hexdigest()
                     self.conexion('UPDATE usuario_admin SET Usuario = ?, Contraseña = ? WHERE usuario_admin.Id = ? and usuario_admin.Estado = "Activo"', (self.newUserEditar.get(),blake2b, self.id))
-                    self.mostrarDatosUsuarios()
-                    self.newEditar.destroy()
                     messagebox.showinfo(title='Info', message='Usuario Editado',parent=self.newEditar)
+                    self.newEditar.destroy()
+                    self.mostrarDatosUsuarios()
                 else:
                     self.newUserEditar.delete(0,tk.END)
                     self.newPasswordEditar.delete(0,tk.END)

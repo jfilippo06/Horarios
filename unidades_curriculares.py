@@ -11,7 +11,7 @@ class Unidades_curriculares(tk.Toplevel):
         super().__init__(master)
         # Config:
         self.title('Unidades curriculares')
-        self.geometry('615x580')
+        self.geometry('660x600')
         self.resizable(width=0, height=0)
         self.iconbitmap(uptpc)
 
@@ -25,22 +25,25 @@ class Unidades_curriculares(tk.Toplevel):
         self.entryUnidadCurricular = ttk.Entry(self.frame,width=40)
         self.entryUnidadCurricular.grid(row=0,column=1,padx=5,pady=5)
         self.entryUnidadCurricular.focus()
-        ttk.Label(self.frame,text='Departamento:').grid(row=1,column=0,padx=5,pady=5)
+        ttk.Label(self.frame,text='Código:').grid(row=1,column=0,padx=5,pady=5)
+        self.entryCodigo = ttk.Entry(self.frame,width=40)
+        self.entryCodigo.grid(row=1,column=1,padx=5,pady=5)
+        ttk.Label(self.frame,text='Departamento:').grid(row=2,column=0,padx=5,pady=5)
         self.entryDepartamento = ttk.Entry(self.frame,width=40)
-        self.entryDepartamento.grid(row=1,column=1,padx=5,pady=5)
+        self.entryDepartamento.grid(row=2,column=1,padx=5,pady=5)
         self.entryDepartamento.config(state=tk.DISABLED)
-        ttk.Button(self.frame, text='ACTIVAR', command=self.activar2).grid(row=2,column=0)
-        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar2).grid(row=2,column=1)
-        ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=3,column=0,padx=5,pady=5)
+        ttk.Button(self.frame, text='ACTIVAR', command=self.activar2).grid(row=3,column=0)
+        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar2).grid(row=3,column=1)
+        ttk.Label(self.frame,text='Programa tradiciónal:').grid(row=4,column=0,padx=5,pady=5)
         self.entryPrograma = ttk.Entry(self.frame,width=40)
-        self.entryPrograma.grid(row=3,column=1,padx=5,pady=5)
+        self.entryPrograma.grid(row=4,column=1,padx=5,pady=5)
         self.entryPrograma.config(state=tk.DISABLED)
-        ttk.Button(self.frame, text='ACTIVAR', command=self.activar).grid(row=4,column=0)
-        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar).grid(row=4,column=1)
-        ttk.Label(self.frame,text='Hora:').grid(row=5,column=0,padx=5,pady=5)
+        ttk.Button(self.frame, text='ACTIVAR', command=self.activar).grid(row=5,column=0)
+        ttk.Button(self.frame, text='DESACTIVAR', command=self.desactivar).grid(row=5,column=1)
+        ttk.Label(self.frame,text='Hora:').grid(row=6,column=0,padx=5,pady=5)
         self.hora = tk.StringVar()
         self.frameRadio = ttk.Labelframe(self.frame)
-        self.frameRadio.grid(row=5,column=1)
+        self.frameRadio.grid(row=6,column=1)
         ttk.Radiobutton(self.frameRadio, text='2', value='2',variable=self.hora).grid(row=0,column=0)
         ttk.Radiobutton(self.frameRadio, text='3', value='3',variable=self.hora).grid(row=0,column=1)
         ttk.Radiobutton(self.frameRadio, text='4', value='4',variable=self.hora).grid(row=0,column=2)
@@ -53,18 +56,20 @@ class Unidades_curriculares(tk.Toplevel):
         
         self.frameUnidadesCurriculares = ttk.Labelframe(self)
         self.frameUnidadesCurriculares.grid(column=0,row=2,padx=5)
-        self.treeUnidadesCurriculares = ttk.Treeview(self.frameUnidadesCurriculares, columns=['#1',"#2",'#3','#4','#5'],show='headings',height=10)
+        self.treeUnidadesCurriculares = ttk.Treeview(self.frameUnidadesCurriculares, columns=['#1',"#2",'#3','#4','#5','#6'],show='headings',height=10)
         self.treeUnidadesCurriculares.grid(row=0,column=0)
         self.treeUnidadesCurriculares.heading('#1', text = 'Id',)
-        self.treeUnidadesCurriculares.heading('#2', text = 'Unidad curricular')
-        self.treeUnidadesCurriculares.heading('#3', text = 'Hora')
-        self.treeUnidadesCurriculares.heading('#4', text = 'Departamento')
-        self.treeUnidadesCurriculares.heading('#5', text = 'Programa tradiciónal')
+        self.treeUnidadesCurriculares.heading('#2', text = 'Código')
+        self.treeUnidadesCurriculares.heading('#3', text = 'Unidad curricular')
+        self.treeUnidadesCurriculares.heading('#4', text = 'Hora')
+        self.treeUnidadesCurriculares.heading('#5', text = 'Departamento')
+        self.treeUnidadesCurriculares.heading('#6', text = 'Programa tradiciónal')
         self.treeUnidadesCurriculares.column('#1', width=50)
-        self.treeUnidadesCurriculares.column('#2', width=240)
-        self.treeUnidadesCurriculares.column('#3', width=40)
-        self.treeUnidadesCurriculares.column('#4', width=120)
-        self.treeUnidadesCurriculares.column('#5', width=130)
+        self.treeUnidadesCurriculares.column('#2', width=55)
+        self.treeUnidadesCurriculares.column('#3', width=240)
+        self.treeUnidadesCurriculares.column('#4', width=40)
+        self.treeUnidadesCurriculares.column('#5', width=120)
+        self.treeUnidadesCurriculares.column('#6', width=130)
         self.treeUnidadesCurriculares.bind('<Double-1>',lambda e, tree = self.treeUnidadesCurriculares: self.doubleClick(tree))
         self.scrollbarUnidadesCurriculares = ttk.Scrollbar(self.frameUnidadesCurriculares, orient=tk.VERTICAL, command=self.treeUnidadesCurriculares.yview)
         self.treeUnidadesCurriculares.configure(yscroll=self.scrollbarUnidadesCurriculares.set)
@@ -98,12 +103,15 @@ class Unidades_curriculares(tk.Toplevel):
     def doubleClick(self,tree):
         item = tree.focus()
         data = tree.item(item)
-        unidad = data['values'][1]
-        hora = data['values'][2]
-        departamento = data['values'][3]
-        programa = data['values'][4]
+        codigo = data['values'][1]
+        unidad = data['values'][2]
+        hora = data['values'][3]
+        departamento = data['values'][4]
+        programa = data['values'][5]
         self.entryUnidadCurricular.delete(0, tk.END)
         self.entryUnidadCurricular.insert(0,unidad)
+        self.entryCodigo.delete(0, tk.END)
+        self.entryCodigo.insert(0,codigo)
         self.hora.set(value=hora)
         if not departamento == ' ':
             self.entryDepartamento.config(state=tk.NORMAL)
@@ -150,7 +158,7 @@ class Unidades_curriculares(tk.Toplevel):
 
     def MostrarDatosUnidadesCurriculares(self):
         self.limpiarTablaUnidadesCurriculares()
-        self.rows = self.TraerDatos("SELECT Id,UnidadCurricular,Hora,Departamento,Pt FROM unidad_curricular WHERE unidad_curricular.Estado = 'Activo' ORDER BY UnidadCurricular")
+        self.rows = self.TraerDatos("SELECT Id,Codigo,UnidadCurricular,Hora,Departamento,Pt FROM unidad_curricular WHERE unidad_curricular.Estado = 'Activo' ORDER BY UnidadCurricular")
         for row in self.rows:
             self.treeUnidadesCurriculares.insert('',tk.END,values=row)
 
@@ -179,11 +187,12 @@ class Unidades_curriculares(tk.Toplevel):
             return ' '        
 
     def RegistrarUnidadCurricular(self):
-        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
+        if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get() and len(self.entryCodigo.get()) != 0 :
             if messagebox.askyesno('Registrar','¿Desea registrar la unidad curricular?',parent=self):
-                if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo")',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa())):
+                if self.conexion('INSERT INTO unidad_curricular VALUES (NUll,?,?,?,?,"Activo",?)',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa(),self.entryCodigo.get())):
                     self.MostrarDatosUnidadesCurriculares()
                     self.entryUnidadCurricular.delete(0, tk.END)
+                    self.entryCodigo.delete(0, tk.END)
                     self.entryDepartamento.delete(0, tk.END)
                     self.entryPrograma.delete(0, tk.END)
                     self.hora.set(value='')
@@ -211,12 +220,10 @@ class Unidades_curriculares(tk.Toplevel):
     def modificarUnidadCurricular(self):
         if len(self.entryUnidadCurricular.get()) != 0 and self.hora.get():
             if messagebox.askyesno('Edit','¿Desea editar la unidad curricular selecionada?',parent=self):
-                self.conexion('UPDATE unidad_curricular SET UnidadCurricular = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.entryUnidadCurricular.get(), self.selecionarFilaUnidadesCurriculares()))
-                self.conexion('UPDATE unidad_curricular SET Hora = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.cantidad(), self.selecionarFilaUnidadesCurriculares()))
-                self.conexion('UPDATE unidad_curricular SET Departamento = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.departamento(), self.selecionarFilaUnidadesCurriculares()))
-                self.conexion('UPDATE unidad_curricular SET Pt = ? WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.programa(), self.selecionarFilaUnidadesCurriculares()))
+                self.conexion('UPDATE unidad_curricular SET UnidadCurricular = ?, Hora = ?, Departamento = ?, Pt = ?, Codigo = ?  WHERE unidad_curricular.id = ? and unidad_curricular.Estado = "Activo"',(self.entryUnidadCurricular.get(),self.cantidad(),self.departamento(),self.programa(),self.entryCodigo.get(),self.selecionarFilaUnidadesCurriculares()))
                 self.MostrarDatosUnidadesCurriculares()
                 self.entryUnidadCurricular.delete(0, tk.END)
+                self.entryCodigo.delete(0, tk.END)
                 self.entryDepartamento.delete(0, tk.END)
                 self.entryPrograma.delete(0, tk.END)
                 self.hora.set(value='')
