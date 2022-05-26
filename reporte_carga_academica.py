@@ -313,9 +313,9 @@ class ReporteCargaAcademica(tk.Toplevel):
                 self.setStyles8.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
                 
                 self.counter = 0
-                messagebox.showinfo(title='Horario', message='Carga academica docente generada correctamente',parent=self)
+                messagebox.showinfo(title='Horario', message='Carga académica docente generada correctamente',parent=self)
             elif descargaAcademica[0] == 'No':
-                messagebox.showwarning(title='Warning', message='Descarga Academica no permitada',parent=self)
+                messagebox.showwarning(title='Warning', message='Descarga Académica no permitada',parent=self)
             else:
                 messagebox.showwarning(title='Warning', message='Algo ocurrio mal, consulte con el desarrollador',parent=self)
         else:

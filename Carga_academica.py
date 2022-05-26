@@ -22,7 +22,7 @@ class CargaAcademica(tk.Toplevel):
 		self.Frame = ttk.Labelframe(self)
 		self.Frame.grid(column=0,row=0,pady=25,padx=11)
 		ttk.Label(self, text='CONSULTAR CEDULA',font=('Helvetica',14)).place(x=150,y=5)
-		ttk.Label(self.Frame, text='Cedula:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
+		ttk.Label(self.Frame, text='Cédula:',font=('Helvetica',11)).grid(column=0,row=0 ,padx=5,pady=5)
 		self.cedula = ttk.Entry(self.Frame, width=45)
 		self.cedula.grid(column=1,row=0,padx=5,pady=5)
 		self.cedula.focus()		
@@ -33,7 +33,7 @@ class CargaAcademica(tk.Toplevel):
 		self.tree.grid(column=0,row=1, sticky='nsew',padx=5)
 		self.tree.heading('#1', text = 'Id')
 		self.tree.heading('#2', text = 'Nombre y apellido')
-		self.tree.heading('#3', text = 'Cedula')
+		self.tree.heading('#3', text = 'Cédula')
 		self.tree.column('#1', width=40)
 		self.tree.column('#2', width=150)
 		self.tree.column('#3', width=50)
@@ -98,11 +98,11 @@ class CargaAcademica(tk.Toplevel):
 		if len(self.cedula.get()) != 0:
 			cedula = self.conexion('SELECT * FROM docente WHERE docente.Cedula = ? and docente.Estado = "Activo"',(self.cedula.get(),)).fetchall()
 			if cedula:
-				messagebox.showwarning(title='Warning', message='Cedula ya esta registrada',parent=self)
+				messagebox.showwarning(title='Warning', message='Cédula ya esta registrada',parent=self)
 				self.cedula.delete(0, tk.END)
 				self.cedula.focus()
 			else:
-				if messagebox.askyesno('Registrar','Cedula no existe, ¿Desea registrarla?',parent=self):
+				if messagebox.askyesno('Registrar','Cédula no existe, ¿Desea registrarla?',parent=self):
 					valor = self.cedula.get()
 					self.cedula.delete(0, tk.END)
 					self.docente(valor)
@@ -110,7 +110,7 @@ class CargaAcademica(tk.Toplevel):
 					self.cedula.delete(0, tk.END)
 					self.cedula.focus()
 		else:
-			messagebox.showwarning(title='Warning', message='Introduzca una cedula',parent=self)
+			messagebox.showwarning(title='Warning', message='Introduzca una cédula',parent=self)
 			self.cedula.delete(0, tk.END)
 			self.cedula.focus()
 
@@ -427,12 +427,14 @@ class CargaAcademica(tk.Toplevel):
 
 			self.frameUnidadCurricular = ttk.Labelframe(self.container)
 			self.frameUnidadCurricular.grid(column=4,row=1,pady=0,padx=5)
-			self.treeUnidadCurricular = ttk.Treeview(self.frameUnidadCurricular, columns=['#1',"#2"],show='headings',height=3)
+			self.treeUnidadCurricular = ttk.Treeview(self.frameUnidadCurricular, columns=['#1',"#2","#3"],show='headings',height=3)
 			self.treeUnidadCurricular.grid(row=0,column=0)
 			self.treeUnidadCurricular.heading('#1', text = 'Id',)
 			self.treeUnidadCurricular.heading('#2', text = 'Unidad Curricular')
+			self.treeUnidadCurricular.heading('#3', text = 'Hora')
 			self.treeUnidadCurricular.column('#1', width=50)
 			self.treeUnidadCurricular.column('#2', width=250)
+			self.treeUnidadCurricular.column('#3', width=50)
 			self.scrollbarUnidadCurricular = ttk.Scrollbar(self.frameUnidadCurricular, orient=tk.VERTICAL, command=self.treeUnidadCurricular.yview)
 			self.treeUnidadCurricular.configure(yscroll=self.scrollbarUnidadCurricular.set)
 			self.scrollbarUnidadCurricular.grid(column=1,row=0, sticky='ns')
@@ -476,7 +478,7 @@ class CargaAcademica(tk.Toplevel):
 			self.treeGestionar.heading('#7', text = 'Sección')
 			self.treeGestionar.heading('#8', text = 'Turno')
 			self.treeGestionar.heading('#9', text = 'Día')
-			self.treeGestionar.heading('#10', text = 'Hora Inicial')
+			self.treeGestionar.heading('#10', text = 'Hora inicial')
 			self.treeGestionar.heading('#11', text = 'Hora final')
 			self.treeGestionar.heading('#12', text = 'Unidad curricular')
 			self.treeGestionar.column('#1', width=40)
@@ -670,7 +672,7 @@ class CargaAcademica(tk.Toplevel):
 								if self.laboratorio.get() == 'Si':
 									if self.treeLaboratorio.selection():
 										if self.maximo() == 10:
-											messagebox.showinfo(title='Info', message='Limite de materias asignadas por lapso academico excedido',parent=self.new)
+											messagebox.showinfo(title='Info', message='Limite de materias asignadas por lapso académico excedido',parent=self.new)
 										else:	
 											if self.obtenerHoraMateria() == '6':
 												# BLOQUE 6
