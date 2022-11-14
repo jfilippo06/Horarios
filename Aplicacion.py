@@ -38,7 +38,7 @@ class App(tk.Tk):
         self.userPassword = ttk.Entry(self,width=40)
         self.userPassword.config(show='*')
         self.userPassword.place(x=165,y=250)
-        self.button = ttk.Button(self, text='Iniciar Sesión', command=self.change)
+        self.button = ttk.Button(self, text='Iniciar sesión', command=self.change)
         self.button.place(x=250,y=285)
         
         self.menubar = tk.Menu(self)

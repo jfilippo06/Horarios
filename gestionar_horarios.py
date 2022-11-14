@@ -1593,63 +1593,63 @@ class Horarios(tk.Toplevel):
 
     def validarSemana(self,array,celda):
         if self.modalidad == 'Diurno':
-            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
+            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes.get() + ')',self.center))
         if self.modalidad == 'Nocturno':
-            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
+            if not self.entryLunes.state() and not self.entryMartes.state() and not self.entryMiercoles.state() and not self.entryJueves.state() and not self.entryViernes.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes.get() + ')',self.center))
                 
     def validarSemanaCeldas(self,array,celda):
         if self.dataModalidad == 'Diurno':
-            if not self.entryLunes2.state() and not self.entryMartes2.state() and not self.entryMiercoles2.state() and not self.entryMiercoles2.state() and not self.entryJueves2.state() and not self.entryViernes2.state():
+            if not self.entryLunes2.state() and not self.entryMartes2.state() and not self.entryMiercoles2.state() and not self.entryJueves2.state() and not self.entryViernes2.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles2.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles2.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles2.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves2.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes2.get() + ')',self.center))
         if self.dataModalidad == 'Nocturno':
-            if not self.entryLunes2.state() and not self.entryMartes2.state() and not self.entryMiercoles2.state() and not self.entryMiercoles2.state() and not self.entryJueves2.state() and not self.entryViernes2.state():
+            if not self.entryLunes2.state() and not self.entryMartes2.state() and not self.entryMiercoles2.state() and not self.entryJueves2.state() and not self.entryViernes2.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes2.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles2.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles2.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles2.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves2.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes2.get() + ')',self.center))
 
     def validarSemanaLaboratorio(self,array,celda):
         if self.dataLaboratorioModalidad == 'Diurno':
-            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
+            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas diurno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles3.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves3.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes3.get() + ')',self.center))
         if self.dataLaboratorioModalidad == 'Nocturno':
-            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
+            if not self.entryLunes3.state() and not self.entryMartes3.state() and not self.entryMiercoles3.state() and not self.entryJueves3.state() and not self.entryViernes3.state():
                 array[celda].clear()
                 array[celda].append(Paragraph('bloque de horas nocturno',self.center))
                 array[celda].append(Paragraph('Lunes (' + self.entryLunes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Martes (' + self.entryMartes3.get() + ')',self.center))
                 array[celda].append(Paragraph('Miércoles (' + self.entryMiercoles3.get() + ')',self.center))
-                array[celda].append(Paragraph('Jueves (' + self.entryMiercoles3.get() + ')',self.center))
-                array[celda].append(Paragraph('Viernes (' + self.entryMiercoles3.get() + ')',self.center))
+                array[celda].append(Paragraph('Jueves (' + self.entryJueves3.get() + ')',self.center))
+                array[celda].append(Paragraph('Viernes (' + self.entryViernes3.get() + ')',self.center))
 
     def obtenerHorarioDiurno(self):
         self.diurno = [
